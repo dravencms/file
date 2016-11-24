@@ -1,0 +1,22 @@
+<h3 n:if="$download->isShowName()" class="heading-title">{$download->getName()}</h3>
+<div class="news-wrapper" n:snippet="detail">
+    <article n:foreach="$files AS $downloadFile" class="news-item page-row has-divider clearfix row">
+        <figure class="thumb file col-md-2 col-sm-3 col-xs-4">
+            {if \Salamek\Files\Models\IFile::TYPE_IMAGE == $downloadFile->getStructureFile()->getFile()->getType()}
+                <img class="img-responsive" n:img="$downloadFile->getStructureFile()->getFile(), 122x91" alt="{$downloadFile->getName()}">
+            {else}
+                <img class="img-responsive" src="{$downloadFile->getStructureFile()->getFile()|fileIcon}" alt="{$downloadFile->getName()}">
+            {/if}
+            <div class="file-name">
+                <h4>{$downloadFile->getStructureFile()->getBasename()}</h4>
+            </div>
+        </figure>
+        <div class="details col-md-10 col-sm-9 col-xs-8">
+            <h3 class="title"><a href="">{$downloadFile->getName()}</a></h3>
+            <p>{$downloadFile->getDescription()|noescape}</p>
+            <a class="btn btn-theme read-more" n:href="download!, $downloadFile->getId()">Stáhnout <small>{$downloadFile->getStructureFile()->getFile()->getSize()|bytes}</small><i class="fa fa-download"></i></a>
+        </div>
+    </article><!--//news-item-->
+
+    {control visualPaginator}
+</div>

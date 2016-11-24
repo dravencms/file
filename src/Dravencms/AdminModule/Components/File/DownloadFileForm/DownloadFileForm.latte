@@ -1,0 +1,52 @@
+<form n:name="form" class="panel form-horizontal">
+    <ul class="alert alert-danger" n:if="$form->hasErrors()">
+        <li n:foreach="$form->errors as $error">{$error}</li>
+    </ul>
+    <div class="panel-body">
+        <ul class="nav nav-tabs" role="tablist">
+            <li n:foreach="$activeLocales AS $activeLocale" role="presentation" n:class="$activeLocale->isDefault() ? active"><a href="#{$activeLocale->getLanguageCode()}" aria-controls="home"
+                                                                                                                                 role="tab" data-toggle="tab"><span
+                            class="flag-icon flag-icon-{$activeLocale->getCountry()->getCode()|lower}"></span> {$activeLocale->getName()}</a></li>
+        </ul>
+        <div class="tab-content">
+            <div n:foreach="$activeLocales AS $activeLocale" role="tabpanel" n:class="$activeLocale->isDefault() ? active, tab-pane" id="{$activeLocale->getLanguageCode()}">
+                {formContainer $activeLocale->getLanguageCode()}
+                    <fieldset>
+                        <legend>{$activeLocale->getName()}</legend>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label" n:name="name">{_"Name"}</label>
+                                    <input type="text" n:name="name" autofocus="autofocus" class="form-control">
+                                </div>
+                            </div><!-- col-sm-12 -->
+                        </div><!-- row -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label" n:name="description">{_"Description"}</label>
+                                    <textarea n:name="description" class="form-control"></textarea>
+                                </div>
+                            </div><!-- col-sm-12 -->
+                        </div><!-- row -->
+                    </fieldset>
+                {/formContainer}
+            </div>
+        </div>
+
+        {include '../../../templates/File/File/fileSelector.latte', filetype => null, form => $form}
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group no-margin-hr">
+                    <label class="control-label" n:name="position">{_"Position"}</label>
+                    <input n:name="position" class="form-control">
+                </div>
+            </div><!-- col-sm-6 -->
+        </div><!-- row -->
+    </div>
+
+    <div class="panel-footer">
+        <input type="submit" n:name="send" class="btn btn-success button" value="{_"Save"}">
+    </div>
+</form>

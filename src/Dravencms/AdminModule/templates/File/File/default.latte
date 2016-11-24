@@ -1,0 +1,74 @@
+{block #content}
+    <p>
+        <a n:href="File:ajaxStructureForm parentStructureId => ($parentStructure ? $parentStructure->getId() : null)" class="btn btn-info" data-toggle="modal" data-target="#fileManagerModal"><i class="fa fa-folder-open"></i> {_"New folder"}</a>
+    </p>
+
+    {control formUpload}
+
+    {include 'ajaxFileManager.latte', 'structureInfo'=> $structureInfo, 'parentStructure' => $parentStructure, 'directories' => $directories, 'files' => $files}
+
+
+    {define #js}
+        <script>
+            function applyControls(obj) {
+                obj.mouseenter(function () {
+                    $(this).find(".box:not(.back)").animate({
+                        top: "-26px"
+                    }, {
+                        queue: !1,
+                        duration: 300
+                    });
+
+                }).mouseleave(function () {
+
+                    $(this).find(".box:not(.back)").animate({
+                        top: "0px"
+                    }, {
+                        queue: !1,
+                        duration: 300
+                    });
+                });
+            }
+
+            $files = $('.files .file');
+            $files.each(function () {
+                applyControls($(this));
+            });
+            $files.find('.delete').click(function (e) {
+                if (!confirm($(this).data('confirm'))) {
+                    e.preventDefault();
+                }
+            });
+
+            $("#fileManagerModal").on("show.bs.modal", function (e) {
+                var link = $(e.relatedTarget);
+                $(this).find(".modal-content").load(link.attr("href"));
+            });
+
+
+            $(function () {
+                // Now that the DOM is fully loaded, create the dropzone, and setup the
+                // event listeners
+                var myDropzone = new Dropzone('#{$presenter['formUpload']['form']->getElementPrototype()->id|noescape}');
+                myDropzone.on("success", function (file, response) {
+                    $("<div>").load({link File:ajaxFileUploadUpdate 'filesStructureFilesId' => 'REPLACE'}.replace('REPLACE', response.filesStructureFilesId), function () {
+                        var newItem = $($(this).html());
+                        applyControls(newItem)
+                        $(".filemanager .files").append(newItem);
+                    }
+                    )
+                    ;
+                    /* Maybe display some more file information on your page */
+                });
+            });
+        </script>
+    {/define}
+    <!-- Modal -->
+    <div class="modal fade" id="fileManagerModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+{/block}

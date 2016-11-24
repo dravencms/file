@@ -1,0 +1,47 @@
+<li class="file fileitem ajaxloaded"
+    data-filesid="{$file->getId()}"
+    data-filespath="{$basePath.'/data/'.$file->getFile()->getBasename()}"
+    data-filestype="{$file->getFile()->getType()}"
+    data-filesname="{$file->getName().'.'.$file->getFile()->getExtension()}"
+>
+    <figure>
+        {if $file->getFile()->getType() != \App\Model\File\Entities\File::TYPE_BINARY}
+        {if $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_IMAGE}
+
+        <a href="{img $file->getFile(),1024x}" class="link" data-gallery>
+            {elseif $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_MEDIA}
+            <a href="{$basePath.'/data/'.$file->getFile()->getBasename()}"
+               class="link"
+               type="{$file->getFile()->getMimeType()}"
+               data-poster="{$imagePath}/ico/{$file->getFile()->getExtension()}.jpg"
+               title="{_"Preview"}"
+               data-sources='[{"href": "{$basePath.'/data/'.$file->getFile()->getBasename()}", "type": "{$file->getFile()->getMimeType()}"}]'
+               data-gallery>
+                {/if}
+                {/if}
+                <div class="img-precontainer">
+                    <div class="img-container">
+                        {if $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_IMAGE}
+                            <img alt="{$file->getName()}" class="original " n:img="$file->getFile(), 122x91">
+                        {else}
+                            <img alt="{$file->getName()}" class="original " src="{$imagePath}/ico/{$file->getFile()->getExtension()}.jpg">
+                        {/if}
+                    </div>
+                </div>
+                {if $file->getFile()->getType() != \App\Model\File\Entities\File::TYPE_BINARY}
+            </a>
+            {/if}
+            <div class="box">
+                <h4 class="ellipsis">
+                    {var $fileName = $file->getName().'.'.$file->getFile()->getExtension()}
+                    <a href="#" class="link">{$fileName|truncate:19}</a>
+                </h4>
+            </div>
+            <figcaption>
+                <a n:href="File:ajaxFileInfo $file->getId()" class="info" data-toggle="modal" data-target="#fileManagerModal" title="{_"Info"}"><i class="fa fa-info"></i></a>
+                <a n:href="fileDownload! $file->getId()" class="download" title="{_"Download"}"><i class="fa fa-download"></i></a>
+                <a n:href="File:ajaxStructureFileForm $file->getId()" class="rename" title="{_"Rename"}" data-toggle="modal" data-target="#fileManagerModal"><i class="fa fa-pencil"></i></a>
+                <a n:href="fileDelete! $file->getId()" class="delete" data-confirm="{_"Are you sure you want to delete this file?"}" title="{_"Delete"}"><i class="fa fa-trash"></i></a>
+            </figcaption>
+    </figure>
+</li>

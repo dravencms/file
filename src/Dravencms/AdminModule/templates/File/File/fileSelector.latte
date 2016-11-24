@@ -1,0 +1,26 @@
+{if \Salamek\Files\Models\IFile::TYPE_IMAGE == $filetype}
+    {var $buttonText = 'Select image'}
+{else}
+    {var $buttonText = 'Select file'}
+{/if}
+<input type="hidden" class="wysiwyg-fileplugin" data-uri="{plink :Admin:File:File:ajaxFileManager}">
+<div class="col-sm-12">
+    <div class="form-group no-margin-hr">
+        <label class="control-label" n:name="structureFile">{_$buttonText}</label>
+        <div class="file-manager-selector">
+            <a href="#" data-link="{plink :Admin:File:File:ajaxFileManagerSelector}" class="btn btn-success file-manager-selector-button" data-filetype="{$filetype}" data-toggle="modal"
+               data-target="#fileManagerSelectorModal{$form['structureFile']->htmlId}">{_$buttonText}</a>
+            <input type="number" n:name="structureFile" class="form-control file-manager-selector-id">
+            <div class="filemanager">
+                <ul class="files file-manager-selector-file" data-link="{plink :Admin:File:File:ajaxFileUploadUpdate}">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div><!-- col-sm-12 -->
+<div class="modal fade" id="fileManagerSelectorModal{$form['structureFile']->htmlId}" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-llg" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
