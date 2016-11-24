@@ -23,7 +23,7 @@ namespace Dravencms\AdminModule\Components\File\DownloadForm;
 use Dravencms\Components\BaseFormFactory;
 use Dravencms\Model\File\Entities\Download;
 use Dravencms\Model\File\Repository\DownloadRepository;
-use App\Model\Locale\Repository\LocaleRepository;
+use Dravencms\Model\Locale\Repository\LocaleRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;

@@ -24,7 +24,7 @@ namespace Dravencms\AdminModule\Components\File\DownloadFileGrid;
 use Dravencms\Components\BaseGridFactory;
 use Dravencms\Model\File\Entities\Download;
 use Dravencms\Model\File\Repository\DownloadFileRepository;
-use App\Model\Locale\Repository\LocaleRepository;
+use Dravencms\Model\Locale\Repository\LocaleRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 
