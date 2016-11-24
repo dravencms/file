@@ -3,9 +3,9 @@
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
-namespace App\Model\File\Repository;
+namespace Dravencms\Model\File\Repository;
 
-use App\Model\File\Entities\Structure;
+use Dravencms\Model\File\Entities\Structure;
 use Kdyby\Doctrine\EntityManager;
 use Nette;
 use Salamek\Files\Models\IStructure;

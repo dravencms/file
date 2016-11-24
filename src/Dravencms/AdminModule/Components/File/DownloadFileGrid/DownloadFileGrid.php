@@ -19,11 +19,11 @@
  * MA 02110-1301  USA
  */
 
-namespace Dravencms\AdminModule\Components\File;
+namespace Dravencms\AdminModule\Components\File\DownloadFileGrid;
 
 use Dravencms\Components\BaseGridFactory;
-use App\Model\File\Entities\Download;
-use App\Model\File\Repository\DownloadFileRepository;
+use Dravencms\Model\File\Entities\Download;
+use Dravencms\Model\File\Repository\DownloadFileRepository;
 use App\Model\Locale\Repository\LocaleRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;

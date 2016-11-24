@@ -6,15 +6,15 @@
 namespace Dravencms\AdminModule\FileModule;
 
 
-use Dravencms\AdminModule\Components\File\DownloadFileFormFactory;
-use Dravencms\AdminModule\Components\File\DownloadFileGridFactory;
-use Dravencms\AdminModule\Components\File\DownloadFormFactory;
-use Dravencms\AdminModule\Components\File\DownloadGridFactory;
+use Dravencms\AdminModule\Components\File\DownloadFileForm\DownloadFileFormFactory;
+use Dravencms\AdminModule\Components\File\DownloadFileGrid\DownloadFileGridFactory;
+use Dravencms\AdminModule\Components\File\DownloadForm\DownloadFormFactory;
+use Dravencms\AdminModule\Components\File\DownloadGrid\DownloadGridFactory;
 use Dravencms\AdminModule\SecuredPresenter;
-use App\Model\File\Entities\Download;
-use App\Model\File\Entities\DownloadFile;
-use App\Model\File\Repository\DownloadFileRepository;
-use App\Model\File\Repository\DownloadRepository;
+use Dravencms\Model\File\Entities\Download;
+use Dravencms\Model\File\Entities\DownloadFile;
+use Dravencms\Model\File\Repository\DownloadFileRepository;
+use Dravencms\Model\File\Repository\DownloadRepository;
 
 class DownloadPresenter extends SecuredPresenter
 {

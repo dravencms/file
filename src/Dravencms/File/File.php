@@ -13,4 +13,9 @@ class File extends \Nette\Object
     public function __construct()
     {
     }
+
+    public function getFileSelectorPath()
+    {
+        return __DIR__.'/../AdminModule/templates/File/File/fileSelector.latte';
+    }
 }

@@ -18,11 +18,11 @@
  * MA 02110-1301  USA
  */
 
-namespace Dravencms\AdminModule\Components\File;
+namespace Dravencms\AdminModule\Components\File\StructureFileForm;
 
 use Dravencms\Components\BaseFormFactory;
-use App\Model\File\Entities\StructureFile;
-use App\Model\File\Repository\StructureFileRepository;
+use Dravencms\Model\File\Entities\StructureFile;
+use Dravencms\Model\File\Repository\StructureFileRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;

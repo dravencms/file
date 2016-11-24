@@ -5,11 +5,11 @@
     data-filesname="{$file->getName().'.'.$file->getFile()->getExtension()}"
 >
     <figure>
-        {if $file->getFile()->getType() != \App\Model\File\Entities\File::TYPE_BINARY}
-        {if $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_IMAGE}
+        {if $file->getFile()->getType() != \Dravencms\Model\File\Entities\File::TYPE_BINARY}
+        {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
 
         <a href="{img $file->getFile(),1024x}" class="link" data-gallery>
-            {elseif $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_MEDIA}
+            {elseif $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
             <a href="{$basePath.'/data/'.$file->getFile()->getBasename()}"
                class="link"
                type="{$file->getFile()->getMimeType()}"
@@ -21,14 +21,14 @@
                 {/if}
                 <div class="img-precontainer">
                     <div class="img-container">
-                        {if $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_IMAGE}
+                        {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                             <img alt="{$file->getName()}" class="original " n:img="$file->getFile(), 122x91">
                         {else}
                             <img alt="{$file->getName()}" class="original " src="{$imagePath}/ico/{$file->getFile()->getExtension()}.jpg">
                         {/if}
                     </div>
                 </div>
-                {if $file->getFile()->getType() != \App\Model\File\Entities\File::TYPE_BINARY}
+                {if $file->getFile()->getType() != \Dravencms\Model\File\Entities\File::TYPE_BINARY}
             </a>
             {/if}
             <div class="box">

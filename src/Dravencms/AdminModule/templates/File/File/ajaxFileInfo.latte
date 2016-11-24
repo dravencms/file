@@ -5,7 +5,7 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-sm-12 text-center">
-            {if $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_IMAGE}
+            {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                 <img alt="{$file->name}" class="original " n:img="$file->getFile(),122x91">
             {else}
                 <img alt="{$file->name}" class="original " src="{$imagePath}/ico/{$file->getFile()->getExtension()}.jpg">
@@ -27,7 +27,7 @@
         <div class="col-sm-6">
             {$file->getFile()->getMimeType()}^{$file->getFile()->getExtension()}
 
-            {if $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_IMAGE}
+            {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                 {var $imagePath = $file->getFile()->getSum().'.'.$file->getFile()->getExtension()}
                 {var $imageInfo = getimagesize($dataDir.'/'.$imagePath)}
                 - <strong>{$imageInfo['mime']}</strong>
@@ -40,7 +40,7 @@
         </div>
         <div class="col-sm-6">
             {$file->getFile()->getSize()|bytes}
-            {if $file->getFile()->getType() == \App\Model\File\Entities\File::TYPE_IMAGE}
+            {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                 <strong>{$imageInfo[0]}x{$imageInfo[1]} ({$imageInfo['bits']}b)</strong>
             {/if}
         </div>

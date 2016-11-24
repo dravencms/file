@@ -17,11 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-namespace Dravencms\AdminModule\Components\File;
+namespace Dravencms\AdminModule\Components\File\DownloadFileForm;
 
 
-use App\Model\File\Entities\Download;
-use App\Model\File\Entities\DownloadFile;
+use Dravencms\Model\File\Entities\Download;
+use Dravencms\Model\File\Entities\DownloadFile;
 
 interface DownloadFileFormFactory
 {

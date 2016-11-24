@@ -3,10 +3,10 @@
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
-namespace App\Model\File\Repository;
+namespace Dravencms\Model\File\Repository;
 
 use App\Model\BaseRepository;
-use App\Model\File\Entities\Download;
+use Dravencms\Model\File\Entities\Download;
 use Gedmo\Translatable\TranslatableListener;
 use Kdyby\Doctrine\EntityManager;
 use Nette;

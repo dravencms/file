@@ -6,15 +6,15 @@
  */
 namespace Dravencms\AdminModule\FileModule;
 
-use Dravencms\AdminModule\Components\File\StructureFileFormFactory;
-use Dravencms\AdminModule\Components\File\StructureFormFactory;
-use Dravencms\AdminModule\Components\File\UploadFileFormFactory;
+use Dravencms\AdminModule\Components\File\StructureFileForm\StructureFileFormFactory;
+use Dravencms\AdminModule\Components\File\StructureForm\StructureFormFactory;
+use Dravencms\AdminModule\Components\File\UploadFileForm\UploadFileFormFactory;
 use Dravencms\AdminModule\SecuredPresenter;
-use App\Model\File\Entities\Structure;
-use App\Model\File\Entities\StructureFile;
-use App\Model\File\Repository\FileRepository;
-use App\Model\File\Repository\StructureFileRepository;
-use App\Model\File\Repository\StructureRepository;
+use Dravencms\Model\File\Entities\Structure;
+use Dravencms\Model\File\Entities\StructureFile;
+use Dravencms\Model\File\Repository\FileRepository;
+use Dravencms\Model\File\Repository\StructureFileRepository;
+use Dravencms\Model\File\Repository\StructureRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Http\SessionSection;
 use Salamek\Files\FileStorage;

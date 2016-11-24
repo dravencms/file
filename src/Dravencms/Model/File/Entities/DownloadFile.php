@@ -3,7 +3,7 @@
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
-namespace App\Model\File\Entities;
+namespace Dravencms\Model\File\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -15,7 +15,7 @@ use Gedmo\Sortable\Sortable;
 
 /**
  * Class Download
- * @package App\Model\File\Entities
+ * @package Dravencms\Model\File\Entities
  * @ORM\Entity
  * @ORM\Table(name="fileDownloadFile")
  */
@@ -26,7 +26,7 @@ class DownloadFile extends Nette\Object
 
     /**
      * @var StructureFile
-     * @ORM\ManyToOne(targetEntity="\App\Model\File\Entities\StructureFile", inversedBy="downloadFiles")
+     * @ORM\ManyToOne(targetEntity="\Dravencms\Model\File\Entities\StructureFile", inversedBy="downloadFiles")
      * @ORM\JoinColumn(name="structure_file_id", referencedColumnName="id")
      */
     private $structureFile;

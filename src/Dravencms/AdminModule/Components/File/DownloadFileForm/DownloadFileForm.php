@@ -18,13 +18,13 @@
  * MA 02110-1301  USA
  */
 
-namespace Dravencms\AdminModule\Components\File;
+namespace Dravencms\AdminModule\Components\File\DownloadFileForm;
 
 use Dravencms\Components\BaseFormFactory;
-use App\Model\File\Entities\Download;
-use App\Model\File\Entities\DownloadFile;
-use App\Model\File\Repository\DownloadFileRepository;
-use App\Model\File\Repository\StructureFileRepository;
+use Dravencms\Model\File\Entities\Download;
+use Dravencms\Model\File\Entities\DownloadFile;
+use Dravencms\Model\File\Repository\DownloadFileRepository;
+use Dravencms\Model\File\Repository\StructureFileRepository;
 use App\Model\Locale\Repository\LocaleRepository;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;

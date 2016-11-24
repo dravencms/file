@@ -37,24 +37,30 @@ class InstallCommand extends Command
 
             $entityManager->persist($aclResource);
 
-            $aclOperation = new AclOperation($aclResource, 'edit', 'Allows editation of file');
-            $entityManager->persist($aclOperation);
-            $aclOperation = new AclOperation($aclResource, 'delete', 'Allows deletion of file');
-            $entityManager->persist($aclOperation);
-            
-            
+            $aclOperationEdit = new AclOperation($aclResource, 'edit', 'Allows editation of file');
+            $entityManager->persist($aclOperationEdit);
+            $aclOperationDelete = new AclOperation($aclResource, 'delete', 'Allows deletion of file');
+            $entityManager->persist($aclOperationDelete);
 
-            $adminMenu = new Menu('File manager', ':Admin:File:File', 'fa-archive', $aclOperation);
+            $aclOperationDownloadEdit = new AclOperation($aclResource, 'downloadEdit', 'Allows editation of download');
+            $entityManager->persist($aclOperationDownloadEdit);
+            $aclOperationDownloadDelete = new AclOperation($aclResource, 'downloadDelete', 'Allows deletion of download');
+            $entityManager->persist($aclOperationDownloadDelete);
+
+            $adminMenu = new Menu('File manager', ':Admin:File:File', 'fa-archive', $aclOperationEdit);
+            $entityManager->persist($adminMenu);
+
+            $adminMenuDownload = new Menu('Download', ':Admin:File:Download', 'fa-download', $aclOperationDownloadEdit);
 
             $foundRoot = $adminMenuRepository->getOneByName('Site items');
 
             if ($foundRoot)
             {
-                $adminMenuRepository->getMenuRepository()->persistAsLastChildOf($adminMenu, $foundRoot);
+                $adminMenuRepository->getMenuRepository()->persistAsLastChildOf($adminMenuDownload, $foundRoot);
             }
             else
             {
-                $entityManager->persist($adminMenu);
+                $entityManager->persist($adminMenuDownload);
             }
 
             $entityManager->flush();

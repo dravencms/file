@@ -17,10 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  */
-namespace Dravencms\AdminModule\Components\File;
+namespace Dravencms\AdminModule\Components\File\StructureFileForm;
 
 
-use App\Model\File\Entities\StructureFile;
+use Dravencms\Model\File\Entities\StructureFile;
 
 interface StructureFileFormFactory
 {

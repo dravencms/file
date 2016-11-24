@@ -3,7 +3,7 @@
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
-namespace App\Model\File\Entities;
+namespace Dravencms\Model\File\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +15,7 @@ use Salamek\Files\Models\IStructure;
 
 /**
  * Class Structure
- * @package App\Model\File\Entities
+ * @package Dravencms\Model\File\Entities
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\Table(name="fileStructure")
