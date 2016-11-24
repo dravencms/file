@@ -20,14 +20,14 @@
 
 namespace Dravencms\AdminModule\Components\File\DownloadFileForm;
 
-use Dravencms\Components\BaseFormFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\File\Entities\Download;
 use Dravencms\Model\File\Entities\DownloadFile;
 use Dravencms\Model\File\Repository\DownloadFileRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\Locale\Repository\LocaleRepository;
 use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 
 /**
@@ -35,7 +35,7 @@ use Nette\Application\UI\Form;
  *
  * @author Adam Schubert <adam.schubert@sg1-game.net>
  */
-class DownloadFileForm extends Control
+class DownloadFileForm extends BaseControl
 {
     /** @var BaseFormFactory */
     private $baseFormFactory;

@@ -21,19 +21,19 @@
 
 namespace Dravencms\AdminModule\Components\File\DownloadFileGrid;
 
-use Dravencms\Components\BaseGridFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseGrid\BaseGridFactory;
 use Dravencms\Model\File\Entities\Download;
 use Dravencms\Model\File\Repository\DownloadFileRepository;
 use Dravencms\Model\Locale\Repository\LocaleRepository;
 use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Control;
 
 /**
  * Description of DownloadFileGrid
  *
  * @author Adam Schubert <adam.schubert@sg1-game.net>
  */
-class DownloadFileGrid extends Control
+class DownloadFileGrid extends BaseControl
 {
     /** @var BaseGridFactory */
     private $baseGridFactory;

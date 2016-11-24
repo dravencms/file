@@ -20,11 +20,11 @@
 
 namespace Dravencms\AdminModule\Components\File\StructureFileForm;
 
-use Dravencms\Components\BaseFormFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\File\Entities\StructureFile;
 use Dravencms\Model\File\Repository\StructureFileRepository;
 use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Salamek\Files\FileStorage;
 
@@ -33,7 +33,7 @@ use Salamek\Files\FileStorage;
  *
  * @author Adam Schubert <adam.schubert@sg1-game.net>
  */
-class StructureFileForm extends Control
+class StructureFileForm extends BaseControl
 {
     /** @var BaseFormFactory */
     private $baseFormFactory;

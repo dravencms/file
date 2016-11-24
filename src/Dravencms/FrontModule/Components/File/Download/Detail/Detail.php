@@ -2,7 +2,7 @@
 
 namespace Dravencms\FrontModule\Components\File\Download\Detail;
 
-use Dravencms\Components\BaseControl;
+use Dravencms\Components\BaseControl\BaseControl;
 use Dravencms\Model\File\Repository\DownloadFileRepository;
 use Dravencms\Model\File\Repository\DownloadRepository;
 use IPub\VisualPaginator\Components\Control;

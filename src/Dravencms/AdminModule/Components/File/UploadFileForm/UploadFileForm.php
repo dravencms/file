@@ -20,11 +20,11 @@
 
 namespace Dravencms\AdminModule\Components\File\UploadFileForm;
 
-use Dravencms\Components\BaseFormFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\File\Entities\Structure;
 use Dravencms\Model\File\Repository\StructureFileRepository;
 use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use Salamek\Files\FileStorage;
 use Salamek\Files\Tools;
@@ -34,7 +34,7 @@ use Salamek\Files\Tools;
  *
  * @author Adam Schubert <adam.schubert@sg1-game.net>
  */
-class UploadFileForm extends Control
+class UploadFileForm extends BaseControl
 {
     /** @var BaseFormFactory */
     private $baseFormFactory;

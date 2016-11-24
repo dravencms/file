@@ -20,12 +20,12 @@
 
 namespace Dravencms\AdminModule\Components\File\FileForm;
 
-use Dravencms\Components\BaseFormFactory;
+use Dravencms\Components\BaseControl\BaseControl;
+use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\File\Entities\File;
 use Dravencms\Model\File\Entities\Structure;
 use Dravencms\Model\File\Repository\FileRepository;
 use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 
 /**
@@ -33,7 +33,7 @@ use Nette\Application\UI\Form;
  *
  * @author Adam Schubert <adam.schubert@sg1-game.net>
  */
-class FileForm extends Control
+class FileForm extends BaseControl
 {
     /** @var BaseFormFactory */
     private $baseFormFactory;
