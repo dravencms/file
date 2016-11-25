@@ -1,6 +1,6 @@
 {
   "name": "dravencms/file",
-  "type": "library",
+  "type": "dravencms-package",
   "description": "File module for dravencms",
   "keywords": [
     "dravencms",
@@ -23,6 +23,19 @@
   "autoload": {
     "psr-0": {
       "Dravencms\\": "src/"
+    }
+  },
+  "extra": {
+    "dravencms": {
+      "configuration": {
+        "extensions": {
+          "timeline": "Dravencms\\File\\DI\\FileExtension"
+        }
+      },
+      "scripts": {
+        "post-install": "Dravencms\\File\\Script\\PostInstall",
+        "pre-uninstall": "Dravencms\\File\\Script\\PreUninstall"
+      }
     }
   }
 }
