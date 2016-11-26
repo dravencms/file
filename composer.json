@@ -37,6 +37,7 @@
           "storageDir": "%wwwDir%/webtemp",
           "iconDir": "%wwwDir%/modules/admin/img/filesManager",
           "blankImage": "%wwwDir%/modules/front/college-green/img/key-handle.png"
+        }
       },
       "scripts": {
         "post-install": "Dravencms\\File\\Script\\PostInstall",
