@@ -29,8 +29,14 @@
     "dravencms": {
       "configuration": {
         "extensions": {
+          "files": "Salamek\\Files\\DI\\FilesExtension",
           "file": "Dravencms\\File\\DI\\FileExtension"
-        }
+        },
+        "files": {
+          "assetsDir": "%wwwDir%/data",
+          "storageDir": "%wwwDir%/webtemp",
+          "iconDir": "%wwwDir%/modules/admin/img/filesManager",
+          "blankImage": "%wwwDir%/modules/front/college-green/img/key-handle.png"
       },
       "scripts": {
         "post-install": "Dravencms\\File\\Script\\PostInstall",
