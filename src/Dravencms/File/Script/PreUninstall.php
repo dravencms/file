@@ -1,5 +1,5 @@
 <?php
-namespace Dravencms\Form\Script;
+namespace Dravencms\File\Script;
 
 use Dravencms\Model\User\Repository\AclResourceRepository;
 use Dravencms\Packager\IPackage;
