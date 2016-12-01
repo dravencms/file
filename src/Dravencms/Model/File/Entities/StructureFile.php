@@ -46,12 +46,6 @@ class StructureFile extends Nette\Object implements IStructureFile
     private $structure;
 
     /**
-     * @var ArrayCollection|DownloadFile[]
-     * @ORM\OneToMany(targetEntity="DownloadFile", mappedBy="structureFile",cascade={"persist"})
-     */
-    private $downloadFiles;
-
-    /**
      * StructureFile constructor.
      * @param string $name
      * @param IFile $file
