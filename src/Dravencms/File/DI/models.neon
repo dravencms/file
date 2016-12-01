@@ -1,3 +1,7 @@
 - Dravencms\Model\File\Repository\FileRepository
 - Dravencms\Model\File\Repository\StructureFileRepository
 - Dravencms\Model\File\Repository\StructureRepository
+
+- Dravencms\Model\File\Fixtures\AclOperationFixtures
+- Dravencms\Model\File\Fixtures\AclResourceFixtures
+- Dravencms\Model\File\Fixtures\AdminMenuFixtures
