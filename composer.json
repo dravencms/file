@@ -26,6 +26,9 @@
       "Dravencms\\": "src/"
     }
   },
+  "suggest": {
+    "dravencms/structure": "Allows file components to be used in cms"
+  },
   "extra": {
     "dravencms": {
       "configuration": {
