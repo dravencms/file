@@ -39,6 +39,15 @@ class StructureRepository implements IStructureRepository
     }
 
     /**
+     * @param $name
+     * @return mixed|null|Structure
+     */
+    public function getOneByName($name)
+    {
+        return $this->structureRepository->findOneBy(['name' => $name]);
+    }
+
+    /**
      * @param $id
      * @return Structure[]
      */
