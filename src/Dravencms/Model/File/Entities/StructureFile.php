@@ -46,12 +46,6 @@ class StructureFile extends Nette\Object implements IStructureFile
     private $structure;
 
     /**
-     * @var ArrayCollection|\Dravencms\Model\Article\Entities\Article[]
-     * @ORM\OneToMany(targetEntity="\Dravencms\Model\Article\Entities\Article", mappedBy="structureFile",cascade={"persist"})
-     */
-    private $articles;
-
-    /**
      * @var ArrayCollection|DownloadFile[]
      * @ORM\OneToMany(targetEntity="DownloadFile", mappedBy="structureFile",cascade={"persist"})
      */
