@@ -15,7 +15,8 @@
     }
   ],
   "require": {
-    "salamek/nette-files": "@dev"
+    "salamek/nette-files": "@dev",
+    "dravencms/locale": "@dev"
   },
   "require-dev": {
     "nette/tester": "@dev"
