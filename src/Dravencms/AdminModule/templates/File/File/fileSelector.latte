@@ -1,16 +1,30 @@
 {if \Salamek\Files\Models\IFile::TYPE_IMAGE == $filetype}
-    {var $buttonText = 'Select image'}
+    {var $labelText = 'Select image'}
+    {var $buttonText = 'Select image from file manager'}
 {else}
-    {var $buttonText = 'Select file'}
+    {var $labelText = 'Select file'}
+    {var $buttonText = 'Select file from file manager'}
 {/if}
+
+{ifset $selectorName}
+
+{else}
+    {var $selectorName = 'structureFile'}
+{/ifset}
 <input type="hidden" class="wysiwyg-fileplugin" data-uri="{plink :Admin:File:File:ajaxFileManager}">
 <div class="col-sm-12">
     <div class="form-group no-margin-hr">
-        <label class="control-label" n:name="structureFile">{_$buttonText}</label>
+        <label class="control-label" n:name="structureFile">{_$labelText}</label>
         <div class="file-manager-selector">
-            <a href="#" data-link="{plink :Admin:File:File:ajaxFileManagerSelector}" class="btn btn-success file-manager-selector-button" data-filetype="{$filetype}" data-toggle="modal"
-               data-target="#fileManagerSelectorModal{$form['structureFile']->htmlId}">{_$buttonText}</a>
-            <input type="number" n:name="structureFile" class="form-control file-manager-selector-id">
+            <div class="input-group">
+                <a href="#" data-link="{plink :Admin:File:File:ajaxFileManagerSelector}" class="btn btn-success file-manager-selector-button {ifset $uploadName}input-group-addon{/ifset}" data-filetype="{$filetype}" data-toggle="modal"
+                   data-target="#fileManagerSelectorModal{$form['structureFile']->htmlId}"><span class="fa fa-archive"></span> {_$buttonText}
+                </a>
+                <label n:ifset="$uploadName" class="btn btn-default btn-file">
+                    <span class="fa fa-upload"></span> {_"Upload from computer"} <input type="file" n:name="$uploadName" style="display: none;">
+                </label>
+            </div>
+            <input type="number" n:name="$selectorName" class="form-control file-manager-selector-id">
             <div class="filemanager">
                 <ul class="files file-manager-selector-file" data-link="{plink :Admin:File:File:ajaxFileUploadUpdate}">
                 </ul>
