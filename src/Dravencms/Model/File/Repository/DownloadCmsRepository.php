@@ -13,7 +13,7 @@ use Nette;
 use Salamek\Cms\CmsActionOption;
 use Salamek\Cms\ICmsActionOption;
 use Salamek\Cms\ICmsComponentRepository;
-use Dravencms\Model\Locale\Entities\ILocale;
+use Salamek\Cms\Models\ILocale;
 
 class DownloadCmsRepository implements ICmsComponentRepository
 {

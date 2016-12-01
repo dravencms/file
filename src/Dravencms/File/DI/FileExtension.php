@@ -63,10 +63,9 @@ class FileExtension extends Nette\DI\CompilerExtension
         $builder = $this->getContainerBuilder();
         foreach ($this->loadFromFile(__DIR__ . '/cmsRepositories.neon') as $i => $command) {
             $cli = $builder->addDefinition($this->prefix('cmsRepository.' . $i))
-                ->addTag(CmsExtension::TAG_COMPONENT)
                 ->setInject(FALSE); // lazy injects
             if (is_string($command)) {
-                $cli->setImplement($command);
+                $cli->setClass($command);
             } else {
                 throw new \InvalidArgumentException;
             }
