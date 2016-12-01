@@ -1,5 +1,3 @@
 - Dravencms\Model\File\Repository\FileRepository
 - Dravencms\Model\File\Repository\StructureFileRepository
 - Dravencms\Model\File\Repository\StructureRepository
-- Dravencms\Model\File\Repository\DownloadRepository
-- Dravencms\Model\File\Repository\DownloadFileRepository

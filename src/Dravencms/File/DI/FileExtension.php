@@ -23,12 +23,6 @@ class FileExtension extends Nette\DI\CompilerExtension
         $builder->addDefinition($this->prefix('file'))
             ->setClass('Dravencms\File\File', []);
 
-        if (class_exists('Salamek\Cms\DI\CmsExtension'))
-        {
-            $this->loadCmsComponents();
-            $this->loadCmsRepositories();
-        }
-
         $this->loadComponents();
         $this->loadModels();
         $this->loadConsole();
@@ -57,36 +51,7 @@ class FileExtension extends Nette\DI\CompilerExtension
 
         return parent::getConfig($defaults, $expand);
     }
-
-    protected function loadCmsRepositories()
-    {
-        $builder = $this->getContainerBuilder();
-        foreach ($this->loadFromFile(__DIR__ . '/cmsRepositories.neon') as $i => $command) {
-            $cli = $builder->addDefinition($this->prefix('cmsRepository.' . $i))
-                ->setInject(FALSE); // lazy injects
-            if (is_string($command)) {
-                $cli->setClass($command);
-            } else {
-                throw new \InvalidArgumentException;
-            }
-        }
-    }
-
-    protected function loadCmsComponents()
-    {
-        $builder = $this->getContainerBuilder();
-        foreach ($this->loadFromFile(__DIR__ . '/cmsComponents.neon') as $i => $command) {
-            $cli = $builder->addDefinition($this->prefix('cmsComponent.' . $i))
-                ->addTag(CmsExtension::TAG_COMPONENT)
-                ->setInject(FALSE); // lazy injects
-            if (is_string($command)) {
-                $cli->setImplement($command);
-            } else {
-                throw new \InvalidArgumentException;
-            }
-        }
-    }
-
+    
     protected function loadComponents()
     {
         $builder = $this->getContainerBuilder();
