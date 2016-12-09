@@ -31,6 +31,9 @@
   },
   "extra": {
     "dravencms": {
+      "files": {
+        "assets/*": "%wwwDir%/assets/file"
+      },
       "configuration": {
         "extensions": {
           "files": "Salamek\\Files\\DI\\FilesExtension",
@@ -39,8 +42,8 @@
         "files": {
           "assetsDir": "%wwwDir%/data",
           "storageDir": "%wwwDir%/webtemp",
-          "iconDir": "%wwwDir%/modules/admin/img/filesManager",
-          "blankImage": "%wwwDir%/modules/front/college-green/img/key-handle.png"
+          "iconDir": "%wwwDir%/assets/file",
+          "blankImage": "%wwwDir%/assets/file/ico/zip.jpg"
         }
       },
       "scripts": {
