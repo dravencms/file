@@ -74,7 +74,7 @@ class FilePresenter extends SecuredPresenter
         parent::startup();
         $this->dataDir = $this->fileStorage->getDataDir();
 
-        $this->template->imagePath = $this->template->basePath.'/'.$this->fileStorage->getIconDirWww();
+        $this->template->imagePath = $this->template->basePath.$this->fileStorage->getIconDirWww();
         $this->template->iconDefault = $this->iconDefault;
         $this->template->iconFolder = $this->iconFolder;
         $this->template->iconBack = $this->iconBack;
