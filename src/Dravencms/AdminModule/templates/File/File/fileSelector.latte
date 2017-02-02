@@ -1,10 +1,14 @@
-{if \Salamek\Files\Models\IFile::TYPE_IMAGE == $filetype}
-    {var $labelText = 'Select image'}
-    {var $buttonText = 'Select image from file manager'}
+{ifset $labelText}
+    {var $buttonText = $labelText.' from file manager'}
 {else}
-    {var $labelText = 'Select file'}
-    {var $buttonText = 'Select file from file manager'}
-{/if}
+    {if \Salamek\Files\Models\IFile::TYPE_IMAGE == $filetype}
+        {var $labelText = 'Select image'}
+        {var $buttonText = 'Select image from file manager'}
+    {else}
+        {var $labelText = 'Select file'}
+        {var $buttonText = 'Select file from file manager'}
+    {/if}
+{/ifset}
 
 {ifset $selectorName}
 
