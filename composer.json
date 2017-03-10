@@ -40,7 +40,7 @@
           "file": "Dravencms\\File\\DI\\FileExtension"
         },
         "files": {
-          "assetsDir": "%wwwDir%/data",
+          "dataDir": "%wwwDir%/data",
           "storageDir": "%wwwDir%/webtemp",
           "iconDir": "%wwwDir%/assets/file",
           "blankImage": "%wwwDir%/assets/file/ico/zip.jpg"
