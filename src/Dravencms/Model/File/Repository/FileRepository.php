@@ -108,4 +108,13 @@ class FileRepository implements IFileRepository
         $this->entityManager->remove($file);
         $this->entityManager->flush();
     }
+
+    /**
+     * @param $mimeType
+     * @return IFile[]
+     */
+    public function getByMimeType($mimeType)
+    {
+        return $this->fileRepository->findBy(['mimeType' => $mimeType]);
+    }
 }

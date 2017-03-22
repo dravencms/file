@@ -1,1 +1,2 @@
 - Dravencms\File\Console\DeleteOrphanedFilesCommand
+- Dravencms\File\Console\FixExtensionsCommand
