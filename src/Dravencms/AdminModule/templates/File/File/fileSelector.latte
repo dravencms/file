@@ -15,6 +15,13 @@
 {else}
     {var $selectorName = 'structureFile'}
 {/ifset}
+
+{ifset $id}
+
+{else}
+    {var $id = $form[$selectorName]->htmlId}
+{/ifset}
+
 <input type="hidden" class="wysiwyg-fileplugin" data-uri="{plink :Admin:File:File:ajaxFileManager}">
 <div class="col-sm-12">
     <div class="form-group no-margin-hr">
@@ -22,7 +29,7 @@
         <div class="file-manager-selector">
             <div class="input-group">
                 <a href="#" data-link="{plink :Admin:File:File:ajaxFileManagerSelector}" class="btn btn-success file-manager-selector-button {ifset $uploadName}input-group-addon{/ifset}" data-filetype="{$filetype}" data-toggle="modal"
-                   data-target="#fileManagerSelectorModal{$form[$selectorName]->htmlId}"><span class="fa fa-archive"></span> {_$buttonText}
+                   data-target="#fileManagerSelectorModal{$id}"><span class="fa fa-archive"></span> {_$buttonText}
                 </a>
                 <label n:ifset="$uploadName" class="btn btn-default btn-file">
                     <span class="fa fa-upload"></span> {_"Upload from computer"} <input type="file" n:name="$uploadName" style="display: none;">
@@ -36,7 +43,7 @@
         </div>
     </div>
 </div><!-- col-sm-12 -->
-<div class="modal fade" id="fileManagerSelectorModal{$form[$selectorName]->htmlId}" tabindex="-1" role="dialog">
+<div class="modal fade" id="fileManagerSelectorModal{$id}" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-llg" role="document">
         <div class="modal-content">
         </div>
