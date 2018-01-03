@@ -2,17 +2,15 @@
 
 namespace Dravencms\File;
 
+use Nette;
 
 /**
  * Class File
  * @package Dravencms\File
  */
-class File extends \Nette\Object
+class File
 {
-
-    public function __construct()
-    {
-    }
+    use Nette\SmartObject;
 
     public function getFileSelectorPath()
     {

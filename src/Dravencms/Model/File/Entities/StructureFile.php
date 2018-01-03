@@ -20,8 +20,9 @@ use Salamek\Files\Models\IStructureFile;
  * @ORM\Entity
  * @ORM\Table(name="fileStructureFile")
  */
-class StructureFile extends Nette\Object implements IStructureFile
+class StructureFile implements IStructureFile
 {
+    use Nette\SmartObject;
     use Identifier;
     use TimestampableEntity;
 

@@ -20,8 +20,9 @@ use Salamek\Files\Models\IStructure;
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  * @ORM\Table(name="fileStructure")
  */
-class Structure extends Nette\Object implements IStructure
+class Structure implements IStructure
 {
+    use Nette\SmartObject;
     use Identifier;
     use TimestampableEntity;
 

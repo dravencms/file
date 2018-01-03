@@ -18,8 +18,9 @@ use Salamek\Files\Models\IFile;
  * @ORM\Entity
  * @ORM\Table(name="fileFile")
  */
-class File extends Nette\Object implements IFile
+class File implements IFile
 {
+    use Nette\SmartObject;
     use Identifier;
     use TimestampableEntity;
     
