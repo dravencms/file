@@ -1,7 +1,7 @@
 <div class="filemanager">
     <ul class="breadcrumb">
         <li><a n:href="File:" class="folder" data-structureid=""><i class="fa fa-home"></i>/</a></li>
-        <li n:foreach="$structureInfo AS $info" class="folder {last}active{/last}" data-structureid="{$info->id}"><a n:href="File: $info->id">{$info->name}</a></li>
+        <li n:foreach="$structureInfo AS $info" class="folder {last}active{/last}" data-structureid="{$info->getId()}"><a n:href="File: $info->getId()">{$info->getName()}</a></li>
     </ul>
     <ul class="files clearfix">
         {if $parentStructure}
@@ -24,25 +24,25 @@
             </li>
         {/if}
         <!--Directories-->
-        <li class="file folder" n:foreach="$directories AS $dir" data-structureid="{$dir->id}">
+        <li class="file folder" n:foreach="$directories AS $dir" data-structureid="{$dir->getId()}">
             <figure>
-                <a n:href="File: $dir->id" class="link">
+                <a n:href="File: $dir->getId()" class="link">
                     <div class="img-precontainer">
                         <div class="img-container">
-                            <img alt="{$dir->name}" class="original " src="{$imagePath}/ico/{$iconFolder}.jpg">
+                            <img alt="{$dir->getName()}" class="original " src="{$imagePath}/ico/{$iconFolder}.jpg">
                         </div>
                     </div>
                 </a>
                 <div class="box">
                     <h4 class="ellipsis">
-                        <a n:href="File: $dir->id" class="link">{$dir->name|truncate:18}</a>
+                        <a n:href="File: $dir->getId()" class="link">{$dir->getName()|truncate:18}</a>
                     </h4>
                 </div>
                 <figcaption>
-                    <a n:href="File:ajaxStructureInfo $dir->id" data-toggle="modal" data-target="#fileManagerModal" title="{_"Info"}"><i class="fa fa-info"></i></a>
-                    <a n:href="structureDownload! $dir->id" title="{_"Download"}"><i class="fa fa-download"></i></a>
-                    <a n:href="File:ajaxStructureForm, structureId => $dir->id" data-toggle="modal" data-target="#fileManagerModal" title="{_"Rename"}"><i class="fa fa-pencil"></i></a>
-                    <a n:href="structureDelete! $dir->id" class="delete" data-confirm="{_"Are you sure you want to delete this folder?"}" title="{_"Delete"}"><i class="fa fa-trash"></i></a>
+                    <a n:href="File:ajaxStructureInfo $dir->getId()" data-toggle="modal" data-target="#fileManagerModal" title="{_"Info"}"><i class="fa fa-info"></i></a>
+                    <a n:href="structureDownload! $dir->getId()" title="{_"Download"}"><i class="fa fa-download"></i></a>
+                    <a n:href="File:ajaxStructureForm, structureId => $dir->getId()" data-toggle="modal" data-target="#fileManagerModal" title="{_"Rename"}"><i class="fa fa-pencil"></i></a>
+                    <a n:href="structureDelete! $dir->getId()" class="delete" data-confirm="{_"Are you sure you want to delete this folder?"}" title="{_"Delete"}"><i class="fa fa-trash"></i></a>
                 </figcaption>
             </figure>
         </li>
