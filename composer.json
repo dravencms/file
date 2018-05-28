@@ -39,6 +39,11 @@
           "files": "Salamek\\Files\\DI\\FilesExtension",
           "file": "Dravencms\\File\\DI\\FileExtension"
         },
+        "doctrine":{
+          "metadata": {
+            "Dravencms\\Model\\File": "%appDir%/../vendor/dravencms/file/src/Dravencms/Model/File"
+          }
+        },
         "files": {
           "dataDir": "%wwwDir%/data",
           "storageDir": "%wwwDir%/webtemp",
