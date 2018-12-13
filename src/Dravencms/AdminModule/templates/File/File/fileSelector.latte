@@ -22,6 +22,20 @@
     {var $id = $form[$selectorName]->htmlId}
 {/ifset}
 
+{ifset $fileAccept}
+
+{else}
+    {if \Salamek\Files\Models\IFile::TYPE_IMAGE == $filetype}
+        {var $fileAccept = 'image/*'}
+    {elseif \Salamek\Files\Models\IFile::TYPE_TEXT == $filetype}
+        {var $fileAccept = 'text/*'}
+    {elseif \Salamek\Files\Models\IFile::TYPE_MEDIA == $filetype}
+        {var $fileAccept = 'audio/*, video/*'}
+    {else}
+        {var $fileAccept = ''}
+    {/if}
+{/ifset}
+
 <input type="hidden" class="wysiwyg-fileplugin" data-uri="{plink :Admin:File:File:ajaxFileManager}">
 <div class="col-sm-12">
     <div class="form-group no-margin-hr">
@@ -32,7 +46,7 @@
                    data-target="#fileManagerSelectorModal{$id}"><span class="fa fa-archive"></span> {_$buttonText}
                 </a>
                 <label n:ifset="$uploadName" class="btn btn-default btn-file">
-                    <span class="fa fa-upload"></span> {_"Upload from computer"} <input type="file" n:name="$uploadName" style="display: none;">
+                    <span class="fa fa-upload"></span> {_"Upload from computer"} <input type="file" n:name="$uploadName" style="display: none;" accept="{$fileAccept}">
                 </label>
             </div>
             <input type="number" n:name="$selectorName" class="form-control file-manager-selector-id">
