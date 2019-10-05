@@ -50,10 +50,6 @@
           "iconDir": "%wwwDir%/assets/file",
           "blankImage": "%wwwDir%/assets/file/ico/zip.jpg"
         }
-      },
-      "scripts": {
-        "post-install": "Dravencms\\File\\Script\\PostInstall",
-        "pre-uninstall": "Dravencms\\File\\Script\\PreUninstall"
       }
     }
   }

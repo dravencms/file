@@ -46,6 +46,13 @@ class StructureFile implements IStructureFile
      */
     private $structure;
 
+
+    /**
+     * @var ArrayCollection|StructureFileLink[]
+     * @ORM\OneToMany(targetEntity="StructureFileLink", mappedBy="structureFile",cascade={"persist"})
+     */
+    private $structureFileLinks;
+
     /**
      * StructureFile constructor.
      * @param string $name
@@ -57,6 +64,7 @@ class StructureFile implements IStructureFile
         $this->name = $name;
         $this->file = $file;
         $this->structure = $structure;
+        $this->structureFileLinks = new ArrayCollection();
     }
 
     /**
@@ -105,5 +113,13 @@ class StructureFile implements IStructureFile
     public function getBasename()
     {
         return $this->name.'.'.$this->file->getExtension();
+    }
+
+    /**
+     * @return ArrayCollection|StructureFileLink[]
+     */
+    public function getStructureFileLinks()
+    {
+        return $this->structureFileLinks;
     }
 }

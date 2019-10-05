@@ -50,6 +50,14 @@ class StructureFileRepository implements IStructureFileRepository
     }
 
     /**
+     * @return StructureFile[]
+     */
+    public function getAll()
+    {
+        return $this->structureFileRepository->findAll();
+    }
+
+    /**
      * @param IStructure|null $structure
      * @return StructureFile[]
      */
