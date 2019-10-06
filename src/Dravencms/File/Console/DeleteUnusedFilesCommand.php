@@ -43,6 +43,8 @@ class DeleteUnusedFilesCommand extends Command
         /** @var EntityManager $entityManager */
         $entityManager = $this->getHelper('container')->getByType('Kdyby\Doctrine\EntityManager');
 
+        $deletedFileStructures = 0;
+        $deletedFiles = 0;
         try {
             $filesToCheckIds = [];
             foreach ($structureFileRepository->getAll() AS $structureFile) {
@@ -62,17 +64,24 @@ class DeleteUnusedFilesCommand extends Command
                 if ($canDelete) {
                     $filesToCheckIds[] = $structureFile->getFile()->getId();
                     $entityManager->remove($structureFile);
+                    $deletedFileStructures++;
                 }
             }
+
+            $entityManager->flush();
 
             foreach($filesToCheckIds AS $filesToCheckId) {
                 $fileFile = $fileRepository->getOneById($filesToCheckId);
                 if (!$fileFile->getStructureFiles()->count()) {
                     $entityManager->remove($fileFile);
+                    $deletedFiles++;
                 }
             }
 
             $entityManager->flush();
+
+            $output->writeln(sprintf('<info>Deleted file structures: %s</info>', $deletedFileStructures));
+            $output->writeln(sprintf('<info>Deleted files: %s</info>', $deletedFiles));
 
             return 0; // zero return code means everything is ok
 
