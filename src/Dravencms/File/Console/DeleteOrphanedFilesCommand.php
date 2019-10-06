@@ -25,6 +25,8 @@ class DeleteOrphanedFilesCommand extends Command
     {
         $this->setName('file:orphaned:delete')
             ->setDescription('Deletes ophranded files');
+        
+        $this->addOption('yes', null, InputOption::VALUE_OPTIONAL, 'Auto YES', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -54,10 +56,16 @@ class DeleteOrphanedFilesCommand extends Command
                 return 0;
             }
             
-            $helper = $this->getHelper('question');
-            $question = new Question(sprintf('%s files are marked for deletion and %s will be freed, do you wish to continue (y/n=default)', count($toDelete), Filters::bytes($toDeleteSize)),
-                self::ACTION_NO);
-            $action = $helper->ask($input, $output, $question);
+            $allYes = $input->getOption('yes');
+            
+            if (!$allYes) {
+                $helper = $this->getHelper('question');
+                $question = new Question(sprintf('%s files are marked for deletion and %s will be freed, do you wish to continue (y/n=default)', count($toDelete), Filters::bytes($toDeleteSize)),
+                    self::ACTION_NO);
+                $action = $helper->ask($input, $output, $question);
+            } else {
+                $action = elf::ACTION_YES;
+            }
 
             switch ($action) {
                 case self::ACTION_YES:
