@@ -51,7 +51,8 @@ class DeleteUnusedFilesByForgeinKeyUsageCommand extends Command
 
         try {
             $deletedFiles = 0;
-            $usedFiles = 0;
+            $deletedStructureFiles = 0;
+            $usedStructureFiles = 0;
             $connection = $entityManager->getConnection();
             $filesToCheckIds = [];
             foreach ($structureFileRepository->getAll() AS $structureFile) {
@@ -60,14 +61,25 @@ class DeleteUnusedFilesByForgeinKeyUsageCommand extends Command
                   $statement = $connection->prepare('DELETE FROM fileStructureFile WHERE id=?');
                   $statement->execute([$structureFile->getId()]);
                   $entityManager->getConnection()->commit();
-                  $deletedFiles++;
+                  $filesToCheckIds[] = $structureFile->getFile()->getId();
+                  $deletedStructureFiles++;
               } catch (ForeignKeyConstraintViolationException $e) {
                   $connection->rollBack();
-                  $usedFiles++;
+                  $usedStructureFiles++;
               }
             }
+            
+            foreach($filesToCheckIds AS $filesToCheckId) {
+                $fileFile = $fileRepository->getOneById($filesToCheckId);
+                if (!$fileFile->getStructureFiles()->count()) {
+                    $entityManager->remove($fileFile);
+                    $deletedFiles++;
+                }
+            }
+            
+            $output->writeln(sprintf('<info>Deleted structure files: %s</info>', $deletedStructureFiles));
+            $output->writeln(sprintf('<info>Used structure files: %s</info>', $usedStructureFiles));
             $output->writeln(sprintf('<info>Deleted files: %s</info>', $deletedFiles));
-            $output->writeln(sprintf('<info>Used files: %s</info>', $usedFiles));
             return 0; // zero return code means everything is ok
 
         } catch (\Exception $e) {
