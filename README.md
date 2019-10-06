@@ -17,3 +17,11 @@ Then you have to register extension in `config.neon`.
 extensions:
 	file: Dravencms\File\DI\FileExtension
 ```
+
+## CRON Jobs
+These CRON jobs are needed for removing old files
+
+```
+./bin/conosle file:unused:delete  # Removes unused files uploaded by another plugins
+./bin/console file:orphaned:delete # Removes untracked files from /data directory
+```
