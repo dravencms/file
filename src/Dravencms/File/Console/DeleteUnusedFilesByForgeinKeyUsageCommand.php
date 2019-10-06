@@ -77,6 +77,8 @@ class DeleteUnusedFilesByForgeinKeyUsageCommand extends Command
                 }
             }
             
+            $entityManager->flush();
+            
             $output->writeln(sprintf('<info>Deleted structure files: %s</info>', $deletedStructureFiles));
             $output->writeln(sprintf('<info>Used structure files: %s</info>', $usedStructureFiles));
             $output->writeln(sprintf('<info>Deleted files: %s</info>', $deletedFiles));
