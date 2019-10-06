@@ -59,13 +59,13 @@ class DeleteOrphanedFilesCommand extends Command
             
             $allYes = $input->getOption('yes');
             
-            if (!$allYes) {
+            if ($allYes === false) {
                 $helper = $this->getHelper('question');
                 $question = new Question(sprintf('%s files are marked for deletion and %s will be freed, do you wish to continue (y/n=default)', count($toDelete), Filters::bytes($toDeleteSize)),
                     self::ACTION_NO);
                 $action = $helper->ask($input, $output, $question);
             } else {
-                $action = elf::ACTION_YES;
+                $action = self::ACTION_YES;
             }
 
             switch ($action) {
