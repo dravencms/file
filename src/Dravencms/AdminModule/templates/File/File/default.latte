@@ -51,7 +51,7 @@
                 // event listeners
                 var myDropzone = new Dropzone('#{$presenter['formUpload']['form']->getElementPrototype()->id|noescape}');
                 myDropzone.on("success", function (file, response) {
-                    $("<div>").load({link File:ajaxFileUploadUpdate 'filesStructureFilesId' => 'REPLACE'}.replace('REPLACE', response.filesStructureFilesId), function () {
+                    $("<div>").load({link File:ajaxFileUploadUpdate 'filesStructureFilesId' => '666'}.replace('666', response.filesStructureFilesId), function () {
                         var newItem = $($(this).html());
                         applyControls(newItem)
                         $(".filemanager .files").append(newItem);
