@@ -73,7 +73,7 @@ class FilePresenter extends SecuredPresenter
     /** @var SessionSection */
     private $fileSession;
 
-    public function startup()
+    public function startup(): void
     {
         parent::startup();
         $this->dataDir = $this->fileStorage->getDataDir();
