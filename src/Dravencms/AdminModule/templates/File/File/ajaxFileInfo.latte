@@ -1,14 +1,14 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="{_"Close"}"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">{_"Details of file %name%", [name => $file->getName()]}</h4>
+    <h4 class="modal-title" id="myModalLabel">{_"Details of file %name%", [name => $structureFile->getName()]}</h4>
 </div>
 <div class="modal-body">
     <div class="row">
         <div class="col-sm-12 text-center">
             {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-                <img alt="{$file->getName()}" class="original " n:img="$file->getFile(),122x91">
+                <img alt="{$structureFile->getName()}" class="original " n:img="$structureFile->getFile(),122x91">
             {else}
-                <img alt="{$file->getName()}" class="original " src="{link fileIcon, $file->getFile()->getExtension()}">
+                <img alt="{$structureFile->getName()}" class="original " src="{link fileIcon, $structureFile->getFile()->getExtension()}">
             {/if}
         </div>
     </div>
@@ -25,13 +25,7 @@
             <strong>{_"Type"}</strong>
         </div>
         <div class="col-sm-6">
-            {$structureFile->getFile()->getMimeType()}^{$structureFile->getFile()->getExtension()}
-
-            {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-                {var $imagePath = $structureFile->getFile()->getSum().'.'.$structureFile->getFile()->getExtension()}
-                {var $imageInfo = getimagesize($dataDir.'/'.$imagePath)}
-                - <strong>{$imageInfo['mime']}</strong>
-            {/if}
+            <strong>{$structureFile->getFile()->getMimeType()}</strong> ({$structureFile->getFile()->getExtension()})
         </div>
     </div>
     <div class="row">
@@ -41,6 +35,7 @@
         <div class="col-sm-6">
             {$structureFile->getFile()->getSize()|bytes}
             {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
+                {var $imageInfo = getimagesize($filePath)}
                 <strong>{$imageInfo[0]}x{$imageInfo[1]} ({$imageInfo['bits']}b)</strong>
             {/if}
         </div>

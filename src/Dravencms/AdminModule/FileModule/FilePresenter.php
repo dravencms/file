@@ -165,7 +165,9 @@ class FilePresenter extends SecuredPresenter
      */
     public function renderAjaxFileInfo(int $filesStructureFilesId = null): void
     {
-        $this->template->structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
+        $structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
+        $this->template->structureFile = $structureFile;
+        $this->template->filePath = $this->fileStorage->getFileSystemPath($structureFile->getFile());
     }
 
     /**

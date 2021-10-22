@@ -9,11 +9,11 @@
         {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
 
         <a href="{img $structureFile->getFile(),1024x}" class="link" data-gallery>
-            {elseif $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
+            {elseif $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
             <a href="{$basePath.'/data/'.$structureFile->getFile()->getBasename()}"
                class="link"
                type="{$structureFile->getFile()->getMimeType()}"
-               data-poster="{$imagePath}/ico/{$structureFile->getFile()->getExtension()}.jpg"
+               data-poster="{link fileIcon, $structureFile->getFile()->getExtension()}"
                title="{_"Preview"}"
                data-sources='[{"href": "{$basePath.'/data/'.$structureFile->getFile()->getBasename()}", "type": "{$structureFile->getFile()->getMimeType()}"}]'
                data-gallery>
