@@ -11,7 +11,7 @@
                     <a n:href="File: ($parentStructure->getParent() ? $parentStructure->getParent()->getId() : null)" class="link">
                         <div class="img-precontainer">
                             <div class="img-container">
-                                <img alt="{_"Back"}" class="original " src="{$imagePath}/ico/{$iconBack}.jpg">
+                                <img alt="{_"Back"}" class="original " src="{link fileIcon,$iconBack}">
                             </div>
                         </div>
                     </a>
@@ -29,7 +29,7 @@
                 <a n:href="File: $dir->getId()" class="link">
                     <div class="img-precontainer">
                         <div class="img-container">
-                            <img alt="{$dir->getName()}" class="original " src="{$imagePath}/ico/{$iconFolder}.jpg">
+                            <img alt="{$dir->getName()}" class="original " src="{link fileIcon, $iconFolder}">
                         </div>
                     </div>
                 </a>

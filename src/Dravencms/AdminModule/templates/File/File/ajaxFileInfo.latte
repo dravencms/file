@@ -8,7 +8,7 @@
             {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                 <img alt="{$file->getName()}" class="original " n:img="$file->getFile(),122x91">
             {else}
-                <img alt="{$file->getName()}" class="original " src="{$imagePath}/ico/{$file->getFile()->getExtension()}.jpg">
+                <img alt="{$file->getName()}" class="original " src="{link fileIcon, $file->getFile()->getExtension()}">
             {/if}
         </div>
     </div>

@@ -5,7 +5,7 @@ extensions:
 files:
     dataDir: %wwwDir%/data
     webTempDir: %wwwDir%/webtemp
-    iconDir: %wwwDir%/assets/file
+    iconDir: %wwwDir%/assets/file/ico
 
 
 nettrine.orm.annotations:

@@ -20,6 +20,7 @@ use Dravencms\Model\File\Repository\FileRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\File\Repository\StructureRepository;
 use Dravencms\Database\EntityManager;
+use Nette\Application\Responses\FileResponse;
 use Nette\Http\SessionSection;
 use Salamek\Files\FileStorage;
 
@@ -67,8 +68,7 @@ class FilePresenter extends SecuredPresenter
     private $iconDefault = 'default';
     private $iconFolder = 'folder';
     private $iconBack = 'folder_back';
-    
-    private $dataDir;
+
 
     /** @var SessionSection */
     private $fileSession;
@@ -76,13 +76,10 @@ class FilePresenter extends SecuredPresenter
     public function startup(): void
     {
         parent::startup();
-        $this->dataDir = $this->fileStorage->getDataDir();
 
-        $this->template->imagePath = $this->template->basePath.$this->fileStorage->getIconDirWww();
         $this->template->iconDefault = $this->iconDefault;
         $this->template->iconFolder = $this->iconFolder;
         $this->template->iconBack = $this->iconBack;
-        $this->template->dataDir = $this->dataDir;
 
         $this->fileSession = $this->getSession('file');
     }
@@ -108,6 +105,16 @@ class FilePresenter extends SecuredPresenter
         } else {
             $this->template->structureInfo = [];
         }
+    }
+
+    /**
+     * @param string $fileType
+     * @throws \Nette\Application\AbortException
+     * @throws \Nette\Application\BadRequestException
+     */
+    public function actionFileIcon(string $fileType): void
+    {
+        $this->sendResponse(new FileResponse($this->fileStorage->getIconDir().'/'.$fileType.'.jpg'));
     }
 
     /**
@@ -257,7 +264,7 @@ class FilePresenter extends SecuredPresenter
             $structureParentId = ($structure->getParent() ? $structure->getParent()->getId() : null);
             $this->fileStorage->deleteStructure($structure);
         }
-        
+
         $this->flashMessage('Folder has been deleted', Flash::SUCCESS);
 
         $this->redirect('File:', $structureParentId);
