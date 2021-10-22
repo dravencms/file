@@ -6,6 +6,7 @@ files:
     dataDir: %wwwDir%/data
     webTempDir: %wwwDir%/webtemp
     iconDir: %wwwDir%/assets/file/ico
+    webTempPath: 'webtemp'
 
 
 nettrine.orm.annotations:
