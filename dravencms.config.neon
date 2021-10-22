@@ -1,6 +1,6 @@
 extensions:
     files: Salamek\Files\DI\FilesExtension
-    dravencms.file": Dravencms\\File\\DI\\FileExtension
+    dravencms.file: Dravencms\File\DI\FileExtension
 
 files:
     dataDir: %wwwDir%/data
