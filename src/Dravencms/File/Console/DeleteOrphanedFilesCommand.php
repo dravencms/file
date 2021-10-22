@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Dravencms\File\Console;
 
@@ -19,31 +19,45 @@ use Symfony\Component\Console\Question\Question;
 
 class DeleteOrphanedFilesCommand extends Command
 {
+    protected static $defaultName = 'file:orphaned:delete';
+    protected static $defaultDescription = 'Deletes ophranded files';
+
     const ACTION_NO = 'n';
     const ACTION_YES = 'y';
 
-    protected function configure()
+
+    /** @var FileRepository */
+    private $fileRepository;
+
+    /** @var FileStorage */
+    private $fileStorage;
+
+    public function __construct(FileRepository $fileRepository, FileStorage $fileStorage)
     {
-        $this->setName('file:orphaned:delete')
-            ->setDescription('Deletes ophranded files');
-        
+        $this->fileRepository = $fileRepository;
+        $this->fileStorage = $fileStorage;
+        parent::__construct(null);
+    }
+
+    protected function configure(): void
+    {
         $this->addOption('yes', null, InputOption::VALUE_OPTIONAL, 'Auto YES', false);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var FileRepository $fileRepository */
-        $fileRepository = $this->getHelper('container')->getByType('Dravencms\Model\File\Repository\FileRepository');
-
-        /** @var FileStorage $fileStorage */
-        $fileStorage = $this->getHelper('container')->getByType('Salamek\Files\FileStorage');
 
         try {
 
             $toDelete = [];
             $toDeleteSize = 0;
-            foreach (Finder::findFiles('*')->exclude('README.md')->in($fileStorage->getDataDir()) as $key => $file) {
-                if ($fileRepository->isSumFree($file->getBasename('.'.$file->getExtension())))
+            foreach (Finder::findFiles('*')->exclude('README.md')->in($this->fileStorage->getDataDir()) as $key => $file) {
+                if ($this->fileRepository->isSumFree($file->getBasename('.'.$file->getExtension())))
                 {
                     $output->writeln(sprintf('<comment>Marking for deletion: %s</comment>', $file->getFileName()));
                     $toDelete[] = $file;

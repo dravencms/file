@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -6,14 +6,13 @@
 namespace Dravencms\Model\File\Repository;
 
 use Dravencms\Model\File\Entities\File;
-use Kdyby\Doctrine\EntityManager;
-use Nette;
+use Dravencms\Database\EntityManager;
 use Salamek\Files\Models\IFile;
 use Salamek\Files\Models\IFileRepository;
 
 class FileRepository implements IFileRepository
 {
-    /** @var \Kdyby\Doctrine\EntityRepository */
+    /** @var \Doctrine\Persistence\ObjectRepository|File */
     private $fileRepository;
 
     /** @var EntityManager */
@@ -33,7 +32,7 @@ class FileRepository implements IFileRepository
      * @param $id
      * @return mixed|null|File
      */
-    public function getOneById($id)
+    public function getOneById(int $id): ?IFile
     {
         return $this->fileRepository->find($id);
     }
@@ -42,7 +41,7 @@ class FileRepository implements IFileRepository
      * @param $sum
      * @return mixed|null|object
      */
-    public function getOneBySum($sum)
+    public function getOneBySum(string $sum): ?IFile
     {
         return $this->fileRepository->findOneBy(['sum' => $sum]);
     }
@@ -57,12 +56,11 @@ class FileRepository implements IFileRepository
     }
 
     /**
-     * @param $sum
+     * @param string $sum
      * @param IFile|null $fileIgnore
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return bool
      */
-    public function isSumFree($sum, IFile $fileIgnore = null)
+    public function isSumFree(string $sum, IFile $fileIgnore = null): bool
     {
         $qb = $this->fileRepository->createQueryBuilder('f')
             ->select('f')
@@ -81,16 +79,16 @@ class FileRepository implements IFileRepository
     }
 
     /**
-     * @param $md5
-     * @param $size
-     * @param $extension
-     * @param $mimeType
+     * @param string $sum
+     * @param int $size
+     * @param string $extension
+     * @param string $mimeType
      * @param string $type
-     * @return File
+     * @return File|IFile
      */
-    public function createNewFile($md5, $size, $extension, $mimeType, $type = IFile::TYPE_BINARY)
+    public function createNewFile(string $sum, int $size, string $extension, string $mimeType, string $type = IFile::TYPE_BINARY): IFile
     {
-        $newFile = new File($md5, $size, $extension, $mimeType, $type);
+        $newFile = new File($sum, $size, $extension, $mimeType, $type);
 
         $this->entityManager->persist($newFile);
         $this->entityManager->flush();
@@ -103,7 +101,7 @@ class FileRepository implements IFileRepository
      * @throws \Exception
      * @return void
      */
-    public function deleteFile(IFile $file)
+    public function deleteFile(IFile $file): void
     {
         $this->entityManager->remove($file);
         $this->entityManager->flush();
@@ -113,7 +111,7 @@ class FileRepository implements IFileRepository
      * @param $mimeType
      * @return IFile[]
      */
-    public function getByMimeType($mimeType)
+    public function getByMimeType(string $mimeType)
     {
         return $this->fileRepository->findBy(['mimeType' => $mimeType]);
     }

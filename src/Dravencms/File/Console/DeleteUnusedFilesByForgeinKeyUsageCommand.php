@@ -1,21 +1,14 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Dravencms\File\Console;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\ORM\Query;
+use Dravencms\Database\EntityManager;
 use Dravencms\Model\File\Repository\FileRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
-use Doctrine\DBAL\Connection;
-use Kdyby\Doctrine\Registry;
-use Latte\Runtime\Filters;
-use Nette\Utils\Finder;
-use Salamek\Files\FileStorage;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
@@ -23,44 +16,55 @@ use Symfony\Component\Console\Question\Question;
 
 class DeleteUnusedFilesByForgeinKeyUsageCommand extends Command
 {
+    protected static $defaultName = 'file:unused-f:delete';
+    protected static $defaultDescription = 'Deletes unused files - detection by forgein key exception...';
+
     const ACTION_NO = 'n';
     const ACTION_YES = 'y';
 
-    protected function configure()
+    /** @var EntityManager */
+    private $entityManager;
+
+    /** @var FileRepository */
+    private $fileRepository;
+
+    /** @var StructureFileRepository */
+    private $structureFileRepository;
+
+    /**
+     * DeleteUnusedFilesByForgeinKeyUsageCommand constructor.
+     * @param EntityManager $entityManager
+     * @param FileRepository $fileRepository
+     * @param StructureFileRepository $structureFileRepository
+     */
+    public function __construct(EntityManager $entityManager, FileRepository $fileRepository, StructureFileRepository $structureFileRepository)
     {
-        $this->setName('file:unused-f:delete')
-            ->setDescription('Deletes unused files - detection by forgein key exception...');
+        parent::__construct(null);
+        $this->entityManager = $entityManager;
+        $this->fileRepository = $fileRepository;
+        $this->structureFileRepository = $structureFileRepository;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     * @throws \Doctrine\DBAL\Driver\Exception
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var FileRepository $fileRepository */
-        $fileRepository = $this->getHelper('container')->getByType('Dravencms\Model\File\Repository\FileRepository');
-
-        /** @var FileStorage $fileStorage */
-        $fileStorage = $this->getHelper('container')->getByType('Salamek\Files\FileStorage');
-
-        /** @var StructureFileRepository $structureFileRepository */
-        $structureFileRepository = $this->getHelper('container')->getByType('Dravencms\Model\File\Repository\StructureFileRepository');
-
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->getHelper('container')->getByType('Kdyby\Doctrine\EntityManager');
-
-        /** @var Registry $registry */
-        $registry = $this->getHelper('container')->getByType('Kdyby\Doctrine\Registry');
-
         try {
             $deletedFiles = 0;
             $deletedStructureFiles = 0;
             $usedStructureFiles = 0;
-            $connection = $entityManager->getConnection();
+            $connection = $this->entityManager->getConnection();
             $filesToCheckIds = [];
-            foreach ($structureFileRepository->getAll() AS $structureFile) {
+            foreach ($this->structureFileRepository->getAll() AS $structureFile) {
                 $connection->beginTransaction();
               try {
                   $statement = $connection->prepare('DELETE FROM fileStructureFile WHERE id=?');
-                  $statement->execute([$structureFile->getId()]);
-                  $entityManager->getConnection()->commit();
+                  $statement->executeStatement([$structureFile->getId()]);
+                  $this->entityManager->getConnection()->commit();
                   $filesToCheckIds[] = $structureFile->getFile()->getId();
                   $deletedStructureFiles++;
               } catch (ForeignKeyConstraintViolationException $e) {
@@ -70,14 +74,14 @@ class DeleteUnusedFilesByForgeinKeyUsageCommand extends Command
             }
             
             foreach($filesToCheckIds AS $filesToCheckId) {
-                $fileFile = $fileRepository->getOneById($filesToCheckId);
+                $fileFile = $this->fileRepository->getOneById($filesToCheckId);
                 if (!$fileFile->getStructureFiles()->count()) {
-                    $entityManager->remove($fileFile);
+                    $this->entityManager->remove($fileFile);
                     $deletedFiles++;
                 }
             }
             
-            $entityManager->flush();
+            $this->entityManager->flush();
             
             $output->writeln(sprintf('<info>Deleted structure files: %s</info>', $deletedStructureFiles));
             $output->writeln(sprintf('<info>Used structure files: %s</info>', $usedStructureFiles));

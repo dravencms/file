@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 /*
  * To change this template, choose Tools | Templates
@@ -6,16 +6,20 @@
  */
 namespace Dravencms\AdminModule\FileModule;
 
+use Dravencms\AdminModule\Components\File\StructureFileForm\StructureFileForm;
 use Dravencms\AdminModule\Components\File\StructureFileForm\StructureFileFormFactory;
+use Dravencms\AdminModule\Components\File\StructureForm\StructureForm;
 use Dravencms\AdminModule\Components\File\StructureForm\StructureFormFactory;
+use Dravencms\AdminModule\Components\File\UploadFileForm\UploadFileForm;
 use Dravencms\AdminModule\Components\File\UploadFileForm\UploadFileFormFactory;
 use Dravencms\AdminModule\SecuredPresenter;
+use Dravencms\Flash;
 use Dravencms\Model\File\Entities\Structure;
 use Dravencms\Model\File\Entities\StructureFile;
 use Dravencms\Model\File\Repository\FileRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\File\Repository\StructureRepository;
-use Kdyby\Doctrine\EntityManager;
+use Dravencms\Database\EntityManager;
 use Nette\Http\SessionSection;
 use Salamek\Files\FileStorage;
 
@@ -84,10 +88,10 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @param null $structureId
+     * @param null|int $structureId
      * @throws \Exception
      */
-    public function actionDefault($structureId = null)
+    public function actionDefault(int $structureId = null): void
     {
         $this->template->h1 = 'File manager';
         if ($structureId)
@@ -97,7 +101,7 @@ class FilePresenter extends SecuredPresenter
 
         $this->template->parentStructure = $this->parentStructure;
         $this->template->directories = $this->structureRepository->getByParent($this->parentStructure);
-        $this->template->files = $this->structureFileRepository->getByStructure($this->parentStructure);
+        $this->template->structureFiles = $this->structureFileRepository->getByStructure($this->parentStructure);
 
         if ($this->parentStructure) {
             $this->template->structureInfo = $this->structureRepository->buildParentTree($this->parentStructure);
@@ -107,11 +111,10 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @param null $structureId
-     * @param null $type
-     * @throws \Exception
+     * @param int|null $structureId
+     * @param int|null $type
      */
-    public function renderAjaxFileManager($structureId = null, $type = null)
+    public function renderAjaxFileManager(int $structureId = null, int $type = null): void
     {
         $this->template->h1 = 'File manager selector';
         if ($structureId)
@@ -121,7 +124,7 @@ class FilePresenter extends SecuredPresenter
 
         $this->template->parentStructure = $this->parentStructure;
         $this->template->directories = $this->structureRepository->getByParent($this->parentStructure);
-        $this->template->files = $this->structureFileRepository->getByStructureAndType($this->parentStructure, $type);
+        $this->template->structureFiles = $this->structureFileRepository->getByStructureAndType($this->parentStructure, $type);
 
         if ($this->parentStructure) {
             $this->template->structureInfo = $this->structureRepository->buildParentTree($this->parentStructure);
@@ -131,18 +134,19 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @param null $structureId
-     * @param null $type
+     * @param int|null $structureId
+     * @param string|null $type
      */
-    public function renderAjaxFileManagerSelector($structureId = null, $type = null)
+    public function renderAjaxFileManagerSelector(int $structureId = null, string $type = null): void
     {
         $this->renderAjaxFileManager($structureId, $type);
     }
 
     /**
-     * @param null $structureId
+     * @param int $structureId
+     * @throws \Exception
      */
-    public function renderAjaxStructureInfo($structureId)
+    public function renderAjaxStructureInfo(int $structureId): void
     {
         $structure = $this->structureRepository->getOneById($structureId);
         $this->template->structure = $structure;
@@ -150,17 +154,17 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @param null $filesStructureFilesId
+     * @param int|null $filesStructureFilesId
      */
-    public function renderAjaxFileInfo($filesStructureFilesId = null)
+    public function renderAjaxFileInfo(int $filesStructureFilesId = null): void
     {
-        $this->template->file = $this->structureFileRepository->getOneById($filesStructureFilesId);
+        $this->template->structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
     }
 
     /**
-     * @param null $filesStructureFilesId
+     * @param int|null $filesStructureFilesId
      */
-    public function actionAjaxStructureFileForm($filesStructureFilesId = null)
+    public function actionAjaxStructureFileForm(int $filesStructureFilesId = null)
     {
         $this->structureFileEdit = $this->structureFileRepository->getOneById($filesStructureFilesId);
     }
@@ -169,7 +173,7 @@ class FilePresenter extends SecuredPresenter
      * @param null|integer $structureId
      * @param null|integer $parentStructureId
      */
-    public function actionAjaxStructureForm($structureId = null, $parentStructureId = null)
+    public function actionAjaxStructureForm(int $structureId = null, int $parentStructureId = null): void
     {
         if ($parentStructureId)
         {
@@ -183,18 +187,19 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @param null $filesStructureFilesId
+     * @param int|null $filesStructureFilesId
      */
-    public function renderAjaxFileUploadUpdate($filesStructureFilesId = null)
+    public function renderAjaxFileUploadUpdate(int $filesStructureFilesId = null): void
     {
-        $this->template->file = $this->structureFileRepository->getOneById($filesStructureFilesId);
+        $this->template->structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
     }
 
     /**
-     * @param $filesStructureFilesId
+     * @param int $filesStructureFilesId
+     * @throws \Nette\Application\AbortException
      * @throws \Nette\Application\BadRequestException
      */
-    public function handleFileDownload($filesStructureFilesId)
+    public function handleFileDownload(int $filesStructureFilesId): void
     {
         $structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
         if (!$structureFile) {
@@ -206,11 +211,11 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @param $structureId
-     * @throws \Exception
+     * @param int $structureId
+     * @throws \Nette\Application\AbortException
      * @throws \Nette\Application\BadRequestException
      */
-    public function handleStructureDownload($structureId)
+    public function handleStructureDownload(int $structureId): void
     {
         $structure = $this->structureRepository->getOneById($structureId);
         if (!$structure) {
@@ -222,10 +227,10 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @param $filesStructureFilesId
-     * @throws \Nette\Application\BadRequestException
+     * @param int $filesStructureFilesId
+     * @throws \Nette\Application\AbortException
      */
-    public function handleFileDelete($filesStructureFilesId)
+    public function handleFileDelete(int $filesStructureFilesId): void
     {
         $files = $this->structureFileRepository->getById($filesStructureFilesId);
         $filesStructureId = null;
@@ -234,17 +239,16 @@ class FilePresenter extends SecuredPresenter
             $filesStructureId = ($file->getStructure()? $file->getStructure()->getId() : null);
             $this->fileStorage->deleteStructureFile($file);
         }
-        $this->flashMessage('File has been deleted', 'alert-success');
+        $this->flashMessage('File has been deleted', Flash::SUCCESS);
 
         $this->redirect('File:', $filesStructureId);
     }
 
     /**
-     * @param $structureId
-     * @throws \Exception
-     * @throws \Nette\Application\BadRequestException
+     * @param int $structureId
+     * @throws \Nette\Application\AbortException
      */
-    public function handleStructureDelete($structureId)
+    public function handleStructureDelete(int $structureId): void
     {
         $structures = $this->structureRepository->getById($structureId);
         $structureParentId = null;
@@ -254,34 +258,34 @@ class FilePresenter extends SecuredPresenter
             $this->fileStorage->deleteStructure($structure);
         }
         
-        $this->flashMessage('Folder has been deleted', 'alert-success');
+        $this->flashMessage('Folder has been deleted', Flash::SUCCESS);
 
         $this->redirect('File:', $structureParentId);
     }
 
     /**
-     * @return \AdminModule\Components\File\RobotsForm
+     * @return StructureForm
      */
-    public function createComponentFormStructure()
+    public function createComponentFormStructure(): StructureForm
     {
         $control = $this->structureFormFactory->create($this->parentStructure, $this->structureEdit);
         $control->onSuccess[] = function($structure)
         {
-            $this->flashMessage('Directory has been saved', 'alert-success');
+            $this->flashMessage('Directory has been saved', Flash::SUCCESS);
             $this->redirect('File:', ($structure->getParent() ? $structure->getParent()->getId() : null));
         };
         return $control;
     }
 
     /**
-     * @return \AdminModule\Components\File\StructureFileForm
+     * @return StructureFileForm
      */
-    public function createComponentFormStructureFile()
+    public function createComponentFormStructureFile(): StructureFileForm
     {
         $control = $this->structureFileFormFactory->create($this->structureFileEdit);
         $control->onSuccess[] = function($structureFile)
         {
-            $this->flashMessage('File has been saved', 'alert-success');
+            $this->flashMessage('File has been saved', Flash::SUCCESS);
             $this->redirect('File:', ($structureFile->getStructure() ? $structureFile->getStructure()->getId() : null));
 
         };
@@ -289,9 +293,9 @@ class FilePresenter extends SecuredPresenter
     }
 
     /**
-     * @return \AdminModule\Components\File\UploadFileForm
+     * @return UploadFileForm
      */
-    public function createComponentFormUpload()
+    public function createComponentFormUpload(): UploadFileForm
     {
         $control = $this->uploadFileFormFactory->create($this->parentStructure);
         $control->onSuccess[] = function($structureFile)

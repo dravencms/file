@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -6,9 +6,10 @@
 namespace Dravencms\Model\File\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Kdyby\Doctrine\Entities\Attributes\Identifier;
+use Dravencms\Database\Attributes\Identifier;
 use Nette;
 use Salamek\Files\Models\IFile;
 use Salamek\Files\Models\IStructure;
@@ -59,7 +60,7 @@ class StructureFile implements IStructureFile
      * @param IFile $file
      * @param IStructure $structure
      */
-    public function __construct($name, IFile $file, IStructure $structure = null)
+    public function __construct(string $name, IFile $file, IStructure $structure = null)
     {
         $this->name = $name;
         $this->file = $file;
@@ -70,7 +71,7 @@ class StructureFile implements IStructureFile
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -78,7 +79,7 @@ class StructureFile implements IStructureFile
     /**
      * @param IFile $file
      */
-    public function setFile(IFile $file)
+    public function setFile(IFile $file): void
     {
         $this->file = $file;
     }
@@ -86,7 +87,7 @@ class StructureFile implements IStructureFile
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -94,7 +95,7 @@ class StructureFile implements IStructureFile
     /**
      * @return File
      */
-    public function getFile()
+    public function getFile(): IFile
     {
         return $this->file;
     }
@@ -102,7 +103,7 @@ class StructureFile implements IStructureFile
     /**
      * @return Structure
      */
-    public function getStructure()
+    public function getStructure(): IStructure
     {
         return $this->structure;
     }
@@ -110,7 +111,7 @@ class StructureFile implements IStructureFile
     /**
      * @return string
      */
-    public function getBasename()
+    public function getBasename(): string
     {
         return $this->name.'.'.$this->file->getExtension();
     }
@@ -118,7 +119,7 @@ class StructureFile implements IStructureFile
     /**
      * @return ArrayCollection|StructureFileLink[]
      */
-    public function getStructureFileLinks()
+    public function getStructureFileLinks(): Collection
     {
         return $this->structureFileLinks;
     }

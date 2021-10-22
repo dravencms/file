@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -6,9 +6,10 @@
 namespace Dravencms\Model\File\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Kdyby\Doctrine\Entities\Attributes\Identifier;
+use Dravencms\Database\Attributes\Identifier;
 use Nette;
 use Salamek\Files\Models\IFile;
 
@@ -68,7 +69,7 @@ class File implements IFile
      * @param string $mimeType
      * @param string $type
      */
-    public function __construct($sum, $size, $extension, $mimeType, $type)
+    public function __construct(string $sum, int $size, string $extension, string $mimeType, string $type)
     {
         $this->sum = $sum;
         $this->size = $size;
@@ -83,7 +84,7 @@ class File implements IFile
      * @param string $sum
      * @return void
      */
-    public function setSum($sum)
+    public function setSum(string $sum): void
     {
         $this->sum = $sum;
     }
@@ -92,7 +93,7 @@ class File implements IFile
      * @param int $size
      * @return void
      */
-    public function setSize($size)
+    public function setSize(int $size): void
     {
         $this->size = $size;
     }
@@ -101,7 +102,7 @@ class File implements IFile
      * @param string $extension
      * @return void
      */
-    public function setExtension($extension)
+    public function setExtension(string $extension): void
     {
         $this->extension = $extension;
     }
@@ -110,7 +111,7 @@ class File implements IFile
      * @param string $mimeType
      * @return void
      */
-    public function setMimeType($mimeType)
+    public function setMimeType(string $mimeType): void
     {
         $this->mimeType = $mimeType;
     }
@@ -119,7 +120,7 @@ class File implements IFile
      * @param string $type
      * @return void
      */
-    public function setType($type = self::TYPE_BINARY)
+    public function setType(string $type = self::TYPE_BINARY): void
     {
         if (!in_array($type, array(self::TYPE_BINARY, self::TYPE_IMAGE, self::TYPE_MEDIA, self::TYPE_TEXT))) {
             throw new \InvalidArgumentException("Invalid $type");
@@ -130,7 +131,7 @@ class File implements IFile
     /**
      * @return string
      */
-    public function getSum()
+    public function getSum(): string
     {
         return $this->sum;
     }
@@ -138,7 +139,7 @@ class File implements IFile
     /**
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -146,7 +147,7 @@ class File implements IFile
     /**
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return $this->extension;
     }
@@ -154,7 +155,7 @@ class File implements IFile
     /**
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
@@ -162,7 +163,7 @@ class File implements IFile
     /**
      * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -170,7 +171,7 @@ class File implements IFile
     /**
      * @return string
      */
-    public function getBasename()
+    public function getBasename(): string
     {
         return $this->sum.'.'.$this->extension;
     }
@@ -178,7 +179,7 @@ class File implements IFile
     /**
      * @return bool
      */
-    public function isExists()
+    public function isExists(): bool
     {
         // TODO: Implement isExists() method.
         return true;
@@ -187,7 +188,7 @@ class File implements IFile
     /**
      * @return StructureFile[]|ArrayCollection
      */
-    public function getStructureFiles()
+    public function getStructureFiles(): Collection
     {
         return $this->structureFiles;
     }

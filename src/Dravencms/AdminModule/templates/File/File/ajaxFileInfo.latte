@@ -5,7 +5,7 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-sm-12 text-center">
-            {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
+            {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                 <img alt="{$file->getName()}" class="original " n:img="$file->getFile(),122x91">
             {else}
                 <img alt="{$file->getName()}" class="original " src="{$imagePath}/ico/{$file->getFile()->getExtension()}.jpg">
@@ -17,7 +17,7 @@
             <strong>{_"Name"}</strong>
         </div>
         <div class="col-sm-6">
-            {$file->getName()}
+            {$structureFile->getName()}
         </div>
     </div>
     <div class="row">
@@ -25,10 +25,10 @@
             <strong>{_"Type"}</strong>
         </div>
         <div class="col-sm-6">
-            {$file->getFile()->getMimeType()}^{$file->getFile()->getExtension()}
+            {$structureFile->getFile()->getMimeType()}^{$structureFile->getFile()->getExtension()}
 
-            {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-                {var $imagePath = $file->getFile()->getSum().'.'.$file->getFile()->getExtension()}
+            {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
+                {var $imagePath = $structureFile->getFile()->getSum().'.'.$structureFile->getFile()->getExtension()}
                 {var $imageInfo = getimagesize($dataDir.'/'.$imagePath)}
                 - <strong>{$imageInfo['mime']}</strong>
             {/if}
@@ -39,8 +39,8 @@
             <strong>{_"Size"}</strong>
         </div>
         <div class="col-sm-6">
-            {$file->getFile()->getSize()|bytes}
-            {if $file->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
+            {$structureFile->getFile()->getSize()|bytes}
+            {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                 <strong>{$imageInfo[0]}x{$imageInfo[1]} ({$imageInfo['bits']}b)</strong>
             {/if}
         </div>
@@ -50,7 +50,7 @@
             <strong>{_"MD5 Sum"}</strong>
         </div>
         <div class="col-sm-6">
-            {$file->getFile()->getSum()}
+            {$structureFile->getFile()->getSum()}
         </div>
     </div>
     <div class="row">
@@ -58,7 +58,7 @@
             <strong>{_"Created"}</strong>
         </div>
         <div class="col-sm-6">
-            {$file->getCreatedAt()|formatDate}
+            {$structureFile->getCreatedAt()|formatDate}
         </div>
     </div>
     <div class="row">
@@ -66,7 +66,7 @@
             <strong>{_"updated"}</strong>
         </div>
         <div class="col-sm-6">
-            {$file->getUpdatedAt()|formatDate}
+            {$structureFile->getUpdatedAt()|formatDate}
         </div>
     </div>
 </div>

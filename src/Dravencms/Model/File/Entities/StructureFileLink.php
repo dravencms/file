@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -8,11 +8,8 @@ namespace Dravencms\Model\File\Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Kdyby\Doctrine\Entities\Attributes\Identifier;
-use Kdyby\Doctrine\Entities\Attributes\UniversallyUniqueIdentifier;
 use Nette;
-use Salamek\Files\Models\IFile;
-use Salamek\Files\Models\IStructure;
+use Dravencms\Database\Attributes\Identifier;
 use Salamek\Files\Models\IStructureFile;
 
 /**
@@ -35,7 +32,7 @@ class StructureFileLink
     private $packageName;
 
     /**
-     * @var File
+     * @var StructureFile
      * @ORM\ManyToOne(targetEntity="StructureFile", inversedBy="structureFileLinks")
      * @ORM\JoinColumn(name="strucutre_file_id", referencedColumnName="id")
      */
@@ -55,8 +52,10 @@ class StructureFileLink
 
     /**
      * StructureFileLink constructor.
-     * @param $packageName
+     * @param string $packageName
      * @param IStructureFile $structureFile
+     * @param bool $isUsed
+     * @param bool $isAutoclean
      */
     public function __construct(string $packageName, IStructureFile $structureFile, bool $isUsed = true, bool $isAutoclean = true)
     {
@@ -69,7 +68,7 @@ class StructureFileLink
     /**
      * @param string $packageName
      */
-    public function setPackageName($packageName): void
+    public function setPackageName(string $packageName): void
     {
         $this->packageName = $packageName;
     }

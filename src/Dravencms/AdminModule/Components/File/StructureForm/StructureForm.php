@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -24,8 +24,9 @@ use Dravencms\Components\BaseControl\BaseControl;
 use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\File\Entities\Structure;
 use Dravencms\Model\File\Repository\StructureRepository;
-use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Form;
+use Dravencms\Database\EntityManager;
+use Dravencms\Components\BaseForm\Form;
+use Nette\Security\User;
 
 /**
  * Description of RobotsForm
@@ -40,6 +41,9 @@ class StructureForm extends BaseControl
     /** @var EntityManager */
     private $entityManager;
 
+    /** @var User */
+    private $user;
+
     /** @var StructureRepository */
     private $structureRepository;
 
@@ -53,9 +57,10 @@ class StructureForm extends BaseControl
     public $onSuccess = [];
 
     /**
-     * RobotsForm constructor.
+     * StructureForm constructor.
      * @param BaseFormFactory $baseFormFactory
      * @param EntityManager $entityManager
+     * @param User $user
      * @param StructureRepository $structureRepository
      * @param Structure|null $structureParent
      * @param Structure|null $structure
@@ -63,14 +68,14 @@ class StructureForm extends BaseControl
     public function __construct(
         BaseFormFactory $baseFormFactory,
         EntityManager $entityManager,
+        User $user,
         StructureRepository $structureRepository,
         Structure $structureParent = null,
         Structure $structure = null
     ) {
-        parent::__construct();
-
         $this->structureParent = $structureParent;
         $this->structure = $structure;
+        $this->user = $user;
 
         $this->baseFormFactory = $baseFormFactory;
         $this->entityManager = $entityManager;
@@ -85,9 +90,9 @@ class StructureForm extends BaseControl
     }
 
     /**
-     * @return \Dravencms\Components\BaseForm
+     * @return Form
      */
-    protected function createComponentForm()
+    protected function createComponentForm(): Form
     {
         $form = $this->baseFormFactory->create();
 
@@ -105,15 +110,16 @@ class StructureForm extends BaseControl
 
     /**
      * @param Form $form
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function editFormValidate(Form $form)
+    public function editFormValidate(Form $form): void
     {
         $values = $form->getValues();
         if (!$this->structureRepository->isNameFree($values->name, $this->structureParent, $this->structure)) {
             $form->addError('Tento název je již zabrán.');
         }
 
-        if (!$this->presenter->isAllowed('file', 'edit')) {
+        if (!$this->user->isAllowed('file', 'edit')) {
             $form->addError('Nemáte oprávění editovat robots.');
         }
     }
@@ -122,7 +128,7 @@ class StructureForm extends BaseControl
      * @param Form $form
      * @throws \Exception
      */
-    public function editFormSucceeded(Form $form)
+    public function editFormSucceeded(Form $form): void
     {
         $values = $form->getValues();
 
@@ -149,7 +155,7 @@ class StructureForm extends BaseControl
         $this->onSuccess($structure);
     }
 
-    public function render()
+    public function render(): void
     {
         $template = $this->template;
         $template->structure = $this->structure;

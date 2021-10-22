@@ -1,22 +1,16 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
 namespace Dravencms\Model\File\Repository;
 
-use Dravencms\Model\File\Entities\StructureFile;
 use Dravencms\Model\File\Entities\StructureFileLink;
-use Kdyby\Doctrine\EntityManager;
-use Nette;
-use Salamek\Files\Models\IFile;
-use Salamek\Files\Models\IStructure;
-use Salamek\Files\Models\IStructureFile;
-use Salamek\Files\Models\IStructureFileRepository;
+use Dravencms\Database\EntityManager;
 
 class StructureFileLinkRepository
 {
-    /** @var \Kdyby\Doctrine\EntityRepository */
+    /** @var \Doctrine\Persistence\ObjectRepository|StructureFileLink */
     private $structureFileLinkRepository;
 
     /** @var EntityManager */
@@ -33,10 +27,10 @@ class StructureFileLinkRepository
     }
 
     /**
-     * @param $id
-     * @return mixed|null|StructureFileLink
+     * @param int $id
+     * @return StructureFileLink|null
      */
-    public function getOneById($id)
+    public function getOneById(int $id): ?StructureFileLink
     {
         return $this->structureFileLinkRepository->find($id);
     }

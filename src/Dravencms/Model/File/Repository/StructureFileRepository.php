@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -6,8 +6,7 @@
 namespace Dravencms\Model\File\Repository;
 
 use Dravencms\Model\File\Entities\StructureFile;
-use Kdyby\Doctrine\EntityManager;
-use Nette;
+use Dravencms\Database\EntityManager;
 use Salamek\Files\Models\IFile;
 use Salamek\Files\Models\IStructure;
 use Salamek\Files\Models\IStructureFile;
@@ -15,7 +14,7 @@ use Salamek\Files\Models\IStructureFileRepository;
 
 class StructureFileRepository implements IStructureFileRepository
 {
-    /** @var \Kdyby\Doctrine\EntityRepository */
+    /** @var \Doctrine\Persistence\ObjectRepository|StructureFile */
     private $structureFileRepository;
 
     /** @var EntityManager */
@@ -35,7 +34,7 @@ class StructureFileRepository implements IStructureFileRepository
      * @param $id
      * @return mixed|null|StructureFile
      */
-    public function getOneById($id)
+    public function getOneById(int $id): ?IStructureFile
     {
         return $this->structureFileRepository->find($id);
     }
@@ -71,7 +70,7 @@ class StructureFileRepository implements IStructureFileRepository
      * @param string|null $type
      * @return IStructureFile[]
      */
-    public function getByStructureAndType(IStructure $structure = null, $type = null)
+    public function getByStructureAndType(IStructure $structure = null, string $type = null)
     {
         $qb = $this->structureFileRepository->createQueryBuilder('sf')
             ->select('sf')
@@ -97,23 +96,22 @@ class StructureFileRepository implements IStructureFileRepository
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param IStructure $structure
-     * @return StructureFile[]
+     * @return StructureFile|null
      */
-    public function getOneByNameAndStructure($name, IStructure $structure)
+    public function getOneByNameAndStructure(string $name, IStructure $structure): ?StructureFile
     {
         return $this->structureFileRepository->findOneBy(['structure' => $structure, 'name' => $name]);
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param IStructure|null $structure
      * @param IStructureFile|null $structureFileIgnore
-     * @return boolean
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return bool
      */
-    public function isNameFree($name, IStructure $structure = null, IStructureFile $structureFileIgnore = null)
+    public function isNameFree(string $name, IStructure $structure = null, IStructureFile $structureFileIgnore = null): bool
     {
         $qb = $this->structureFileRepository->createQueryBuilder('sf')
             ->select('sf')
@@ -134,13 +132,12 @@ class StructureFileRepository implements IStructureFileRepository
     }
 
     /**
-     * @param $insertName
+     * @param string $insertName
      * @param IFile $newFile
      * @param IStructure|null $structure
      * @return StructureFile
-     * @throws \Exception
      */
-    public function createNewStructureFile($insertName, IFile $newFile, IStructure $structure = null)
+    public function createNewStructureFile(string $insertName, IFile $newFile, IStructure $structure = null): StructureFile
     {
         $newStructureFile = new StructureFile($insertName, $newFile, $structure);
         $this->entityManager->persist($newStructureFile);
@@ -154,7 +151,7 @@ class StructureFileRepository implements IStructureFileRepository
      * @throws \Exception
      * @return void
      */
-    public function deleteStructureFile(IStructureFile $structureFile)
+    public function deleteStructureFile(IStructureFile $structureFile): void
     {
         $this->entityManager->remove($structureFile);
         $this->entityManager->flush();

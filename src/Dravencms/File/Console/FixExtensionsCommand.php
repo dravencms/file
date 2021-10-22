@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Dravencms\File\Console;
 
+use Dravencms\Database\EntityManager;
 use Dravencms\Model\File\Repository\FileRepository;
-use Kdyby\Doctrine\EntityManager;
 use Salamek\Files\FileStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class FixExtensionsCommand extends Command
 {
+    protected static $defaultName = 'file:extension:fix';
+    protected static $defaultDescription = 'Fixes corrupted extensions for known files';
+
     const ACTION_NO = 'n';
     const ACTION_YES = 'y';
 
@@ -22,35 +25,42 @@ class FixExtensionsCommand extends Command
         'image/jpeg' => 'jpg' //I rather use jpeg, but windows ruins everything...
     ];
 
-    protected function configure()
+    /** @var EntityManager */
+    private $entityManager;
+
+    /** @var FileRepository */
+    private $fileRepository;
+
+    /** @var FileStorage */
+    private $fileStorage;
+
+    public function __construct(EntityManager $entityManager, FileRepository $fileRepository, FileStorage $fileStorage)
     {
-        $this->setName('file:extension:fix')
-            ->setDescription('Fixes corrupted extensions for known files');
+        parent::__construct(null);
+        $this->entityManager = $entityManager;
+        $this->fileRepository = $fileRepository;
+        $this->fileStorage = $fileStorage;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var FileRepository $fileRepository */
-        $fileRepository = $this->getHelper('container')->getByType('Dravencms\Model\File\Repository\FileRepository');
-
-        /** @var FileStorage $fileStorage */
-        $fileStorage = $this->getHelper('container')->getByType('Salamek\Files\FileStorage');
-
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->getHelper('container')->getByType('Kdyby\Doctrine\EntityManager');
-
         try {
             $cnt = 0;
             foreach ($this->fixTable AS $mimeType => $extension)
             {
-                foreach($fileRepository->getByMimeType($mimeType) AS $file)
+                foreach($this->fileRepository->getByMimeType($mimeType) AS $file)
                 {
-                    if (is_file($fileStorage->getFileSystemPath($file)))
+                    if (is_file($this->fileStorage->getFileSystemPath($file)))
                     {
                         if ($file->getExtension() != $extension)
                         {
                             $output->writeln('<info>Found file with wrong extension '.$file->getExtension().' fixing to  '.$extension.'</info>');
-                            $newName = $fileStorage->getDataDir().'/'.$file->getSum().'.'.$extension;
+                            $newName = $this->fileStorage->getDataDir().'/'.$file->getSum().'.'.$extension;
                             if (is_file($newName))
                             {
                                 $output->writeln('<warning>New file found on FS, removing the old one</warning>');
@@ -60,26 +70,22 @@ class FixExtensionsCommand extends Command
                             else
                             {
                                 $output->writeln('<info>Renaming file to match new extension</info>');
-                                rename ($fileStorage->getFileSystemPath($file), $newName);
+                                rename ($this->fileStorage->getFileSystemPath($file), $newName);
                             }
 
 
                             $file->setExtension($extension);
-                            $entityManager->persist($file);
-                            $entityManager->flush();
+                            $this->entityManager->persist($file);
+                            $this->entityManager->flush();
                             $cnt++;
                         }
                     }
                     else
                     {
-                        $output->writeln('<warning>' . $fileStorage->getFileSystemPath($file) . ' not found, ignoring...</warning>');
+                        $output->writeln('<warning>' . $this->fileStorage->getFileSystemPath($file) . ' not found, ignoring...</warning>');
                     }
                 }
             }
-
-
-            
-                
 
             $output->writeln('<info>'.$cnt.' files fixed</info>');
             return 0; // zero return code means everything is ok

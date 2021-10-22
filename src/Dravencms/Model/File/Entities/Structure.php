@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -6,10 +6,11 @@
 namespace Dravencms\Model\File\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Kdyby\Doctrine\Entities\Attributes\Identifier;
+use Dravencms\Database\Attributes\Identifier;
 use Nette;
 use Salamek\Files\Models\IStructure;
 
@@ -78,7 +79,7 @@ class Structure implements IStructure
      * Structure constructor.
      * @param string $name
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
         $this->structureFiles = new ArrayCollection();
@@ -87,26 +88,24 @@ class Structure implements IStructure
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
      * @param IStructure|null $parent
-     * @return $this
+     * @return void
      */
-    public function setParent(IStructure $parent = null)
+    public function setParent(IStructure $parent = null): void
     {
         $this->parent = $parent;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -114,39 +113,39 @@ class Structure implements IStructure
     /**
      * @return StructureFile[]|ArrayCollection
      */
-    public function getStructureFiles()
+    public function getStructureFiles(): Collection
     {
         return $this->structureFiles;
     }
 
     /**
-     * @return mixed
+     * @return IStructure|null
      */
-    public function getParent()
+    public function getParent(): ?IStructure
     {
         return $this->parent;
     }
 
     /**
-     * @return mixed
+     * @return Collection
      */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return $this->children;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getRoot()
+    public function getRoot(): int
     {
         return $this->root;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getLvl()
+    public function getLvl(): int
     {
         return $this->lvl;
     }

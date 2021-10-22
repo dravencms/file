@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -22,10 +22,11 @@ namespace Dravencms\AdminModule\Components\File\StructureFileForm;
 
 use Dravencms\Components\BaseControl\BaseControl;
 use Dravencms\Components\BaseForm\BaseFormFactory;
+use Dravencms\Components\BaseForm\Form;
 use Dravencms\Model\File\Entities\StructureFile;
 use Dravencms\Model\File\Repository\StructureFileRepository;
-use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Form;
+use Dravencms\Database\EntityManager;
+use Nette\Security\User;
 use Salamek\Files\FileStorage;
 
 /**
@@ -41,9 +42,13 @@ class StructureFileForm extends BaseControl
     /** @var EntityManager */
     private $entityManager;
 
+    /** @var User */
+    private $user;
+
     /** @var StructureFileRepository */
     private $structureFileRepository;
 
+    /** @var FileStorage */
     private $fileStorage;
 
     /** @var StructureFile */
@@ -56,6 +61,7 @@ class StructureFileForm extends BaseControl
      * StructureFileForm constructor.
      * @param BaseFormFactory $baseFormFactory
      * @param EntityManager $entityManager
+     * @param User $user
      * @param FileStorage $fileStorage
      * @param StructureFileRepository $structureFileRepository
      * @param StructureFile $structureFile
@@ -63,14 +69,15 @@ class StructureFileForm extends BaseControl
     public function __construct(
         BaseFormFactory $baseFormFactory,
         EntityManager $entityManager,
+        User $user,
         FileStorage $fileStorage,
         StructureFileRepository $structureFileRepository,
         StructureFile $structureFile
     ) {
-        parent::__construct();
 
         $this->structureFile = $structureFile;
         $this->fileStorage = $fileStorage;
+        $this->user = $user;
 
         $this->baseFormFactory = $baseFormFactory;
         $this->entityManager = $entityManager;
@@ -82,9 +89,9 @@ class StructureFileForm extends BaseControl
     }
 
     /**
-     * @return \Dravencms\Components\BaseForm
+     * @return Form
      */
-    protected function createComponentForm()
+    protected function createComponentForm(): Form
     {
         $form = $this->baseFormFactory->create();
 
@@ -104,15 +111,16 @@ class StructureFileForm extends BaseControl
 
     /**
      * @param Form $form
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function editFormValidate(Form $form)
+    public function editFormValidate(Form $form): void
     {
         $values = $form->getValues();
         if (!$this->structureFileRepository->isNameFree($values->name, $this->structureFile->getStructure(), $this->structureFile)) {
             $form->addError('Tento název je již zabrán.');
         }
 
-        if (!$this->presenter->isAllowed('file', 'edit')) {
+        if (!$this->user->isAllowed('file', 'edit')) {
             $form->addError('Nemáte oprávění editovat robots.');
         }
     }
@@ -121,7 +129,7 @@ class StructureFileForm extends BaseControl
      * @param Form $form
      * @throws \Exception
      */
-    public function editFormSucceeded(Form $form)
+    public function editFormSucceeded(Form $form): void
     {
         $values = $form->getValues();
 
@@ -142,7 +150,7 @@ class StructureFileForm extends BaseControl
         $this->onSuccess($structureFile);
     }
 
-    public function render()
+    public function render(): void
     {
         $template = $this->template;
         $template->structureFile = $this->structureFile;

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -30,5 +30,5 @@ interface FileFormFactory
      * @param File|null $file
      * @return FileForm
      */
-    public function create(Structure $structureParent = null, File $file = null);
+    public function create(Structure $structureParent = null, File $file = null): FileForm;
 }

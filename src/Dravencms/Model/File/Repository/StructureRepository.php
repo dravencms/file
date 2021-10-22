@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -6,14 +6,13 @@
 namespace Dravencms\Model\File\Repository;
 
 use Dravencms\Model\File\Entities\Structure;
-use Kdyby\Doctrine\EntityManager;
-use Nette;
+use Dravencms\Database\EntityManager;
 use Salamek\Files\Models\IStructure;
 use Salamek\Files\Models\IStructureRepository;
 
 class StructureRepository implements IStructureRepository
 {
-    /** @var \Kdyby\Doctrine\EntityRepository */
+    /** @var \Doctrine\Persistence\ObjectRepository|Structure */
     private $structureRepository;
 
     /** @var EntityManager */
@@ -30,20 +29,20 @@ class StructureRepository implements IStructureRepository
     }
 
     /**
-     * @param $id
-     * @return mixed|null|Structure
+     * @param int $id
+     * @return IStructure|null
      */
-    public function getOneById($id)
+    public function getOneById(int $id): ?IStructure
     {
         return $this->structureRepository->find($id);
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @param IStructure|null $parent
-     * @return StructureRepository|null
+     * @return IStructure|null
      */
-    public function getOneByName($name, IStructure $parent = null)
+    public function getOneByName(string $name, IStructure $parent = null): ?IStructure
     {
         return $this->structureRepository->findOneBy(['name' => $name, 'parent' => $parent]);
     }
@@ -102,22 +101,21 @@ class StructureRepository implements IStructureRepository
     }
 
     /**
-     * @param $options
+     * @param array $options
      * @return mixed
      */
-    public function getTree($options = [])
+    public function getTree(array $options = [])
     {
         return $this->structureRepository->childrenHierarchy(null, false, $options);
     }
-    
+
     /**
-     * @param $name
+     * @param string $name
      * @param IStructure|null $parentStructure
      * @param IStructure|null $ignoreStructure
-     * @return boolean
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return bool
      */
-    public function isNameFree($name, IStructure $parentStructure = null, IStructure $ignoreStructure = null)
+    public function isNameFree(string $name, IStructure $parentStructure = null, IStructure $ignoreStructure = null): bool
     {
         $qb = $this->structureRepository->createQueryBuilder('s')
             ->select('s')
@@ -141,7 +139,7 @@ class StructureRepository implements IStructureRepository
      * @param IStructure $child
      * @param IStructure $root
      */
-    public function persistAsLastChildOf(IStructure $child, IStructure $root)
+    public function persistAsLastChildOf(IStructure $child, IStructure $root): void
     {
         $this->structureRepository->persistAsLastChildOf($child, $root);
     }
@@ -151,7 +149,7 @@ class StructureRepository implements IStructureRepository
      * @throws \Exception
      * @return void
      */
-    public function deleteStructure(IStructure $structure)
+    public function deleteStructure(IStructure $structure): void
     {
         $this->entityManager->remove($structure);
         $this->entityManager->flush();

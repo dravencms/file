@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -24,8 +24,9 @@ use Dravencms\Components\BaseControl\BaseControl;
 use Dravencms\Components\BaseForm\BaseFormFactory;
 use Dravencms\Model\File\Entities\Structure;
 use Dravencms\Model\File\Repository\StructureFileRepository;
-use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Form;
+use Dravencms\Database\EntityManager;
+use Dravencms\Components\BaseForm\Form;
+use Nette\Security\User;
 use Salamek\Files\FileStorage;
 use Salamek\Files\Tools;
 
@@ -41,6 +42,9 @@ class UploadFileForm extends BaseControl
 
     /** @var EntityManager */
     private $entityManager;
+
+    /** @var User */
+    private $user;
 
     /** @var StructureFileRepository */
     private $structureFileRepository;
@@ -58,6 +62,7 @@ class UploadFileForm extends BaseControl
      * UploadFileForm constructor.
      * @param BaseFormFactory $baseFormFactory
      * @param EntityManager $entityManager
+     * @param User $user
      * @param StructureFileRepository $structureFileRepository
      * @param FileStorage $fileStorage
      * @param Structure|null $structureParent
@@ -65,14 +70,15 @@ class UploadFileForm extends BaseControl
     public function __construct(
         BaseFormFactory $baseFormFactory,
         EntityManager $entityManager,
+        User $user,
         StructureFileRepository $structureFileRepository,
         FileStorage $fileStorage,
         Structure $structureParent = null
     ) {
-        parent::__construct();
 
         $this->structureParent = $structureParent;
         $this->fileStorage = $fileStorage;
+        $this->user = $user;
 
         $this->baseFormFactory = $baseFormFactory;
         $this->entityManager = $entityManager;
@@ -80,9 +86,9 @@ class UploadFileForm extends BaseControl
     }
 
     /**
-     * @return \Dravencms\Components\BaseForm
+     * @return Form
      */
-    protected function createComponentForm()
+    protected function createComponentForm(): Form
     {
         $form = $this->baseFormFactory->create();
 
@@ -100,7 +106,7 @@ class UploadFileForm extends BaseControl
     /**
      * @param Form $form
      */
-    public function editFormValidate(Form $form)
+    public function editFormValidate(Form $form): void
     {
         $values = $form->getValues();
 
@@ -108,7 +114,7 @@ class UploadFileForm extends BaseControl
             $form->addError('Upload of file failed ' . $values->file->getError());
         }
 
-        if (!$this->presenter->isAllowed('file', 'edit')) {
+        if (!$this->user->isAllowed('file', 'edit')) {
             $form->addError('Nemáte oprávění editovat robots.');
         }
     }
@@ -117,7 +123,7 @@ class UploadFileForm extends BaseControl
      * @param Form $form
      * @throws \Exception
      */
-    public function editFormSucceeded(Form $form)
+    public function editFormSucceeded(Form $form): void
     {
         $values = $form->getValues();
 
@@ -126,7 +132,7 @@ class UploadFileForm extends BaseControl
         $this->onSuccess($structureFile);
     }
 
-    public function render()
+    public function render(): void
     {
         $template = $this->template;
         $template->maxUploadSize = Tools::getMaxUploadSize();

@@ -1,0 +1,13 @@
+extensions:
+    files: Salamek\Files\DI\FilesExtension
+    dravencms.file": Dravencms\\File\\DI\\FileExtension
+
+files:
+    dataDir: %wwwDir%/data
+    webTempDir: %wwwDir%/webtemp
+    iconDir: %wwwDir%/assets/file
+
+
+nettrine.orm.annotations:
+    mapping:
+        Dravencms\Model\File: %appDir%/../vendor/dravencms/file/src/Dravencms/Model/File

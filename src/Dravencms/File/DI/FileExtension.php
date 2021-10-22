@@ -1,27 +1,24 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Dravencms\File\DI;
 
-use Kdyby\Console\DI\ConsoleExtension;
-use Nette;
-use Nette\DI\Compiler;
-use Nette\DI\Configurator;
-use Salamek\Cms\DI\CmsExtension;
+use Dravencms\File\File;
+use Nette\DI\CompilerExtension;
+
 /**
  * Class FileExtension
  * @package Dravencms\File\DI
  */
-class FileExtension extends Nette\DI\CompilerExtension
+class FileExtension extends CompilerExtension
 {
 
     public function loadConfiguration()
     {
-        $config = $this->getConfig();
         $builder = $this->getContainerBuilder();
 
 
         $builder->addDefinition($this->prefix('file'))
-            ->setClass('Dravencms\File\File', []);
+            ->setClass(File::class);
 
         $this->loadComponents();
         $this->loadModels();
@@ -29,35 +26,11 @@ class FileExtension extends Nette\DI\CompilerExtension
     }
 
 
-    /**
-     * @param Configurator $config
-     * @param string $extensionName
-     */
-    public static function register(Configurator $config, $extensionName = 'fileExtension')
-    {
-        $config->onCompile[] = function (Configurator $config, Compiler $compiler) use ($extensionName) {
-            $compiler->addExtension($extensionName, new FileExtension());
-        };
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfig(array $defaults = [], $expand = true)
-    {
-        $defaults = [
-        ];
-
-        return parent::getConfig($defaults, $expand);
-    }
-    
-    protected function loadComponents()
+    protected function loadComponents(): void
     {
         $builder = $this->getContainerBuilder();
         foreach ($this->loadFromFile(__DIR__ . '/components.neon') as $i => $command) {
-            $cli = $builder->addDefinition($this->prefix('components.' . $i))
-                ->setInject(FALSE); // lazy injects
+            $cli = $builder->addFactoryDefinition($this->prefix('components.' . $i));
             if (is_string($command)) {
                 $cli->setImplement($command);
             } else {
@@ -66,32 +39,29 @@ class FileExtension extends Nette\DI\CompilerExtension
         }
     }
 
-    protected function loadModels()
+    protected function loadModels(): void
     {
         $builder = $this->getContainerBuilder();
         foreach ($this->loadFromFile(__DIR__ . '/models.neon') as $i => $command) {
-            $cli = $builder->addDefinition($this->prefix('models.' . $i))
-                ->setInject(FALSE); // lazy injects
+            $cli = $builder->addDefinition($this->prefix('models.' . $i));
             if (is_string($command)) {
-                $cli->setClass($command);
+                $cli->setFactory($command);
             } else {
                 throw new \InvalidArgumentException;
             }
         }
     }
 
-    protected function loadConsole()
+    protected function loadConsole(): void
     {
         $builder = $this->getContainerBuilder();
 
         foreach ($this->loadFromFile(__DIR__ . '/console.neon') as $i => $command) {
             $cli = $builder->addDefinition($this->prefix('cli.' . $i))
-                ->addTag(ConsoleExtension::TAG_COMMAND)
-                ->setInject(FALSE); // lazy injects
+                ->setAutowired(false);
 
             if (is_string($command)) {
-                $cli->setClass($command);
-
+                $cli->setFactory($command);
             } else {
                 throw new \InvalidArgumentException;
             }

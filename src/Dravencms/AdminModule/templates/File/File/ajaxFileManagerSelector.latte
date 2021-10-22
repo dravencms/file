@@ -3,7 +3,7 @@
     <h4 class="modal-title" id="myModalLabel">{_"Select file..."}</h4>
 </div>
 <div class="modal-body">
-    {include 'ajaxFileManager.latte', 'structureInfo'=> $structureInfo, 'parentStructure' => $parentStructure, 'directories' => $directories, 'files' => $files}
+    {include 'ajaxFileManager.latte', 'structureInfo'=> $structureInfo, 'parentStructure' => $parentStructure, 'directories' => $directories, 'structureFile' => $structureFiles}
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">{_"Close"}</button>

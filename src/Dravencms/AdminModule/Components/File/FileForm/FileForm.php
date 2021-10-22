@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -22,11 +22,12 @@ namespace Dravencms\AdminModule\Components\File\FileForm;
 
 use Dravencms\Components\BaseControl\BaseControl;
 use Dravencms\Components\BaseForm\BaseFormFactory;
+use Dravencms\Components\BaseForm\Form;
 use Dravencms\Model\File\Entities\File;
 use Dravencms\Model\File\Entities\Structure;
 use Dravencms\Model\File\Repository\FileRepository;
-use Kdyby\Doctrine\EntityManager;
-use Nette\Application\UI\Form;
+use Dravencms\Database\EntityManager;
+use Nette\Security\User;
 
 /**
  * Description of FileForm
@@ -44,6 +45,9 @@ class FileForm extends BaseControl
     /** @var FileRepository */
     private $fileRepository;
 
+    /** @var User */
+    private $user;
+
     /** @var File|null */
     private $file = null;
 
@@ -54,10 +58,11 @@ class FileForm extends BaseControl
     public $onSuccess = [];
 
     /**
-     * RobotsForm constructor.
+     * FileForm constructor.
      * @param BaseFormFactory $baseFormFactory
      * @param EntityManager $entityManager
      * @param FileRepository $fileRepository
+     * @param User $user
      * @param Structure|null $structureParent
      * @param File|null $file
      */
@@ -65,10 +70,10 @@ class FileForm extends BaseControl
         BaseFormFactory $baseFormFactory,
         EntityManager $entityManager,
         FileRepository $fileRepository,
+        User $user,
         Structure $structureParent = null,
         File $file = null
     ) {
-        parent::__construct();
 
         $this->structureParent = $structureParent;
         $this->file = $file;
@@ -76,6 +81,7 @@ class FileForm extends BaseControl
         $this->baseFormFactory = $baseFormFactory;
         $this->entityManager = $entityManager;
         $this->fileRepository = $fileRepository;
+        $this->user = $user;
 
         if ($this->file)
         {
@@ -86,9 +92,9 @@ class FileForm extends BaseControl
     }
 
     /**
-     * @return \Dravencms\Components\BaseForm
+     * @return Form
      */
-    protected function createComponentForm()
+    protected function createComponentForm(): Form
     {
         $form = $this->baseFormFactory->create();
 
@@ -107,14 +113,14 @@ class FileForm extends BaseControl
     /**
      * @param Form $form
      */
-    public function editFormValidate(Form $form)
+    public function editFormValidate(Form $form): void
     {
         $values = $form->getValues();
         if (!$this->fileRepository->isNameFree($values->name, $this->structureParent, $this->file)) {
             $form->addError('Tento název je již zabrán.');
         }
 
-        if (!$this->presenter->isAllowed('file', 'edit')) {
+        if (!$this->user->isAllowed('file', 'edit')) {
             $form->addError('Nemáte oprávění editovat robots.');
         }
     }
@@ -123,7 +129,7 @@ class FileForm extends BaseControl
      * @param Form $form
      * @throws \Exception
      */
-    public function editFormSucceeded(Form $form)
+    public function editFormSucceeded(Form $form): void
     {
         $values = $form->getValues();
 
@@ -150,7 +156,7 @@ class FileForm extends BaseControl
         $this->onSuccess($file);
     }
 
-    public function render()
+    public function render(): void
     {
         $template = $this->template;
         $template->structure = $this->file;

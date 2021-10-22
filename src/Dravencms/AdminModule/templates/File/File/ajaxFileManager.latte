@@ -47,8 +47,8 @@
             </figure>
         </li>
         <!--FILES-->
-        {foreach $files AS $file}
-            {include 'ajaxFileUploadUpdate.latte', 'file'=> $file}
+        {foreach $$structureFiles AS $structureFile}
+            {include 'ajaxFileUploadUpdate.latte', 'structureFile'=> $structureFile}
         {/foreach}
     </ul>
 </div>

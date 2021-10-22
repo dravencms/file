@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
@@ -9,7 +9,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Dravencms\Model\User\Entities\AclOperation;
 use Dravencms\Model\User\Entities\AclResource;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class AclOperationFixtures extends AbstractFixture implements DependentFixtureInterface
 {
@@ -18,7 +18,7 @@ class AclOperationFixtures extends AbstractFixture implements DependentFixtureIn
      *
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $operations = [
             'file' => [
@@ -44,9 +44,9 @@ class AclOperationFixtures extends AbstractFixture implements DependentFixtureIn
     /**
      * Get the order of this fixture
      *
-     * @return integer
+     * @return array
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return ['Dravencms\Model\File\Fixtures\AclResourceFixtures', 'Dravencms\Model\User\Fixtures\GroupFixtures'];
     }

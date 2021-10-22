@@ -15,8 +15,9 @@
     }
   ],
   "require": {
-    "salamek/nette-files": "^v1.0",
-    "dravencms/locale": "^v1.0"
+    "salamek/nette-files": "@dev",
+    "dravencms/locale": ">=1.0",
+    "dravencms/admin": ">=2.0"
   },
   "require-dev": {
     "nette/tester": "@dev"
@@ -34,23 +35,7 @@
       "files": {
         "assets/*": "%wwwDir%/assets/file"
       },
-      "configuration": {
-        "extensions": {
-          "files": "Salamek\\Files\\DI\\FilesExtension",
-          "file": "Dravencms\\File\\DI\\FileExtension"
-        },
-        "doctrine":{
-          "metadata": {
-            "Dravencms\\Model\\File": "%appDir%/../vendor/dravencms/file/src/Dravencms/Model/File"
-          }
-        },
-        "files": {
-          "dataDir": "%wwwDir%/data",
-          "storageDir": "%wwwDir%/webtemp",
-          "iconDir": "%wwwDir%/assets/file",
-          "blankImage": "%wwwDir%/assets/file/ico/zip.jpg"
-        }
-      }
+      "configuration": "dravencms.config.neon"
     }
   }
 }

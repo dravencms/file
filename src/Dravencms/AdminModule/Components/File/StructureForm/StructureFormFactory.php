@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /*
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  *
@@ -29,5 +29,5 @@ interface StructureFormFactory
      * @param Structure|null $structure
      * @return StructureForm
      */
-    public function create(Structure $structureParent = null, Structure $structure = null);
+    public function create(Structure $structureParent = null, Structure $structure = null): StructureForm;
 }
