@@ -5,6 +5,8 @@ namespace Dravencms\File\Console;
 use Dravencms\Database\EntityManager;
 use Dravencms\Model\File\Repository\FileRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
+use Dravencms\Model\File\Repository\StructureRepository;
+use Salamek\Files\FileStorage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,21 +29,37 @@ class DeleteUnusedFilesCommand extends Command
     /** @var FileRepository */
     private $fileRepository;
 
+    /** @var FileStorage */
+    private $fileStorage;
+
     /** @var StructureFileRepository  */
     private $structureFileRepository;
+
+    /** @var StructureRepository */
+    private $structureRepository;
 
     /**
      * DeleteUnusedFilesCommand constructor.
      * @param EntityManager $entityManager
      * @param FileRepository $fileRepository
+     * @param FileStorage $fileStorage
      * @param StructureFileRepository $structureFileRepository
+     * @param StructureRepository $structureRepository
      */
-    public function __construct(EntityManager $entityManager, FileRepository $fileRepository, StructureFileRepository $structureFileRepository)
+    public function __construct(
+        EntityManager $entityManager,
+        FileRepository $fileRepository,
+        FileStorage $fileStorage,
+        StructureFileRepository $structureFileRepository,
+        StructureRepository $structureRepository
+    )
     {
         parent::__construct(null);
         $this->entityManager = $entityManager;
         $this->fileRepository = $fileRepository;
+        $this->fileStorage = $fileStorage;
         $this->structureFileRepository = $structureFileRepository;
+        $this->structureRepository = $structureRepository;
     }
 
     /**
@@ -53,6 +71,7 @@ class DeleteUnusedFilesCommand extends Command
     {
         $deletedFileStructures = 0;
         $deletedFiles = 0;
+        $deletedStructures = 0;
         try {
             $filesToCheckIds = [];
             foreach ($this->structureFileRepository->getAll() AS $structureFile) {
@@ -88,8 +107,21 @@ class DeleteUnusedFilesCommand extends Command
 
             $this->entityManager->flush();
 
+
+            foreach ($this->structureRepository->getAll() AS $structure) {
+                $info = $this->fileStorage->getStructureFilesInfo($structure);
+                if ($info['files'] == 0 && $info['folders'] == 0) {
+                    # Structure is empty, delete it
+                    $this->entityManager->remove($structure);
+                    $deletedStructures++;
+                }
+            }
+
+            $this->entityManager->flush();
+
             $output->writeln(sprintf('<info>Deleted file structures: %s</info>', $deletedFileStructures));
             $output->writeln(sprintf('<info>Deleted files: %s</info>', $deletedFiles));
+            $output->writeln(sprintf('<info>Deleted structures: %s</info>', $deletedStructures));
 
             return 0; // zero return code means everything is ok
 
