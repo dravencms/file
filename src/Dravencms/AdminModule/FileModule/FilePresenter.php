@@ -241,13 +241,43 @@ class FilePresenter extends SecuredPresenter
      */
     public function handleFileDelete(int $filesStructureFilesId): void
     {
-        $files = $this->structureFileRepository->getById($filesStructureFilesId);
+        $structureFiles = $this->structureFileRepository->getById($filesStructureFilesId);
         $filesStructureId = null;
-        foreach ($files AS $file)
+        $filesToCheckIds = [];
+        foreach ($structureFiles AS $structureFile)
         {
-            $filesStructureId = ($file->getStructure()? $file->getStructure()->getId() : null);
-            $this->fileStorage->deleteStructureFile($file);
+            $allAgree = [];
+            foreach ($structureFile->getStructureFileLinks() AS $structureFileLink) {
+                if ($structureFileLink->isUsed() || !$structureFileLink->isAutoclean()) {
+                    $allAgree[] = false;
+                } else {
+                    $allAgree[] = true;
+                    $this->entityManager->remove($structureFileLink);
+                }
+            }
+
+            $canDelete = (count(array_unique($allAgree)) === 1 && end($allAgree) === true);
+
+            if ($canDelete) {
+                $filesToCheckIds[] = $structureFile->getFile()->getId();
+                $this->entityManager->remove($structureFile);
+            }
+
+
+            $filesStructureId = ($structureFile->getStructure() ? $structureFile->getStructure()->getId() : null);
         }
+
+        $this->entityManager->flush();
+
+        foreach($filesToCheckIds AS $filesToCheckId) {
+            $fileFile = $this->fileRepository->getOneById($filesToCheckId);
+            if (!$fileFile->getStructureFiles()->count()) {
+                $this->entityManager->remove($fileFile);
+            }
+        }
+
+        $this->entityManager->flush();
+
         $this->flashMessage('File has been deleted', Flash::SUCCESS);
 
         $this->redirect('File:', $filesStructureId);
