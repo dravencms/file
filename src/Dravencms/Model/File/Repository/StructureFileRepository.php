@@ -137,7 +137,7 @@ class StructureFileRepository implements IStructureFileRepository
      * @param IStructure|null $structure
      * @return StructureFile
      */
-    public function createNewStructureFile(string $insertName, IFile $newFile, IStructure $structure = null): StructureFile
+    public function createNewStructureFile(string $insertName, IFile $newFile, IStructure $structure = null): IStructureFile
     {
         $newStructureFile = new StructureFile($insertName, $newFile, $structure);
         $this->entityManager->persist($newStructureFile);
