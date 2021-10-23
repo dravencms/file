@@ -11,4 +11,4 @@ files:
 
 nettrine.orm.annotations:
     mapping:
-        Dravencms\Model\File: %appDir%/../vendor/dravencms/file/src/Dravencms/Model/File
+        Dravencms\Model\File: %appDir%/../vendor/dravencms/file/src/Dravencms/Model/File/Entities
