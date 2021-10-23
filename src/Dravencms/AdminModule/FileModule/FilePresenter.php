@@ -246,7 +246,7 @@ class FilePresenter extends SecuredPresenter
         $filesToCheckIds = [];
         foreach ($structureFiles AS $structureFile)
         {
-            $allAgree = [];
+            $allAgree = [true];
             foreach ($structureFile->getStructureFileLinks() AS $structureFileLink) {
                 if ($structureFileLink->isUsed() || !$structureFileLink->isAutoclean()) {
                     $allAgree[] = false;
