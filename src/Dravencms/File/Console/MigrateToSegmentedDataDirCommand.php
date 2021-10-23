@@ -6,6 +6,7 @@ use Dravencms\Model\File\Repository\FileRepository;
 use Latte\Runtime\Filters;
 use Nette\Utils\Finder;
 use Salamek\Files\FileStorage;
+use Salamek\Files\Tools;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,10 +18,10 @@ use Symfony\Component\Console\Question\Question;
  * Copyright (C) 2016 Adam Schubert <adam.schubert@sg1-game.net>.
  */
 
-class DeleteOrphanedFilesCommand extends Command
+class MigrateToSegmentedDataDirCommand extends Command
 {
-    protected static $defaultName = 'file:orphaned:delete';
-    protected static $defaultDescription = 'Deletes ophranded files';
+    protected static $defaultName = 'file:segmented-storage:migrate';
+    protected static $defaultDescription = 'Migrates from old storage format to segmented format';
 
     const ACTION_NO = 'n';
     const ACTION_YES = 'y';
@@ -39,10 +40,6 @@ class DeleteOrphanedFilesCommand extends Command
         parent::__construct(null);
     }
 
-    protected function configure(): void
-    {
-        $this->addOption('yes', null, InputOption::VALUE_OPTIONAL, 'Auto YES', false);
-    }
 
     /**
      * @param InputInterface $input
@@ -51,18 +48,30 @@ class DeleteOrphanedFilesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         try {
-
             $toDelete = [];
             $toDeleteSize = 0;
-            foreach (Finder::findDirectories('*')->exclude('README.md')->in($this->fileStorage->getDataDir()) as $key => $dir) {
-                foreach (Finder::findFiles('*')->in($dir) as $key => $file) {
-                    if ($this->fileRepository->isSumFree($file->getBasename('.' . $file->getExtension()))) {
-                        $output->writeln(sprintf('<comment>Marking for deletion: %s</comment>', $file->getFileName()));
-                        $toDelete[] = $file;
-                        $toDeleteSize += $file->getSize();
+
+            foreach (Finder::findFiles('*')->exclude('README.md')->in($this->fileStorage->getDataDir()) as $key => $file) {
+                $fileSum = $file->getBasename('.' . $file->getExtension());
+                $foundFile = $this->fileRepository->getOneBySum($fileSum);
+
+                if ($foundFile) {
+                    $output->writeln(sprintf('<comment>Migrating file: %s</comment>', $file->getFileName()));
+
+                    if (!is_dir($this->fileStorage->getDataDirForFile($foundFile)))
+                    {
+                        Tools::mkdir($this->fileStorage->getDataDirForFile($foundFile));
                     }
+
+                    if (!@rename($file->getPathName(), $this->fileStorage->getFileSystemPath($foundFile)))
+                    {
+                        throw new \Exception(sprintf('Failed to move file %s, is it writable ?', $file->getPathName()));
+                    }
+                } else {
+                    $output->writeln(sprintf('<comment>Marking for deletion: %s</comment>', $file->getFileName()));
+                    $toDelete[] = $file;
+                    $toDeleteSize += $file->getSize();
                 }
             }
 
@@ -72,16 +81,11 @@ class DeleteOrphanedFilesCommand extends Command
                 return 0;
             }
             
-            $allYes = $input->getOption('yes');
-            
-            if ($allYes === false) {
-                $helper = $this->getHelper('question');
-                $question = new Question(sprintf('%s files are marked for deletion and %s will be freed, do you wish to continue (y/n=default)', count($toDelete), Filters::bytes($toDeleteSize)),
-                    self::ACTION_NO);
-                $action = $helper->ask($input, $output, $question);
-            } else {
-                $action = self::ACTION_YES;
-            }
+
+            $helper = $this->getHelper('question');
+            $question = new Question(sprintf('%s files are marked for deletion and %s will be freed, do you wish to continue (y/n=default)', count($toDelete), Filters::bytes($toDeleteSize)),
+                self::ACTION_NO);
+            $action = $helper->ask($input, $output, $question);
 
             switch ($action) {
                 case self::ACTION_YES:

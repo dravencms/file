@@ -1,4 +1,4 @@
 - Dravencms\File\Console\DeleteOrphanedFilesCommand
-- Dravencms\File\Console\FixExtensionsCommand
 - Dravencms\File\Console\DeleteUnusedFilesCommand
 - Dravencms\File\Console\DeleteUnusedFilesByForgeinKeyUsageCommand
+- Dravencms\File\Console\MigrateToSegmentedDataDirCommand
