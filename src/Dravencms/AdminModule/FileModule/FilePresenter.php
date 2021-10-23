@@ -65,7 +65,6 @@ class FilePresenter extends SecuredPresenter
     public $fileStorage;
 
 
-    private $iconDefault = 'default';
     private $iconFolder = 'folder';
     private $iconBack = 'folder_back';
 
@@ -77,7 +76,6 @@ class FilePresenter extends SecuredPresenter
     {
         parent::startup();
 
-        $this->template->iconDefault = $this->iconDefault;
         $this->template->iconFolder = $this->iconFolder;
         $this->template->iconBack = $this->iconBack;
 
@@ -106,17 +104,7 @@ class FilePresenter extends SecuredPresenter
             $this->template->structureInfo = [];
         }
     }
-
-    /**
-     * @param string $fileType
-     * @throws \Nette\Application\AbortException
-     * @throws \Nette\Application\BadRequestException
-     */
-    public function actionFileIcon(string $fileType): void
-    {
-        $this->sendResponse(new FileResponse($this->fileStorage->getIconDir().'/'.$fileType.'.jpg'));
-    }
-
+    
     /**
      * @param int|null $structureId
      * @param int|null $type

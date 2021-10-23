@@ -13,7 +13,7 @@
             <a href="{$basePath.'/data/'.$structureFile->getFile()->getBasename()}"
                class="link"
                type="{$structureFile->getFile()->getMimeType()}"
-               data-poster="{link fileIcon, $structureFile->getFile()->getExtension()}"
+               data-poster="{fileIcon $structureFile->getFile()}"
                title="{_"Preview"}"
                data-sources='[{"href": "{$basePath.'/data/'.$structureFile->getFile()->getBasename()}", "type": "{$structureFile->getFile()->getMimeType()}"}]'
                data-gallery>
@@ -24,7 +24,7 @@
                         {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
                             <img alt="{$structureFile->getName()}" class="original " n:img="$structureFile->getFile(), 122x91">
                         {else}
-                            <img alt="{$structureFile->getName()}" class="original " src="{link fileIcon, $structureFile->getFile()->getExtension()}">
+                            <img alt="{$structureFile->getName()}" class="original " n:fileIcon="$structureFile->getFile()">
                         {/if}
                     </div>
                 </div>
