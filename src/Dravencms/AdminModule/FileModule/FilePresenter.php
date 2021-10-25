@@ -20,7 +20,6 @@ use Dravencms\Model\File\Repository\FileRepository;
 use Dravencms\Model\File\Repository\StructureFileRepository;
 use Dravencms\Model\File\Repository\StructureRepository;
 use Dravencms\Database\EntityManager;
-use Nette\Application\Responses\FileResponse;
 use Nette\Http\SessionSection;
 use Salamek\Files\FileStorage;
 
@@ -107,9 +106,9 @@ class FilePresenter extends SecuredPresenter
     
     /**
      * @param int|null $structureId
-     * @param int|null $type
+     * @param string|null $type
      */
-    public function renderAjaxFileManager(int $structureId = null, int $type = null): void
+    public function renderAjaxFileManager(int $structureId = null, string $type = null): void
     {
         $this->template->h1 = 'File manager selector';
         if ($structureId)
