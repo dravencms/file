@@ -8,7 +8,7 @@ The best way to install dravencms/file is using  [Composer](http://getcomposer.o
 
 
 ```sh
-$ composer require dravencms/file:@dev
+$ composer require dravencms/file
 ```
 
 Then you have to register extension in `config.neon`.
