@@ -101,9 +101,9 @@ class StructureFile implements IStructureFile
     }
 
     /**
-     * @return Structure
+     * @return Structure|null
      */
-    public function getStructure(): IStructure
+    public function getStructure(): ?IStructure
     {
         return $this->structure;
     }
