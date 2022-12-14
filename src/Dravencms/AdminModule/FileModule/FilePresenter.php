@@ -226,32 +226,38 @@ class FilePresenter extends SecuredPresenter
      * @param int $filesStructureFilesId
      * @throws \Nette\Application\AbortException
      */
-    public function handleFileDelete(int $filesStructureFilesId): void
+    public function handleFileDelete(int $filesStructureFileId): void
     {
-        $structureFiles = $this->structureFileRepository->getById($filesStructureFilesId);
-        $filesStructureId = null;
+        $structureFile = $this->structureFileRepository->getOneById($filesStructureFileId);
+        $filesStructureId = ($structureFile->getStructure() ? $structureFile->getStructure()->getId() : null);
+        $this->deleteFile($structureFile);
+       
+        $this->flashMessage('File has been deleted', Flash::SUCCESS);
+
+        $this->redirect('File:', $filesStructureId);
+    }
+
+    private function deleteFile(StructureFile $structureFile): bool {
         $filesToCheckIds = [];
-        foreach ($structureFiles AS $structureFile)
-        {
-            $allAgree = [true];
-            foreach ($structureFile->getStructureFileLinks() AS $structureFileLink) {
-                if ($structureFileLink->isUsed() || !$structureFileLink->isAutoclean()) {
-                    $allAgree[] = false;
-                } else {
-                    $allAgree[] = true;
-                    $this->entityManager->remove($structureFileLink);
-                }
+        $hasUndeletable = false;
+
+        $allAgree = [true];
+        foreach ($structureFile->getStructureFileLinks() AS $structureFileLink) {
+            if ($structureFileLink->isUsed() || !$structureFileLink->isAutoclean()) {
+                $allAgree[] = false;
+            } else {
+                $allAgree[] = true;
+                $this->entityManager->remove($structureFileLink);
             }
+        }
 
-            $canDelete = (count(array_unique($allAgree)) === 1 && end($allAgree) === true);
+        $canDelete = (count(array_unique($allAgree)) === 1 && end($allAgree) === true);
 
-            if ($canDelete) {
-                $filesToCheckIds[] = $structureFile->getFile()->getId();
-                $this->entityManager->remove($structureFile);
-            }
-
-
-            $filesStructureId = ($structureFile->getStructure() ? $structureFile->getStructure()->getId() : null);
+        if ($canDelete) {
+            $filesToCheckIds[] = $structureFile->getFile()->getId();
+            $this->entityManager->remove($structureFile);
+        } else {
+            $hasUndeletable = true;
         }
 
         $this->entityManager->flush();
@@ -264,30 +270,60 @@ class FilePresenter extends SecuredPresenter
         }
 
         $this->entityManager->flush();
-
-        $this->flashMessage('File has been deleted', Flash::SUCCESS);
-
-        $this->redirect('File:', $filesStructureId);
+        
+        return $hasUndeletable;
     }
-
+    
+    private function resolveStructureChildren(Structure $structure): array {
+        $allChildren = $children = $structure->getChildren()->toArray();
+        if (count($children) > 0) {
+            foreach ($children AS $child) {
+                $allChildren = array_merge($allChildren, $this->resolveStructureChildren($child));
+            }
+        }
+        
+        return $allChildren;
+    }
+    
+    
     /**
      * @param int $structureId
      * @throws \Nette\Application\AbortException
      */
     public function handleStructureDelete(int $structureId): void
     {
-        $structures = $this->structureRepository->getById($structureId);
-        $structureParentId = null;
-        foreach ($structures AS $structure)
-        {
-            $structureParentId = ($structure->getParent() ? $structure->getParent()->getId() : null);
-            $this->fileStorage->deleteStructure($structure);
+        $structure = $this->structureRepository->getOneById($structureId);
+  
+        $structureParentId = ($structure->getParent() ? $structure->getParent()->getId() : null);
+        
+        $children = array_reverse($this->resolveStructureChildren($structure)) + [$structure];
+        $hasUndeletableChildren = false;
+        foreach ($children AS $child) {
+            $hasUndeletable = false;
+            $structureFiles = $child->getStructureFiles();
+            foreach($structureFiles AS $structureFile) {
+                if ($this->deleteFile($structureFile)) {
+                    $hasUndeletable = true;
+                }
+            }
+            
+            if (!$hasUndeletable) {
+                $this->fileStorage->deleteStructure($child);
+            } else {
+                $hasUndeletableChildren = true;
+            }
         }
 
-        $this->flashMessage('Folder has been deleted', Flash::SUCCESS);
-
+        if (!$hasUndeletableChildren) {
+            $this->fileStorage->deleteStructure($structure);
+            $this->flashMessage('Folder has been deleted', Flash::SUCCESS);
+        } else {
+            $this->flashMessage('Folder was not deleted, some files inside are used by system other components.', Flash::WARNING);
+        }
+        
         $this->redirect('File:', $structureParentId);
     }
+
 
     /**
      * @return StructureForm
