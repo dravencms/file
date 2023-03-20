@@ -51,4 +51,13 @@ class StructureFileLinkRepository
     {
         return $this->structureFileLinkRepository->findAll();
     }
+    
+    /**
+     * @param array $parameters
+     * @return StructureFileLink
+     */
+    public function getOneByParameters(array $parameters): ?StructureFileLink
+    {
+        return $this->structureFileLinkRepository->findOneBy($parameters);
+    }
 }
