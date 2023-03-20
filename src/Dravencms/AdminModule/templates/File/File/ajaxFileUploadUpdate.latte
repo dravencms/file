@@ -1,6 +1,6 @@
 <li class="file fileitem ajaxloaded"
     data-filesid="{$structureFile->getId()}"
-    data-filespath="{$basePath.'/data/'.$structureFile->getFile()->getBasename()}"
+    data-filespath="{$basePath.'/data/'.substr($structureFile->getFile()->getSum(), 0, 2).'/'.$structureFile->getFile()->getBasename()}"
     data-filestype="{$structureFile->getFile()->getType()}"
     data-filesname="{$structureFile->getName().'.'.$structureFile->getFile()->getExtension()}"
 >
@@ -10,12 +10,12 @@
 
         <a href="{img $structureFile->getFile(),1024x}" class="link" data-gallery>
             {elseif $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
-            <a href="{$basePath.'/data/'.$structureFile->getFile()->getBasename()}"
+            <a href="{$basePath.'/data/'.substr($structureFile->getFile()->getSum(), 0, 2).'/'.$structureFile->getFile()->getBasename()}"
                class="link"
                type="{$structureFile->getFile()->getMimeType()}"
                data-poster="{fileIcon $structureFile->getFile()}"
                title="{_"Preview"}"
-               data-sources='[{"href": "{$basePath.'/data/'.$structureFile->getFile()->getBasename()}", "type": "{$structureFile->getFile()->getMimeType()}"}]'
+               data-sources='[{"href": "{$basePath.'/data/'.substr($structureFile->getFile()->getSum(), 0, 2).'/'.$structureFile->getFile()->getBasename()}", "type": "{$structureFile->getFile()->getMimeType()}"}]'
                data-gallery>
                 {/if}
                 {/if}
