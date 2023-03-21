@@ -1,0 +1,6 @@
+buttonTextLabel: '%labelText% from file manager'
+selectImage: 'Select image'
+selectImageFromFileManager: 'Select image from file manager'
+selectFile: 'Select file'
+selectFileFromFileManager: 'Select file from file manager'
+uploadFromComputer: 'Upload from computer'

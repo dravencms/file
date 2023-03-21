@@ -3,14 +3,20 @@
 namespace Dravencms\File\DI;
 
 use Dravencms\File\File;
+use Contributte\Translation\DI\TranslationProviderInterface;
 use Nette\DI\CompilerExtension;
 
 /**
  * Class FileExtension
  * @package Dravencms\File\DI
  */
-class FileExtension extends CompilerExtension
+class FileExtension extends CompilerExtension implements TranslationProviderInterface
 {
+    public function getTranslationResources(): array
+    {
+        return [__DIR__.'/../lang'];
+    }
+
 
     public function loadConfiguration()
     {

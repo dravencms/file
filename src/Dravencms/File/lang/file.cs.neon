@@ -1,0 +1,6 @@
+buttonTextLabel: '%labelText% ze správce souborů'
+selectImage: 'Vybrat obrázek'
+selectImageFromFileManager: 'Vybrat obrázek ze správce souborů'
+selectFile: 'Vybrat soubor'
+selectFileFromFileManager: 'Vybrat soubor ze správce souborů'
+uploadFromComputer: 'Nahrát z počítače'

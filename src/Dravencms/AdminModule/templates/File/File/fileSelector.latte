@@ -1,12 +1,12 @@
 {ifset $labelText}
-    {var $buttonText = $labelText.' from file manager'}
+    {var $buttonText = $presenter->translator->translate("file.buttonTextLabel", ['labelText' => $presenter->translator->translate($labelText)])}
 {else}
     {if \Salamek\Files\Models\IFile::TYPE_IMAGE == $filetype}
-        {var $labelText = 'Select image'}
-        {var $buttonText = 'Select image from file manager'}
+        {var $labelText = $presenter->translator->translate('file.selectImage')}
+        {var $buttonText = $presenter->translator->translate('file.selectImageFromFileManager')}
     {else}
-        {var $labelText = 'Select file'}
-        {var $buttonText = 'Select file from file manager'}
+        {var $labelText = $presenter->translator->translate('file.selectFile')}
+        {var $buttonText = $presenter->translator->translate('file.selectFileFromFileManager')}
     {/if}
 {/ifset}
 
@@ -39,14 +39,14 @@
 <input type="hidden" class="wysiwyg-fileplugin" data-uri="{plink :Admin:File:File:ajaxFileManager}">
 <div class="col-sm-12">
     <div class="form-group no-margin-hr">
-        <label class="control-label" n:name="$selectorName">{_$labelText}</label>
+        <label class="control-label" n:name="$selectorName">{$labelText}</label>
         <div class="file-manager-selector">
             <div class="input-group">
                 <a href="#" data-link="{plink :Admin:File:File:ajaxFileManagerSelector}" class="btn btn-success file-manager-selector-button {ifset $uploadName}input-group-addon{/ifset}" data-filetype="{$filetype}" data-toggle="modal"
-                   data-target="#fileManagerSelectorModal{$id}"><span class="fa fa-archive"></span> {_$buttonText}
+                   data-target="#fileManagerSelectorModal{$id}"><span class="fa fa-archive"></span> {$buttonText}
                 </a>
                 <label n:ifset="$uploadName" class="btn btn-default btn-file">
-                    <span class="fa fa-upload"></span> {_"Upload from computer"} <input type="file" n:name="$uploadName" style="display: none;" accept="{$fileAccept}">
+                    <span class="fa fa-upload"></span> {_"file.uploadFromComputer"} <input type="file" n:name="$uploadName" style="display: none;" accept="{$fileAccept}">
                 </label>
             </div>
             <input type="number" n:name="$selectorName" class="form-control file-manager-selector-id">
