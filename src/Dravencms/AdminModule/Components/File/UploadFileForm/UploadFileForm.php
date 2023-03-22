@@ -93,7 +93,7 @@ class UploadFileForm extends BaseControl
         $form = $this->baseFormFactory->create();
 
         $form->addUpload('file')
-            ->setRequired('Please enter file to upload.');
+            ->setRequired('file.pleaseEnterFileToUpload');
 
         $form->addSubmit('send');
 
@@ -111,11 +111,12 @@ class UploadFileForm extends BaseControl
         $values = $form->getValues();
 
         if (!$values->file->isOk()) {
-            $form->addError('Upload of file failed ' . $values->file->getError());
+            $form->addError('uploadOfFileFailed');
+            $form->addError($values->file->getError());
         }
 
         if (!$this->user->isAllowed('file', 'edit')) {
-            $form->addError('Nemáte oprávění editovat robots.');
+            $form->addError('file.youHaveNoPermissionToEditThisFile');
         }
     }
 

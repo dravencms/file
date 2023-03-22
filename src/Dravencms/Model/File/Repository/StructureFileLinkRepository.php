@@ -51,8 +51,8 @@ class StructureFileLinkRepository
     {
         return $this->structureFileLinkRepository->findAll();
     }
-    
-    /**
+
+     /**
      * @param array $parameters
      * @return StructureFileLink
      */

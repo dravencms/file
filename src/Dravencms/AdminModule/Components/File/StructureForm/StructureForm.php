@@ -97,8 +97,8 @@ class StructureForm extends BaseControl
         $form = $this->baseFormFactory->create();
 
         $form->addText('name')
-            ->setRequired('Please enter name.')
-            ->addRule(Form::MAX_LENGTH, 'Name is too long.', 255);
+            ->setRequired('file.pleaseEnterName')
+            ->addRule(Form::MAX_LENGTH, 'file.nameIsTooLong', 255);
 
         $form->addSubmit('send');
 
@@ -116,11 +116,11 @@ class StructureForm extends BaseControl
     {
         $values = $form->getValues();
         if (!$this->structureRepository->isNameFree($values->name, $this->structureParent, $this->structure)) {
-            $form->addError('Tento název je již zabrán.');
+            $form->addError('file.thisNameIsAlreadyUsed');
         }
 
         if (!$this->user->isAllowed('file', 'edit')) {
-            $form->addError('Nemáte oprávění editovat robots.');
+            $form->addError('file.youHaveNoPermissionToEditThisFile');
         }
     }
 

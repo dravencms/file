@@ -1,28 +1,28 @@
 <form n:name="form">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="{_"Close"}"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="{_"file.close"}"><span aria-hidden="true">&times;</span></button>
         {if $structure}
-            <h4 class="modal-title" id="myModalLabel">{_"Rename folder %name% to...", [name => $structure->getName()]}</h4>
+            <h4 class="modal-title" id="myModalLabel">{_"file.renameFolderNameTo", [name => $structure->getName()]}</h4>
         {else}
-            <h4 class="modal-title" id="myModalLabel">{_"New folder"}</h4>
+            <h4 class="modal-title" id="myModalLabel">{_"file.newFolder"}</h4>
         {/if}
     </div>
     <div class="modal-body">
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group no-margin-hr">
-                    <label class="control-label" n:name="name">{_"New folder name"}</label>
-                    <input autofocus="autofocus" class="form-control" n:name="name" placeholder="{_"New folder name..."}">
+                    <label class="control-label" n:name="name">{_"file.newFolderName"}</label>
+                    <input autofocus="autofocus" class="form-control" n:name="name" placeholder="{_"file.newFolderName"}...">
                 </div>
             </div><!-- col-sm-12 -->
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{_"Close"}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{_"file.close"}</button>
         {if $structure}
-            <button type="submit" class="btn btn-primary">{_"Rename"}</button>
+            <button type="submit" class="btn btn-primary">{_"file.rename"}</button>
         {else}
-            <button type="submit" class="btn btn-primary">{_"Create"}</button>
+            <button type="submit" class="btn btn-primary">{_"file.create"}</button>
         {/if}
     </div>
 </form>

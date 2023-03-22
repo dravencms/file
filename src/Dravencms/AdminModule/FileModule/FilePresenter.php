@@ -87,12 +87,13 @@ class FilePresenter extends SecuredPresenter
      */
     public function actionDefault(int $structureId = null): void
     {
-        $this->template->h1 = 'File manager';
+        $this->template->h1 = $this->translator->translate('file.fileManager');
         if ($structureId)
         {
             $this->parentStructure = $this->structureRepository->getOneById($structureId);
         }
 
+        $this->template->fileStorage = $this->fileStorage;
         $this->template->parentStructure = $this->parentStructure;
         $this->template->directories = $this->structureRepository->getByParent($this->parentStructure);
         $this->template->structureFiles = $this->structureFileRepository->getByStructure($this->parentStructure);
@@ -110,12 +111,13 @@ class FilePresenter extends SecuredPresenter
      */
     public function renderAjaxFileManager(int $structureId = null, string $type = null): void
     {
-        $this->template->h1 = 'File manager selector';
+        $this->template->h1 = $this->translator->translate('file.fileManagerSelector');
         if ($structureId)
         {
             $this->parentStructure = $this->structureRepository->getOneById($structureId);
         }
 
+        $this->template->fileStorage = $this->fileStorage;
         $this->template->parentStructure = $this->parentStructure;
         $this->template->directories = $this->structureRepository->getByParent($this->parentStructure);
         $this->template->structureFiles = $this->structureFileRepository->getByStructureAndType($this->parentStructure, $type);
@@ -232,7 +234,7 @@ class FilePresenter extends SecuredPresenter
         $filesStructureId = ($structureFile->getStructure() ? $structureFile->getStructure()->getId() : null);
         $this->deleteFile($structureFile);
        
-        $this->flashMessage('File has been deleted', Flash::SUCCESS);
+        $this->flashMessage($this->translator->translate('file.fileHasBeenSucessfullyDeleted'), Flash::SUCCESS);
 
         $this->redirect('File:', $filesStructureId);
     }
@@ -316,9 +318,9 @@ class FilePresenter extends SecuredPresenter
 
         if (!$hasUndeletableChildren) {
             $this->fileStorage->deleteStructure($structure);
-            $this->flashMessage('Folder has been deleted', Flash::SUCCESS);
+            $this->flashMessage($this->translator->translate('file.folderHasBeenSucessfullyDeleted'), Flash::SUCCESS);
         } else {
-            $this->flashMessage('Folder was not deleted, some files inside are used by system other components.', Flash::WARNING);
+            $this->flashMessage($this->translator->translate('file.folderWasNotDeletedSomeFilesInsideAreUsedByOtherSystemComponents'), Flash::WARNING);
         }
         
         $this->redirect('File:', $structureParentId);
@@ -333,7 +335,7 @@ class FilePresenter extends SecuredPresenter
         $control = $this->structureFormFactory->create($this->parentStructure, $this->structureEdit);
         $control->onSuccess[] = function($structure)
         {
-            $this->flashMessage('Directory has been saved', Flash::SUCCESS);
+            $this->flashMessage($this->translator->translate('file.folderHasBeenSaved'), Flash::SUCCESS);
             $this->redirect('File:', ($structure->getParent() ? $structure->getParent()->getId() : null));
         };
         return $control;
@@ -347,7 +349,7 @@ class FilePresenter extends SecuredPresenter
         $control = $this->structureFileFormFactory->create($this->structureFileEdit);
         $control->onSuccess[] = function($structureFile)
         {
-            $this->flashMessage('File has been saved', Flash::SUCCESS);
+            $this->flashMessage($this->translator->translate('file.fileHasBeenSaved'), Flash::SUCCESS);
             $this->redirect('File:', ($structureFile->getStructure() ? $structureFile->getStructure()->getId() : null));
 
         };

@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="{_"Close"}"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="myModalLabel">{_"Details of directory %name%", [name => $structure->getName()]}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="{_"file.close"}"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">{_"detailsOfFolderName", [name => $structure->getName()]}</h4>
 </div>
 <div class="modal-body">
     <div class="row">
@@ -10,7 +10,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <strong>{_"Name"}</strong>
+            <strong>{_"file.folderName"}</strong>
         </div>
         <div class="col-sm-6">
             {$structure->getName()}
@@ -18,7 +18,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <strong>{_"Files"}</strong>
+            <strong>{_"file.numberOfFilesInFolder"}</strong>
         </div>
         <div class="col-sm-6">
             {$info['files']}
@@ -26,7 +26,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <strong>{_"Subfolders"}</strong>
+            <strong>{_"file.numberOfFoldersInFolder"}</strong>
         </div>
         <div class="col-sm-6">
             {$info['folders']}
@@ -34,7 +34,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <strong>{_"Size"}</strong>
+            <strong>{_"file.size"}</strong>
         </div>
         <div class="col-sm-6">
             {$info['size']|bytes}
@@ -42,7 +42,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <strong>{_"Created"}</strong>
+            <strong>{_"file.createdAt"}</strong>
         </div>
         <div class="col-sm-6">
             {$structure->getCreatedAt()|formatDate}
@@ -50,7 +50,7 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <strong>{_"Updated"}</strong>
+            <strong>{_"file.updatedAt"}</strong>
         </div>
         <div class="col-sm-6">
             {$structure->getUpdatedAt()|formatDate}
@@ -58,5 +58,5 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">{_"Close"}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{_"file.close"}</button>
 </div>
