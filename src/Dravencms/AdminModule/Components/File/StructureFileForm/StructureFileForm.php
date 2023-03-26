@@ -138,9 +138,9 @@ class StructureFileForm extends BaseControl
 
         if ($values->file->isOk()) {
             $file = $this->fileStorage->saveFile($values->file);
-            $deleteFile = $structureFile->getFile();
+            //$deleteFile = $structureFile->getFile();
             $structureFile->setFile($file);
-            $this->fileStorage->deleteFile($deleteFile);
+            //$this->fileStorage->deleteFile($deleteFile);
         }
 
         $this->entityManager->persist($structureFile);
