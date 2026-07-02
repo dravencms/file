@@ -8,7 +8,17 @@ files:
     iconDir: %wwwDir%/assets/file/ico
     webTempPath: 'webtemp'
 
+services:
+    file.filePresenter:
+        class: Dravencms\AdminModule\FileModule\FilePresenter
 
-nettrine.orm.annotations:
-    mapping:
-        Dravencms\Model\File: %appDir%/../vendor/dravencms/file/src/Dravencms/Model/File/Entities
+
+nettrine.orm:
+    managers:
+        default:
+            mapping:
+                DravencmsFile:
+                    type: attributes
+                    directories:
+                        - %appDir%/../vendor/dravencms/file/src/Dravencms/Model/File/Entities
+                    namespace: Dravencms\Model\File

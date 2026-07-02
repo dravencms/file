@@ -17,7 +17,7 @@ class AdminMenuFixtures extends AbstractFixture implements DependentFixtureInter
      *
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Users
         $root = new Menu('File manager', ':Admin:File:File', 'fa-archive', $this->getReference('user-acl-operation-file-edit'));
