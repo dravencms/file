@@ -73,7 +73,7 @@ class UploadFileForm extends BaseControl
         User $user,
         StructureFileRepository $structureFileRepository,
         FileStorage $fileStorage,
-        Structure $structureParent = null
+        ?Structure $structureParent = null
     ) {
 
         $this->structureParent = $structureParent;

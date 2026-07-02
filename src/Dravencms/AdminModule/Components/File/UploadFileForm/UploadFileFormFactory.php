@@ -27,5 +27,5 @@ interface UploadFileFormFactory
      * @param Structure|null $structureParent
      * @return UploadFileForm
      */
-    public function create(Structure $structureParent = null): UploadFileForm;
+    public function create(?Structure $structureParent = null): UploadFileForm;
 }

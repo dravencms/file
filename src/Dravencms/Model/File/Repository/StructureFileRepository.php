@@ -60,7 +60,7 @@ class StructureFileRepository implements IStructureFileRepository
      * @param IStructure|null $structure
      * @return StructureFile[]
      */
-    public function getByStructure(IStructure $structure = null)
+    public function getByStructure(?IStructure $structure = null)
     {
         return $this->structureFileRepository->findBy(['structure' => $structure]);
     }
@@ -70,7 +70,7 @@ class StructureFileRepository implements IStructureFileRepository
      * @param string|null $type
      * @return IStructureFile[]
      */
-    public function getByStructureAndType(IStructure $structure = null, string $type = null)
+    public function getByStructureAndType(?IStructure $structure = null, ?string $type = null)
     {
         $qb = $this->structureFileRepository->createQueryBuilder('sf')
             ->select('sf')
@@ -111,16 +111,14 @@ class StructureFileRepository implements IStructureFileRepository
      * @param IStructureFile|null $structureFileIgnore
      * @return bool
      */
-    public function isNameFree(string $name, IStructure $structure = null, IStructureFile $structureFileIgnore = null): bool
+    public function isNameFree(string $name, ?IStructure $structure = null, ?IStructureFile $structureFileIgnore = null): bool
     {
         $qb = $this->structureFileRepository->createQueryBuilder('sf')
             ->select('sf')
             ->where('sf.name = :name')
             ->andWhere('sf.structure = :structure')
-            ->setParameters([
-                'name' => $name,
-                'structure' => $structure
-            ]);
+            ->setParameter('name', $name)
+            ->setParameter('structure', $structure);
 
         if ($structureFileIgnore)
         {
@@ -137,7 +135,7 @@ class StructureFileRepository implements IStructureFileRepository
      * @param IStructure|null $structure
      * @return StructureFile
      */
-    public function createNewStructureFile(string $insertName, IFile $newFile, IStructure $structure = null): IStructureFile
+    public function createNewStructureFile(string $insertName, IFile $newFile, ?IStructure $structure = null): IStructureFile
     {
         $newStructureFile = new StructureFile($insertName, $newFile, $structure);
         $this->entityManager->persist($newStructureFile);

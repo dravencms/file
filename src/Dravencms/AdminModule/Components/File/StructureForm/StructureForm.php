@@ -70,8 +70,8 @@ class StructureForm extends BaseControl
         EntityManager $entityManager,
         User $user,
         StructureRepository $structureRepository,
-        Structure $structureParent = null,
-        Structure $structure = null
+        ?Structure $structureParent = null,
+        ?Structure $structure = null
     ) {
         $this->structureParent = $structureParent;
         $this->structure = $structure;

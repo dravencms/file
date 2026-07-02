@@ -8,8 +8,8 @@ namespace Dravencms\Model\File\Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Dravencms\Database\Attributes\Identifier;
+use Dravencms\Database\Attributes\TimestampableEntity;
 use Nette;
 use Salamek\Files\Models\IFile;
 use Salamek\Files\Models\IStructure;
@@ -18,9 +18,9 @@ use Salamek\Files\Models\IStructureFile;
 /**
  * Class StructureFile
  * @package Dravencms\Model\File\Entities
- * @ORM\Entity
- * @ORM\Table(name="fileStructureFile")
  */
+#[ORM\Entity]
+#[ORM\Table(name: "fileStructureFile")]
 class StructureFile implements IStructureFile
 {
     use Nette\SmartObject;
@@ -29,29 +29,29 @@ class StructureFile implements IStructureFile
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
      */
+    #[ORM\Column(type: "string", length: 255, nullable: false)]
     private $name;
 
     /**
      * @var File
-     * @ORM\ManyToOne(targetEntity="File", inversedBy="structureFiles")
-     * @ORM\JoinColumn(name="file_id", referencedColumnName="id")
      */
+    #[ORM\ManyToOne(targetEntity: "File", inversedBy: "structureFiles")]
+    #[ORM\JoinColumn(name: "file_id", referencedColumnName: "id")]
     private $file;
 
     /**
      * @var Structure
-     * @ORM\ManyToOne(targetEntity="Structure", inversedBy="structureFiles")
-     * @ORM\JoinColumn(name="structure_id", referencedColumnName="id",nullable=true)
      */
+    #[ORM\ManyToOne(targetEntity: "Structure", inversedBy: "structureFiles")]
+    #[ORM\JoinColumn(name: "structure_id", referencedColumnName: "id", nullable: true)]
     private $structure;
 
 
     /**
      * @var ArrayCollection|StructureFileLink[]
-     * @ORM\OneToMany(targetEntity="StructureFileLink", mappedBy="structureFile",cascade={"persist"})
      */
+    #[ORM\OneToMany(targetEntity: "StructureFileLink", mappedBy: "structureFile", cascade: ["persist"])]
     private $structureFileLinks;
 
     /**
@@ -60,7 +60,7 @@ class StructureFile implements IStructureFile
      * @param IFile $file
      * @param IStructure $structure
      */
-    public function __construct(string $name, IFile $file, IStructure $structure = null)
+    public function __construct(string $name, IFile $file, ?IStructure $structure = null)
     {
         $this->name = $name;
         $this->file = $file;

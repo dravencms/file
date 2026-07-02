@@ -30,5 +30,5 @@ interface FileFormFactory
      * @param File|null $file
      * @return FileForm
      */
-    public function create(Structure $structureParent = null, File $file = null): FileForm;
+    public function create(?Structure $structureParent = null, ?File $file = null): FileForm;
 }

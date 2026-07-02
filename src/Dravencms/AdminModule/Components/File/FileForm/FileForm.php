@@ -71,8 +71,8 @@ class FileForm extends BaseControl
         EntityManager $entityManager,
         FileRepository $fileRepository,
         User $user,
-        Structure $structureParent = null,
-        File $file = null
+        ?Structure $structureParent = null,
+        ?File $file = null
     ) {
 
         $this->structureParent = $structureParent;

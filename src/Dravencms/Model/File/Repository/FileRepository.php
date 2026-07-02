@@ -60,14 +60,12 @@ class FileRepository implements IFileRepository
      * @param IFile|null $fileIgnore
      * @return bool
      */
-    public function isSumFree(string $sum, IFile $fileIgnore = null): bool
+    public function isSumFree(string $sum, ?IFile $fileIgnore = null): bool
     {
         $qb = $this->fileRepository->createQueryBuilder('f')
             ->select('f')
             ->where('f.sum = :sum')
-            ->setParameters([
-                'sum' => $sum
-            ]);
+            ->setParameter('sum', $sum);
 
         if ($fileIgnore)
         {

@@ -29,5 +29,5 @@ interface StructureFormFactory
      * @param Structure|null $structure
      * @return StructureForm
      */
-    public function create(Structure $structureParent = null, Structure $structure = null): StructureForm;
+    public function create(?Structure $structureParent = null, ?Structure $structure = null): StructureForm;
 }

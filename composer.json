@@ -7,7 +7,7 @@
     "file"
   ],
   "license": [
-    "LGPL-3.0"
+    "LGPL-3.0-only"
   ],
   "authors": [
     {
@@ -15,9 +15,9 @@
     }
   ],
   "require": {
-    "salamek/nette-files": ">=2.0.0",
-    "dravencms/locale": ">=1.0",
-    "dravencms/admin": ">=2.0"
+    "salamek/nette-files": "^2.2",
+    "dravencms/locale": "^2.1",
+    "dravencms/admin": "^2.3"
   },
   "require-dev": {
     "nette/tester": "@dev"

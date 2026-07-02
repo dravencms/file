@@ -8,17 +8,17 @@ namespace Dravencms\Model\File\Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Dravencms\Database\Attributes\Identifier;
+use Dravencms\Database\Attributes\TimestampableEntity;
 use Nette;
 use Salamek\Files\Models\IFile;
 
 /**
  * Class File
  * @package Dravencms\Model\File\Entities
- * @ORM\Entity
- * @ORM\Table(name="fileFile")
  */
+#[ORM\Entity]
+#[ORM\Table(name: "fileFile")]
 class File implements IFile
 {
     use Nette\SmartObject;
@@ -27,38 +27,38 @@ class File implements IFile
     
     /**
      * @var string
-     * @ORM\Column(type="string",length=32,unique=true,nullable=false)
      */
+    #[ORM\Column(type: "string", length: 32, unique: true, nullable: false)]
     private $sum;
 
     /**
      * @var integer
-     * @ORM\Column(type="integer",nullable=false)
      */
+    #[ORM\Column(type: "integer", nullable: false)]
     private $size;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
      */
+    #[ORM\Column(type: "string", length: 255, nullable: false)]
     private $extension;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
      */
+    #[ORM\Column(type: "string", length: 255, nullable: false)]
     private $mimeType;
 
     /**
      * @var string
-     * @ORM\Column(type="string",length=255)
      */
+    #[ORM\Column(type: "string", length: 255)]
     private $type;
 
     /**
      * @var ArrayCollection|StructureFile[]
-     * @ORM\OneToMany(targetEntity="StructureFile", mappedBy="file",cascade={"persist"})
      */
+    #[ORM\OneToMany(targetEntity: "StructureFile", mappedBy: "file", cascade: ["persist"])]
     private $structureFiles;
 
     /**

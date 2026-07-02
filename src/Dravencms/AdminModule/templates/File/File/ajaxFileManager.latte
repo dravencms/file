@@ -1,7 +1,7 @@
 <div class="filemanager">
     <ul class="breadcrumb">
         <li><a n:href="File:" class="folder" data-structureid=""><i class="fa fa-home"></i>/</a></li>
-        <li n:foreach="$structureInfo AS $info" class="folder {last}active{/last}" data-structureid="{$info->getId()}"><a n:href="File: $info->getId()">{$info->getName()}</a></li>
+        <li n:foreach="$structureInfo as $info" class="folder {last}active{/last}" data-structureid="{$info->getId()}"><a n:href="File: $info->getId()">{$info->getName()}</a></li>
     </ul>
     <ul class="files clearfix">
         {if $parentStructure}
@@ -24,7 +24,7 @@
             </li>
         {/if}
         <!--Directories-->
-        <li class="file folder" n:foreach="$directories AS $dir" data-structureid="{$dir->getId()}">
+        <li class="file folder" n:foreach="$directories as $dir" data-structureid="{$dir->getId()}">
             <figure>
                 <a n:href="File: $dir->getId()" class="link">
                     <div class="img-precontainer">
@@ -47,7 +47,7 @@
             </figure>
         </li>
         <!--FILES-->
-        {foreach $structureFiles AS $structureFile}
+        {foreach $structureFiles as $structureFile}
             {include 'ajaxFileUploadUpdate.latte', 'structureFile'=> $structureFile}
         {/foreach}
     </ul>

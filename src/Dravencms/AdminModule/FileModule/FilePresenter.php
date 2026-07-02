@@ -85,7 +85,7 @@ class FilePresenter extends SecuredPresenter
      * @param null|int $structureId
      * @throws \Exception
      */
-    public function actionDefault(int $structureId = null): void
+    public function actionDefault(?int $structureId = null): void
     {
         $this->template->h1 = $this->translator->translate('file.fileManager');
         if ($structureId)
@@ -109,7 +109,7 @@ class FilePresenter extends SecuredPresenter
      * @param int|null $structureId
      * @param string|null $type
      */
-    public function renderAjaxFileManager(int $structureId = null, string $type = null): void
+    public function renderAjaxFileManager(?int $structureId = null, ?string $type = null): void
     {
         $this->template->h1 = $this->translator->translate('file.fileManagerSelector');
         if ($structureId)
@@ -133,7 +133,7 @@ class FilePresenter extends SecuredPresenter
      * @param int|null $structureId
      * @param string|null $type
      */
-    public function renderAjaxFileManagerSelector(int $structureId = null, string $type = null): void
+    public function renderAjaxFileManagerSelector(?int $structureId = null, ?string $type = null): void
     {
         $this->renderAjaxFileManager($structureId, $type);
     }
@@ -152,7 +152,7 @@ class FilePresenter extends SecuredPresenter
     /**
      * @param int|null $filesStructureFilesId
      */
-    public function renderAjaxFileInfo(int $filesStructureFilesId = null): void
+    public function renderAjaxFileInfo(?int $filesStructureFilesId = null): void
     {
         $structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
         $this->template->structureFile = $structureFile;
@@ -162,7 +162,7 @@ class FilePresenter extends SecuredPresenter
     /**
      * @param int|null $filesStructureFilesId
      */
-    public function actionAjaxStructureFileForm(int $filesStructureFilesId = null)
+    public function actionAjaxStructureFileForm(?int $filesStructureFilesId = null)
     {
         $this->structureFileEdit = $this->structureFileRepository->getOneById($filesStructureFilesId);
     }
@@ -171,7 +171,7 @@ class FilePresenter extends SecuredPresenter
      * @param null|integer $structureId
      * @param null|integer $parentStructureId
      */
-    public function actionAjaxStructureForm(int $structureId = null, int $parentStructureId = null): void
+    public function actionAjaxStructureForm(?int $structureId = null, ?int $parentStructureId = null): void
     {
         if ($parentStructureId)
         {
@@ -187,7 +187,7 @@ class FilePresenter extends SecuredPresenter
     /**
      * @param int|null $filesStructureFilesId
      */
-    public function renderAjaxFileUploadUpdate(int $filesStructureFilesId = null): void
+    public function renderAjaxFileUploadUpdate(?int $filesStructureFilesId = null): void
     {
         $this->template->structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
     }

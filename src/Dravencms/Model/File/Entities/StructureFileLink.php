@@ -5,19 +5,18 @@
 
 namespace Dravencms\Model\File\Entities;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Nette;
 use Dravencms\Database\Attributes\Identifier;
+use Dravencms\Database\Attributes\TimestampableEntity;
 use Salamek\Files\Models\IStructureFile;
 
 /**
  * Class StructureFileLink
  * @package Dravencms\Model\File\Entities
- * @ORM\Entity
- * @ORM\Table(name="fileStructureFileLink")
  */
+#[ORM\Entity]
+#[ORM\Table(name: "fileStructureFileLink")]
 class StructureFileLink
 {
     use Nette\SmartObject;
@@ -27,27 +26,27 @@ class StructureFileLink
     /**
      * What package is using this file
      * @var string
-     * @ORM\Column(type="string",length=255,nullable=false)
      */
+    #[ORM\Column(type: "string", length: 255, nullable: false)]
     private $packageName;
 
     /**
      * @var StructureFile
-     * @ORM\ManyToOne(targetEntity="StructureFile", inversedBy="structureFileLinks")
-     * @ORM\JoinColumn(name="strucutre_file_id", referencedColumnName="id")
      */
+    #[ORM\ManyToOne(targetEntity: "StructureFile", inversedBy: "structureFileLinks")]
+    #[ORM\JoinColumn(name: "strucutre_file_id", referencedColumnName: "id")]
     private $structureFile;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean",nullable=false)
      */
+    #[ORM\Column(type: "boolean", nullable: false)]
     private $isUsed;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean",nullable=false)
      */
+    #[ORM\Column(type: "boolean", nullable: false)]
     private $isAutoclean;
 
     /**

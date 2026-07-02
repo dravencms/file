@@ -42,7 +42,7 @@ class StructureRepository implements IStructureRepository
      * @param IStructure|null $parent
      * @return IStructure|null
      */
-    public function getOneByName(string $name, IStructure $parent = null): ?IStructure
+    public function getOneByName(string $name, ?IStructure $parent = null): ?IStructure
     {
         return $this->structureRepository->findOneBy(['name' => $name, 'parent' => $parent]);
     }
@@ -60,7 +60,7 @@ class StructureRepository implements IStructureRepository
      * @param IStructure|null $structure
      * @return Structure[]
      */
-    public function getByParent(IStructure $structure = null)
+    public function getByParent(?IStructure $structure = null)
     {
         return $this->structureRepository->findBy(['parent' => $structure]);
     }
@@ -115,16 +115,14 @@ class StructureRepository implements IStructureRepository
      * @param IStructure|null $ignoreStructure
      * @return bool
      */
-    public function isNameFree(string $name, IStructure $parentStructure = null, IStructure $ignoreStructure = null): bool
+    public function isNameFree(string $name, ?IStructure $parentStructure = null, ?IStructure $ignoreStructure = null): bool
     {
         $qb = $this->structureRepository->createQueryBuilder('s')
             ->select('s')
             ->where('s.name = :name')
             ->andWhere('s.parent = :parent')
-            ->setParameters([
-                'name' => $name,
-                'parent' => $parentStructure
-            ]);
+            ->setParameter('name', $name)
+            ->setParameter('parent', $parentStructure);
 
         if ($ignoreStructure)
         {
