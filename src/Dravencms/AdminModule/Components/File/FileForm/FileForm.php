@@ -82,13 +82,6 @@ class FileForm extends BaseControl
         $this->entityManager = $entityManager;
         $this->fileRepository = $fileRepository;
         $this->user = $user;
-
-        if ($this->file)
-        {
-            $this['form']->setDefaults([
-                'name' => $this->file->getName()
-            ]);
-        }
     }
 
     /**
@@ -106,6 +99,13 @@ class FileForm extends BaseControl
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
+
+        if ($this->file)
+        {
+            $form->setDefaults([
+                'name' => $this->file->getName()
+            ]);
+        }
 
         return $form;
     }

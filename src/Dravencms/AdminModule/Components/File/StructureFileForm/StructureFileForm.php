@@ -82,10 +82,6 @@ class StructureFileForm extends BaseControl
         $this->baseFormFactory = $baseFormFactory;
         $this->entityManager = $entityManager;
         $this->structureFileRepository = $structureFileRepository;
-
-        $this['form']->setDefaults([
-            'name' => $this->structureFile->getName()
-        ]);
     }
 
     /**
@@ -105,6 +101,10 @@ class StructureFileForm extends BaseControl
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
+
+        $form->setDefaults([
+            'name' => $this->structureFile->getName()
+        ]);
 
         return $form;
     }

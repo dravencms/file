@@ -80,13 +80,6 @@ class StructureForm extends BaseControl
         $this->baseFormFactory = $baseFormFactory;
         $this->entityManager = $entityManager;
         $this->structureRepository = $structureRepository;
-
-        if ($this->structure)
-        {
-            $this['form']->setDefaults([
-                'name' => $this->structure->getName()
-            ]);
-        }
     }
 
     /**
@@ -104,6 +97,13 @@ class StructureForm extends BaseControl
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
+
+        if ($this->structure)
+        {
+            $form->setDefaults([
+                'name' => $this->structure->getName()
+            ]);
+        }
 
         return $form;
     }
