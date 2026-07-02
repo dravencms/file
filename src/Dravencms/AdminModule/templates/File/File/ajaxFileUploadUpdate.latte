@@ -8,7 +8,7 @@
         {if $structureFile->getFile()->getType() != \Dravencms\Model\File\Entities\File::TYPE_BINARY}
         {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
 
-        <a href="{img $structureFile->getFile(),1024x}" class="link" data-gallery>
+        <a href="{img $structureFile->getFile(),'1024x'}" class="link" data-gallery>
             {elseif $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
             <a href="{$basePath.'/data/'.substr($structureFile->getFile()->getSum(), 0, 2).'/'.$structureFile->getFile()->getBasename()}"
                class="link"
@@ -22,7 +22,7 @@
                 <div class="img-precontainer">
                     <div class="img-container">
                         {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-                            <img alt="{$structureFile->getName()}" class="original " n:img="$structureFile->getFile(), 122x91">
+                            <img alt="{$structureFile->getName()}" class="original " n:img="$structureFile->getFile(), '122x91'">
                         {else}
                             <img alt="{$structureFile->getName()}" class="original " n:fileIcon="$structureFile->getFile()">
                         {/if}
