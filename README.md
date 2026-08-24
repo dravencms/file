@@ -1,27 +1,50 @@
-# Dravencms File module
+# DravenCMS File
 
-This is a File module for dravencms
+File storage and administration for DravenCMS. The package combines `salamek/nette-files` with database-backed metadata, virtual structures, usage links, upload controls, selectors, and maintenance commands.
 
-## Instalation
+## Features
 
-The best way to install dravencms/file is using  [Composer](http://getcomposer.org/):
+- Admin file manager with uploads, previews, metadata editing, and selection dialogs.
+- Content-addressed files stored below the public data directory.
+- Virtual directory structures and structure-file records.
+- Usage links that let other packages track whether a file is still needed.
+- Image/file rendering through Nette Files Latte integration.
+- Cleanup and storage-migration console commands.
 
+## Installation
 
-```sh
-$ composer require dravencms/file
+```bash
+composer require dravencms/file
 ```
 
-Then you have to register extension in `config.neon`.
+The package loader publishes assets to `%wwwDir%/assets/file` and loads its configuration. By default, original data is stored under `%wwwDir%/data`, generated files under `%wwwDir%/webtemp`, and icons under `%wwwDir%/assets/file/ico`.
 
-```yaml
-extensions:
-	file: Dravencms\File\DI\FileExtension
+Apply the package's Doctrine schema and load its fixtures when the file-manager admin menu and ACL permissions are required. Ensure the web/PHP process can write to the data and webtemp directories.
+
+## Application Use
+
+Inject `FileRepository`, `StructureRepository`, or `StructureFileRepository` when application code needs to create or query managed files. Prefer repository creation methods so hashes, metadata, and storage relationships remain consistent.
+
+Other DravenCMS modules should associate files through `StructureFileLink` records. The `isUsed` and `isAutoclean` flags allow cleanup commands to distinguish retained files from disposable references.
+
+## Maintenance Commands
+
+The package registers these commands:
+
+```text
+file:orphaned:delete
+file:unused:delete
+file:unused-f:delete
+file:extension:fix
+file:segmented-storage:migrate
 ```
 
-## CRON Jobs
-These CRON jobs are needed for removing old files
+The delete and migration commands modify both database records and storage. Back up the database and data directory, inspect command help, and test against a non-production copy before running them in production.
 
-```
-./bin/conosle file:unused:delete  # Removes unused files uploaded by another plugins
-./bin/console file:orphaned:delete # Removes untracked files from /data directory
-```
+## Optional CMS Integration
+
+Installing `dravencms/structure` allows file components to be exposed through the CMS integration layer.
+
+## License
+
+This package is licensed under the LGPL-3.0-only license.
