@@ -20,7 +20,7 @@ class AdminMenuFixtures extends AbstractFixture implements DependentFixtureInter
     public function load(ObjectManager $manager): void
     {
         // Users
-        $root = new Menu('File manager', ':Admin:File:File', 'fa-archive', $this->getReference('user-acl-operation-file-edit'));
+        $root = new Menu('File manager', ':Admin:File:File', 'fa-archive', $this->getReference('user-acl-operation-file-edit', \Dravencms\Model\User\Entities\AclOperation::class));
         $manager->persist($root);
         $manager->flush();
     }
