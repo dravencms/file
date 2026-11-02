@@ -93,11 +93,12 @@ class StructureFileForm extends BaseControl
 
         $form->addText('name')
             ->setRequired('file.pleaseEnterName')
-            ->addRule(Form::MAX_LENGTH, 'nameIsTooLong', 255);
+            ->addRule(Form::MAX_LENGTH, 'file.nameIsTooLong', 255);
 
         $form->addUpload('file');
+        \Dravencms\File\Forms\UploadMessages::localize($form['file']->getRules());
 
-        $form->addSubmit('send');
+        $form->addSubmit('send', 'file.change');
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];

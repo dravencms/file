@@ -95,7 +95,7 @@ class FileForm extends BaseControl
             ->setRequired('file.pleaseEnterName')
             ->addRule(Form::MAX_LENGTH, 'file.nameIsTooLong', 255);
 
-        $form->addSubmit('send');
+        $form->addSubmit('send', 'file.change');
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];

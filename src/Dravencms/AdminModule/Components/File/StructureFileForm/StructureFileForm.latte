@@ -1,6 +1,6 @@
 <form n:name="form">
     <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">{_"changeFileNameTo", [name => $structureFile->getName()]}</h4>
+        <h4 class="modal-title" id="myModalLabel">{_"file.changeFileNameTo", [name => $structureFile->getName()]}</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{_"file.close"}"></button>
     </div>
     <div class="modal-body">
@@ -16,7 +16,7 @@
             <div class="col-sm-12">
                 <div class="mb-3">
                     <label class="form-label" n:name="file">{_"file.file"}</label>
-                    <input class="form-control" n:name="file" placeholder="{_"newFile"}">
+                    <input class="form-control" n:name="file" placeholder="{_"file.newFile"}">
                 </div>
             </div><!-- col-sm-12 -->
         </div>

@@ -95,7 +95,9 @@ class UploadFileForm extends BaseControl
         $form->addUpload('file')
             ->setRequired('file.pleaseEnterFileToUpload');
 
-        $form->addSubmit('send');
+        \Dravencms\File\Forms\UploadMessages::localize($form['file']->getRules());
+
+        $form->addSubmit('send', 'file.upload');
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
@@ -111,8 +113,16 @@ class UploadFileForm extends BaseControl
         $values = $form->getValues();
 
         if (!$values->file->isOk()) {
-            $form->addError('uploadOfFileFailed');
-            $form->addError($values->file->getError());
+            $form->addError('file.uploadOfFileFailed');
+            $form->addError(match ($values->file->getError()) {
+                UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'file.uploadError.tooLarge',
+                UPLOAD_ERR_PARTIAL => 'file.uploadError.partial',
+                UPLOAD_ERR_NO_FILE => 'file.uploadError.noFile',
+                UPLOAD_ERR_NO_TMP_DIR => 'file.uploadError.noTemporaryDirectory',
+                UPLOAD_ERR_CANT_WRITE => 'file.uploadError.cannotWrite',
+                UPLOAD_ERR_EXTENSION => 'file.uploadError.extensionStopped',
+                default => 'file.uploadError.unknown',
+            });
         }
 
         if (!$this->user->isAllowed('file', 'edit')) {

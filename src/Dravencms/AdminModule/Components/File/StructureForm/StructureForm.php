@@ -93,7 +93,7 @@ class StructureForm extends BaseControl
             ->setRequired('file.pleaseEnterName')
             ->addRule(Form::MAX_LENGTH, 'file.nameIsTooLong', 255);
 
-        $form->addSubmit('send');
+        $form->addSubmit('send', $this->structure ? 'file.rename' : 'file.create');
 
         $form->onValidate[] = [$this, 'editFormValidate'];
         $form->onSuccess[] = [$this, 'editFormSucceeded'];
