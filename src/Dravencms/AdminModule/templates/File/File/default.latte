@@ -14,7 +14,7 @@
             $(function () {
                 // Now that the DOM is fully loaded, create the dropzone, and setup the
                 // event listeners
-                var myDropzone = new Dropzone('#' + {$presenter['formUpload']['form']->getElementPrototype()->id});
+                var myDropzone = new Dropzone('#' + {$presenter['formUpload']['form']->getElementPrototype()->id}, Tools.dropzoneOptions);
                 myDropzone.on("success", function (file, response) {
                     $("<div>").load({link File:ajaxFileUploadUpdate 'filesStructureFilesId' => '666'}.replace('666', response.filesStructureFilesId), function () {
                         var newItem = $($(this).html());
