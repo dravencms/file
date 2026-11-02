@@ -38,19 +38,19 @@
 
 <input type="hidden" class="wysiwyg-fileplugin" data-uri="{plink :Admin:File:File:ajaxFileManager}">
 <div class="col-sm-12">
-    <div class="form-group no-margin-hr">
-        <label class="control-label" n:name="$selectorName">{$labelText}</label>
+    <div class="mb-3">
+        <label class="form-label" n:name="$selectorName">{$labelText}</label>
         <div class="file-manager-selector">
             <div class="input-group">
-                <a href="#" data-link="{plink :Admin:File:File:ajaxFileManagerSelector}" class="btn btn-success file-manager-selector-button {ifset $uploadName}input-group-addon{/ifset}" data-filetype="{$filetype}" data-toggle="modal"
-                   data-target="#fileManagerSelectorModal{$id}"><span class="fa fa-archive"></span> {$buttonText}
+                <a href="#" data-link="{plink :Admin:File:File:ajaxFileManagerSelector}" class="btn btn-success file-manager-selector-button {ifset $uploadName}input-group-text{/ifset}" data-filetype="{$filetype}" data-bs-toggle="modal"
+                   data-bs-target="#fileManagerSelectorModal{$id}"><span class="fa fa-archive"></span> {$buttonText}
                 </a>
-                <label n:ifset="$uploadName" class="btn btn-default btn-file">
+                <label n:ifset="$uploadName" class="btn btn-outline-secondary btn-file">
                     <span class="fa fa-upload"></span> {_"file.uploadFromComputer"} <input type="file" n:name="$uploadName" style="display: none;" accept="{$fileAccept}">
                 </label>
             </div>
             <input type="number" n:name="$selectorName" class="form-control file-manager-selector-id">
-            <div class="filemanager">
+            <div class="filemanager filemanager-selected" data-remove-label="{_'file.removeSelection'}">
                 <ul class="files file-manager-selector-file" data-link="{plink :Admin:File:File:ajaxFileUploadUpdate}">
                 </ul>
             </div>

@@ -1,6 +1,7 @@
 {block #content}
+    <section class="file-manager-page">
     <p>
-        <a n:href="File:ajaxStructureForm parentStructureId => ($parentStructure ? $parentStructure->getId() : null)" class="btn btn-info" data-toggle="modal" data-target="#fileManagerModal"><i class="fa fa-folder-open"></i> {_"file.newFolder"}</a>
+        <a n:href="File:ajaxStructureForm parentStructureId => ($parentStructure ? $parentStructure->getId() : null)" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#fileManagerModal"><i class="fa fa-folder-open"></i> {_"file.newFolder"}</a>
     </p>
 
     {control formUpload}
@@ -10,42 +11,6 @@
 
     {define #js}
         <script>
-            function applyControls(obj) {
-                obj.mouseenter(function () {
-                    $(this).find(".box:not(.back)").animate({
-                        top: "-26px"
-                    }, {
-                        queue: !1,
-                        duration: 300
-                    });
-
-                }).mouseleave(function () {
-
-                    $(this).find(".box:not(.back)").animate({
-                        top: "0px"
-                    }, {
-                        queue: !1,
-                        duration: 300
-                    });
-                });
-            }
-
-            $files = $('.files .file');
-            $files.each(function () {
-                applyControls($(this));
-            });
-            $files.find('.delete').click(function (e) {
-                if (!confirm($(this).data('confirm'))) {
-                    e.preventDefault();
-                }
-            });
-
-            $("#fileManagerModal").on("show.bs.modal", function (e) {
-                var link = $(e.relatedTarget);
-                $(this).find(".modal-content").load(link.attr("href"));
-            });
-
-
             $(function () {
                 // Now that the DOM is fully loaded, create the dropzone, and setup the
                 // event listeners
@@ -53,8 +18,8 @@
                 myDropzone.on("success", function (file, response) {
                     $("<div>").load({link File:ajaxFileUploadUpdate 'filesStructureFilesId' => '666'}.replace('666', response.filesStructureFilesId), function () {
                         var newItem = $($(this).html());
-                        applyControls(newItem)
-                        $(".filemanager .files").append(newItem);
+                        $(".file-manager-page > .filemanager > .files > .filemanager-empty").remove();
+                        $(".file-manager-page > .filemanager > .files").append(newItem);
                     }
                     )
                     ;
@@ -70,5 +35,6 @@
             </div>
         </div>
     </div>
+    </section>
 
 {/block}

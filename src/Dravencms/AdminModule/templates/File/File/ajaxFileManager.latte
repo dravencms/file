@@ -1,54 +1,37 @@
-<div class="filemanager">
-    <ul class="breadcrumb">
-        <li><a n:href="File:" class="folder" data-structureid=""><i class="fa fa-home"></i>/</a></li>
-        <li n:foreach="$structureInfo as $info" class="folder {last}active{/last}" data-structureid="{$info->getId()}"><a n:href="File: $info->getId()">{$info->getName()}</a></li>
-    </ul>
-    <ul class="files clearfix">
-        {if $parentStructure}
-            <!--BACK-->
-            <li class="file back" data-backid="{($parentStructure->getParent() ? $parentStructure->getParent()->getId() : null)}">
-                <figure>
-                    <a n:href="File: ($parentStructure->getParent() ? $parentStructure->getParent()->getId() : null)" class="link">
-                        <div class="img-precontainer">
-                            <div class="img-container">
-                                <img alt="{_"file.back"}" class="original " n:fileIcon="$iconBack">
-                            </div>
-                        </div>
-                    </a>
-                    <div class="box back">
-                        <h4 class="ellipsis">
-                            <a n:href="File: ($parentStructure->getParent() ? $parentStructure->getParent()->getId() : null)" class="link">{_"file.back"}</a>
-                        </h4>
-                    </div>
-                </figure>
-            </li>
-        {/if}
-        <!--Directories-->
-        <li class="file folder" n:foreach="$directories as $dir" data-structureid="{$dir->getId()}">
+{var $selectionMode = $selectionMode ?? false}
+<div n:class="filemanager, $selectionMode ? filemanager-select">
+    <ol class="breadcrumb mb-3">
+        <li class="breadcrumb-item"><a n:href="File:" class="folder" data-structureid="" aria-label="{_'file.fileManager'}"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li n:foreach="$structureInfo as $info" n:class="breadcrumb-item, $iterator->isLast() ? active">
+            <a n:href="File: $info->getId()" class="folder" data-structureid="{$info->getId()}">{$info->getName()}</a>
+        </li>
+    </ol>
+    <ul class="files">
+        <li n:if="$parentStructure" class="file back" data-backid="{$parentStructure->getParent()?->getId()}">
             <figure>
-                <a n:href="File: $dir->getId()" class="link">
-                    <div class="img-precontainer">
-                        <div class="img-container">
-                            <img alt="{$dir->getName()}" class="original" n:fileIcon="$iconFolder">
-                        </div>
-                    </div>
+                <a n:href="File: $parentStructure->getParent()?->getId()" class="file-tile-link link">
+                    <span class="file-preview"><i class="fa fa-level-up file-folder-icon" aria-hidden="true"></i></span>
+                    <span class="file-name"><span class="file-name-text">{_'file.back'}</span></span>
                 </a>
-                <div class="box">
-                    <h4 class="ellipsis">
-                        <a n:href="File: $dir->getId()" class="link">{$dir->getName()|truncate:18}</a>
-                    </h4>
-                </div>
-                <figcaption>
-                    <a n:href="File:ajaxStructureInfo $dir->getId()" data-toggle="modal" data-target="#fileManagerModal" title="{_"file.info"}"><i class="fa fa-info"></i></a>
-                    <a n:href="structureDownload! $dir->getId()" title="{_"file.download"}"><i class="fa fa-download"></i></a>
-                    <a n:href="File:ajaxStructureForm, structureId => $dir->getId()" data-toggle="modal" data-target="#fileManagerModal" title="{_"file.rename"}"><i class="fa fa-pencil"></i></a>
-                    <a n:href="structureDelete! $dir->getId()" class="delete" data-confirm="{_"file.areYouSureYouWantTodeleteThisFolder"}" title="{_"file.delete"}"><i class="fa fa-trash"></i></a>
+            </figure>
+        </li>
+        <li n:foreach="$directories as $dir" class="file folder" data-structureid="{$dir->getId()}">
+            <figure>
+                <a n:href="File: $dir->getId()" class="file-tile-link link" title="{$dir->getName()}">
+                    <span class="file-preview"><i class="fa fa-folder file-folder-icon" aria-hidden="true"></i></span>
+                    <span class="file-name"><span class="file-name-text">{$dir->getName()}</span></span>
+                </a>
+                <figcaption class="file-actions">
+                    <a n:href="File:ajaxStructureInfo $dir->getId()" class="btn btn-sm btn-icon btn-outline-secondary info" data-bs-toggle="modal" data-bs-target="#fileManagerModal" title="{_'file.info'}" aria-label="{_'file.info'}"><i class="fa fa-info" aria-hidden="true"></i></a>
+                    <a n:href="structureDownload! $dir->getId()" class="btn btn-sm btn-icon btn-outline-secondary download" title="{_'file.download'}" aria-label="{_'file.download'}"><i class="fa fa-download" aria-hidden="true"></i></a>
+                    <a n:href="File:ajaxStructureForm, structureId => $dir->getId()" class="btn btn-sm btn-icon btn-outline-secondary rename" data-bs-toggle="modal" data-bs-target="#fileManagerModal" title="{_'file.rename'}" aria-label="{_'file.rename'}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a n:href="structureDelete! $dir->getId()" class="btn btn-sm btn-icon btn-outline-danger delete" data-confirm="{_'file.areYouSureYouWantTodeleteThisFolder'}" title="{_'file.delete'}" aria-label="{_'file.delete'}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 </figcaption>
             </figure>
         </li>
-        <!--FILES-->
         {foreach $structureFiles as $structureFile}
-            {include 'ajaxFileUploadUpdate.latte', 'structureFile'=> $structureFile}
+            {include 'ajaxFileUploadUpdate.latte', structureFile => $structureFile}
         {/foreach}
+        <li n:if="!count($directories) && !count($structureFiles)" class="filemanager-empty text-secondary">{_'file.emptyFolder'}</li>
     </ul>
 </div>

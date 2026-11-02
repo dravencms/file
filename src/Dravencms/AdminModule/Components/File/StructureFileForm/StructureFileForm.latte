@@ -1,28 +1,28 @@
 <form n:name="form">
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="{_"file.close"}"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">{_"changeFileNameTo", [name => $structureFile->getName()]}</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{_"file.close"}"></button>
     </div>
     <div class="modal-body">
         <div class="row">
             <div class="col-sm-12">
-                <div class="form-group no-margin-hr">
-                    <label class="control-label" n:name="name">{_"file.newFileName"}</label>
+                <div class="mb-3">
+                    <label class="form-label" n:name="name">{_"file.newFileName"}</label>
                     <input autofocus="autofocus" class="form-control" n:name="name" placeholder="{_"file.newFileName"}...">
                 </div>
             </div><!-- col-sm-12 -->
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <div class="form-group no-margin-hr">
-                    <label class="control-label" n:name="file">{_"file.file"}</label>
+                <div class="mb-3">
+                    <label class="form-label" n:name="file">{_"file.file"}</label>
                     <input class="form-control" n:name="file" placeholder="{_"newFile"}">
                 </div>
             </div><!-- col-sm-12 -->
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{_"file.close"}</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{_"file.close"}</button>
         <button type="submit" class="btn btn-primary">{_"file.change"}</button>
     </div>
 </form>

@@ -1,47 +1,33 @@
-<li class="file fileitem ajaxloaded"
+{var $file = $structureFile->getFile()}
+{var $fileName = $structureFile->getName().'.'.$file->getExtension()}
+{var $fileUrl = $basePath.'/data/'.substr($file->getSum(), 0, 2).'/'.$file->getBasename()}
+<li class="file fileitem"
     data-filesid="{$structureFile->getId()}"
-    data-filespath="{$basePath.'/data/'.substr($structureFile->getFile()->getSum(), 0, 2).'/'.$structureFile->getFile()->getBasename()}"
-    data-filestype="{$structureFile->getFile()->getType()}"
-    data-filesname="{$structureFile->getName().'.'.$structureFile->getFile()->getExtension()}"
->
+    data-filespath="{$fileUrl}"
+    data-filestype="{$file->getType()}"
+    data-filesname="{$fileName}">
     <figure>
-        {if $structureFile->getFile()->getType() != \Dravencms\Model\File\Entities\File::TYPE_BINARY}
-        {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-
-        <a href="{img $structureFile->getFile(),'1024x'}" class="link" data-gallery>
-            {elseif $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
-            <a href="{$basePath.'/data/'.substr($structureFile->getFile()->getSum(), 0, 2).'/'.$structureFile->getFile()->getBasename()}"
-               class="link"
-               type="{$structureFile->getFile()->getMimeType()}"
-               data-poster="{fileIcon $structureFile->getFile()}"
-               title="{_"file.preview"}"
-               data-sources='[{"href": "{$basePath.'/data/'.substr($structureFile->getFile()->getSum(), 0, 2).'/'.$structureFile->getFile()->getBasename()}", "type": "{$structureFile->getFile()->getMimeType()}"}]'
-               data-gallery>
+        {if $file->getType() === \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
+            <a href="{img $file, '1024x'}" class="file-tile-link link" data-gallery title="{$fileName}">
+        {elseif $file->getType() === \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
+            <a href="{$fileUrl}" class="file-tile-link link" type="{$file->getMimeType()}" data-poster="{fileIcon $file}" data-sources="{json_encode([['href' => $fileUrl, 'type' => $file->getMimeType()]], \JSON_THROW_ON_ERROR)}" data-gallery title="{$fileName}">
+        {else}
+            <a n:href="fileDownload! $structureFile->getId()" class="file-tile-link link" title="{$fileName}">
+        {/if}
+            <span class="file-preview">
+                {if $file->getType() === \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
+                    <img alt="" class="file-image" loading="lazy" n:img="$file, '200x'">
+                {else}
+                    <img alt="" loading="lazy" n:fileIcon="$file">
                 {/if}
-                {/if}
-                <div class="img-precontainer">
-                    <div class="img-container">
-                        {if $structureFile->getFile()->getType() == \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-                            <img alt="{$structureFile->getName()}" class="original " n:img="$structureFile->getFile(), '122x91'">
-                        {else}
-                            <img alt="{$structureFile->getName()}" class="original " n:fileIcon="$structureFile->getFile()">
-                        {/if}
-                    </div>
-                </div>
-                {if $structureFile->getFile()->getType() != \Dravencms\Model\File\Entities\File::TYPE_BINARY}
-            </a>
-            {/if}
-            <div class="box">
-                <h4 class="ellipsis">
-                    {var $fileName = $structureFile->getName().'.'.$structureFile->getFile()->getExtension()}
-                    <a href="#" class="link">{$fileName|truncate:19}</a>
-                </h4>
-            </div>
-            <figcaption>
-                <a n:href="File:ajaxFileInfo $structureFile->getId()" class="info" data-toggle="modal" data-target="#fileManagerModal" title="{_"file.info"}"><i class="fa fa-info"></i></a>
-                <a n:href="fileDownload! $structureFile->getId()" class="download" title="{_"file.download"}"><i class="fa fa-download"></i></a>
-                <a n:href="File:ajaxStructureFileForm $structureFile->getId()" class="rename" title="{_"file.rename"}" data-toggle="modal" data-target="#fileManagerModal"><i class="fa fa-pencil"></i></a>
-                <a n:href="fileDelete! $structureFile->getId()" class="delete" data-confirm="{_"file.areYouSureYouWantTodeleteThisFile"}" title="{_"file.delete"}"><i class="fa fa-trash"></i></a>
-            </figcaption>
+            </span>
+            <span class="file-name"><span class="file-name-text">{$fileName}</span></span>
+        </a>
+        <figcaption class="file-actions">
+            <a n:href="File:ajaxFileInfo $structureFile->getId()" class="btn btn-sm btn-icon btn-outline-secondary info" data-bs-toggle="modal" data-bs-target="#fileManagerModal" title="{_'file.info'}" aria-label="{_'file.info'}"><i class="fa fa-info" aria-hidden="true"></i></a>
+            <a n:href="fileDownload! $structureFile->getId()" class="btn btn-sm btn-icon btn-outline-secondary download" title="{_'file.download'}" aria-label="{_'file.download'}"><i class="fa fa-download" aria-hidden="true"></i></a>
+            <a n:href="File:ajaxStructureFileForm $structureFile->getId()" class="btn btn-sm btn-icon btn-outline-secondary rename" data-bs-toggle="modal" data-bs-target="#fileManagerModal" title="{_'file.rename'}" aria-label="{_'file.rename'}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+            <a n:href="fileDelete! $structureFile->getId()" class="btn btn-sm btn-icon btn-outline-danger delete" data-confirm="{_'file.areYouSureYouWantTodeleteThisFile'}" title="{_'file.delete'}" aria-label="{_'file.delete'}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+        </figcaption>
     </figure>
 </li>
