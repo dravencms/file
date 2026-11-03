@@ -73,3 +73,6 @@ media:
     title: 'Title'
     unsupportedTitle: 'Unable to play media'
     unsupported: 'Your browser cannot play this media. Please try a newer browser.'
+
+menu:
+    overview: 'File manager'

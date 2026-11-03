@@ -17,7 +17,7 @@
   "require": {
     "salamek/nette-files": "^2.2",
     "dravencms/locale": "^2.1",
-    "dravencms/admin": "^2.3"
+    "dravencms/admin": "^3.0"
   },
   "require-dev": {
     "nette/tester": "@dev"

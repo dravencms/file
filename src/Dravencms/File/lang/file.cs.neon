@@ -73,3 +73,6 @@ media:
     title: 'Název'
     unsupportedTitle: 'Médium nelze přehrát'
     unsupported: 'Váš prohlížeč toto médium nedokáže přehrát. Zkuste prosím novější prohlížeč.'
+
+menu:
+    overview: 'Správce souborů'
