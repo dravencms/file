@@ -76,3 +76,11 @@ media:
 
 menu:
     overview: 'File manager'
+
+acl:
+    resource: 'Files'
+    permissions:
+        edit:
+            label: 'Manage files'
+        delete:
+            label: 'Delete files'

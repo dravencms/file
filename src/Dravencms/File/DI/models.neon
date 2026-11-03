@@ -2,6 +2,3 @@
 - Dravencms\Model\File\Repository\StructureFileRepository
 - Dravencms\Model\File\Repository\StructureRepository
 - Dravencms\Model\File\Repository\StructureFileLinkRepository
-
-- Dravencms\Model\File\Fixtures\AclOperationFixtures
-- Dravencms\Model\File\Fixtures\AclResourceFixtures

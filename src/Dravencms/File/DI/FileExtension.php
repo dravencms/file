@@ -21,6 +21,9 @@ class FileExtension extends CompilerExtension implements TranslationProviderInte
     public function loadConfiguration()
     {
         $builder = $this->getContainerBuilder();
+        if ($this->compiler->getExtensions(\Dravencms\User\DI\UserExtension::class) !== []) {
+            $builder->addDefinition($this->prefix('aclProvider'))->setFactory(\Dravencms\File\AclProvider::class);
+        }
         if ($this->compiler->getExtensions(\Dravencms\Admin\DI\AdminExtension::class) !== []) {
             $builder->addDefinition($this->prefix('adminMenuProvider'))->setFactory(\Dravencms\File\AdminMenuProvider::class);
         }

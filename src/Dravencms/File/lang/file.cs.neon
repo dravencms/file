@@ -76,3 +76,11 @@ media:
 
 menu:
     overview: 'Správce souborů'
+
+acl:
+    resource: 'Soubory'
+    permissions:
+        edit:
+            label: 'Spravovat soubory'
+        delete:
+            label: 'Mazat soubory'
