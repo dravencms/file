@@ -3,12 +3,38 @@ extensions:
     dravencms.file: Dravencms\File\DI\FileExtension
 
 files:
-    dataDir: %wwwDir%/data
-    webTempDir: %wwwDir%/webtemp
+    dataDir: %appDir%/../var/files/data
+    webTempDir: %appDir%/../var/files/cache
     iconDir: %wwwDir%/assets/file/ico
-    webTempPath: 'webtemp'
+    iconPath: assets/file/ico
+    publicMaxAge: 3600
+    variants:
+        admin-thumb: [200, null, null]
+        admin-preview: [1024, null, null]
+        file-info: [122, 91, null]
+        gallery-cover: [553, 306, exact]
+        gallery-thumb: [263, 150, fit_exact]
+        carousel: [1140, 350, exact]
+        partner-main: [360, 144, fit_exact]
+        partner-list: [261, 144, fit_exact]
+        partner-bar: [100, 100, fit_exact]
+        article-small: [140, 100, null]
+        article-wide: [750, 300, exact]
+        article-related: [40, 40, shrink_only]
+        article-thumb: [100, 100, null]
+        article-cover: [750, 300, fit_exact]
+        sklub-gallery-cover: [300, 247, null]
+        sklub-picture: [1204, 768, null]
+        sklub-thumbnail: [304, 247, exact]
+        sklub-program: [800, 571, exact]
+        sklub-past-event: [700, 892, exact]
+        sklub-banner: [1920, 900, null]
 
 services:
+    routeFactory.Files: Dravencms\File\RouteFactory
+    route:
+        setup:
+            - addRouteFactory(@routeFactory.Files)
     file.filePresenter:
         class: Dravencms\AdminModule\FileModule\FilePresenter
 
@@ -22,3 +48,7 @@ nettrine.orm:
                     directories:
                         - %appDir%/../vendor/dravencms/file/src/Dravencms/Model/File/Entities
                     namespace: Dravencms\Model\File
+
+application:
+    mapping:
+        Files: Salamek\Files\Access\*Presenter

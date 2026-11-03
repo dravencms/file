@@ -21,6 +21,7 @@ class FileExtension extends CompilerExtension implements TranslationProviderInte
     public function loadConfiguration()
     {
         $builder = $this->getContainerBuilder();
+        $builder->addDefinition($this->prefix('files.AdminFileProvider'))->setFactory(\Dravencms\File\Access\AdminFileProvider::class);
         if ($this->compiler->getExtensions(\Dravencms\User\DI\UserExtension::class) !== []) {
             $builder->addDefinition($this->prefix('aclProvider'))->setFactory(\Dravencms\File\AclProvider::class);
         }
@@ -29,12 +30,18 @@ class FileExtension extends CompilerExtension implements TranslationProviderInte
         }
 
 
+        $builder->addDefinition($this->prefix('hashMigration'))->setFactory(\Dravencms\File\FileHashSchemaMigration::class);
+        $builder->addDefinition($this->prefix('hashMigrationCommand'))->setFactory(\Dravencms\File\Console\MigrateFileHashCommand::class)->setAutowired(false)->addTag('console.command', 'file:hash:migrate');
+
         $builder->addDefinition($this->prefix('file'))
             ->setClass(File::class);
 
         $this->loadComponents();
         $this->loadModels();
         $this->loadConsole();
+        $builder->addDefinition($this->prefix('migratePrivateStorage'))
+            ->setFactory(\Dravencms\File\Console\MigratePrivateStorageCommand::class, ['wwwDir' => $builder->parameters['wwwDir']])
+            ->setAutowired(false);
     }
 
 

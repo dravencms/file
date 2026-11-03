@@ -31,6 +31,9 @@ use Salamek\Files\FileStorage;
 #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
 class FilePresenter extends SecuredPresenter
 {
+    /** @inject */
+    public \Salamek\Files\Access\FileUrl $fileUrls;
+
     /** @var FileRepository @inject */
     public $fileRepository;
 

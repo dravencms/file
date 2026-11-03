@@ -65,3 +65,45 @@ The explicit runtime file list is `assets/public-assets.json`; local CSS depende
 are included automatically. Commit `public/` and `public-assets.manifest.json` with
 the source changes. The builder rejects missing dependencies and locally modified
 or unmanaged generated files. Admin's `npm run build:admin` also rebuilds public assets.
+
+## Private delivery (File 3 / Nette Files 3)
+
+Uploaded originals and generated image variants are outside `www`. URLs use
+`/files/<resolver>/<reference>/<checksum>/<variant>` and are authorized through
+`Salamek\Files\Access\IFileAccessProvider`. Packages register specific resolvers;
+File's `file.admin` resolver requires the existing `file.edit` permission and always
+returns private responses. Public gallery/content attachments use their owning
+plugin's resolver. Generic file icons remain public package assets.
+
+Before the first deployment, stop uploads/requests, back up the database and storage,
+install matching package versions, and update the generated File configuration
+(private data/cache paths, image recipes, routing and presenter mapping). Then run:
+
+```sh
+php bin/console file:hash:migrate
+php bin/console file:hash:migrate --apply
+php bin/console file:storage:migrate
+php bin/console file:storage:migrate --apply
+```
+
+The targeted schema migration widens only `fileFile.sum` from 32 to 64 characters.
+Existing IDs, foreign keys and MD5 checksums remain valid. New uploads use SHA-256.
+MySQL DDL is not transactional. The storage command previews all moves first,
+refuses collisions/symlinks, moves originals to the configured private data directory,
+archives old previews in `var/files/legacy-webtemp`, and verifies file checksums.
+It preserves root README/server markers and top-level Webloader CSS/JS files.
+
+Block direct `/data/` access and old `/webtemp/` image previews at the web server,
+while retaining public Webloader CSS/JS. Clear compiled containers and reload workers
+before resuming requests. `composer install` does not run database or storage migrations.
+Use persistent/shared private storage when deploying separate release directories.
+
+Public responses use a configurable TTL (default one hour); private responses and
+errors are not shared-cacheable. URLs have no expiry. Configure a reverse-proxy cache
+that honors those decisions if PHP-free public cache hits are needed. Optional
+`files.accelMapping` hands the transfer to Nginx internal locations; without it,
+Nette handles range-capable streaming. See Nette Files' README for server configuration.
+
+All custom image helpers/templates must pass a `FileReference`, not a bare file.
+Stored HTML embeds must pass through `fileContent` with their owning content resolver.
+There is no public raw-checksum fallback endpoint.

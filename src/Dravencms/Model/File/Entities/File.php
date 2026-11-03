@@ -28,7 +28,7 @@ class File implements IFile
     /**
      * @var string
      */
-    #[ORM\Column(type: "string", length: 32, unique: true, nullable: false)]
+    #[ORM\Column(type: "string", length: 64, unique: true, nullable: false)]
     private $sum;
 
     /**

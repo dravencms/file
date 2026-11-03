@@ -1,6 +1,6 @@
 {var $file = $structureFile->getFile()}
 {var $fileName = $structureFile->getName().'.'.$file->getExtension()}
-{var $fileUrl = $basePath.'/data/'.substr($file->getSum(), 0, 2).'/'.$file->getBasename()}
+{var $fileUrl = $presenter->fileUrls->create(new \Salamek\Files\Access\FileReference('file.admin', (string) $file->getId(), $file))}
 <li class="file fileitem"
     data-filesid="{$structureFile->getId()}"
     data-filespath="{$fileUrl}"
@@ -8,7 +8,7 @@
     data-filesname="{$fileName}">
     <figure>
         {if $file->getType() === \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-            <a href="{img $file, '1024x'}" class="file-tile-link link" data-gallery title="{$fileName}">
+            <a href="{img (new \Salamek\Files\Access\FileReference('file.admin', (string) $file->getId(), $file)), '1024x'}" class="file-tile-link link" data-gallery title="{$fileName}">
         {elseif $file->getType() === \Dravencms\Model\File\Entities\File::TYPE_MEDIA}
             <a href="{$fileUrl}" class="file-tile-link link" type="{$file->getMimeType()}" data-poster="{fileIcon $file}" data-sources="{json_encode([['href' => $fileUrl, 'type' => $file->getMimeType()]], \JSON_THROW_ON_ERROR)}" data-gallery title="{$fileName}">
         {else}
@@ -16,7 +16,7 @@
         {/if}
             <span class="file-preview">
                 {if $file->getType() === \Dravencms\Model\File\Entities\File::TYPE_IMAGE}
-                    <img alt="" class="file-image" loading="lazy" n:img="$file, '200x'">
+                    <img alt="" class="file-image" loading="lazy" n:img="(new \Salamek\Files\Access\FileReference('file.admin', (string) $file->getId(), $file)), '200x'">
                 {else}
                     <img alt="" loading="lazy" n:fileIcon="$file">
                 {/if}
