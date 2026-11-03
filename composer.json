@@ -18,7 +18,8 @@
     "salamek/nette-files": "^2.2",
     "dravencms/locale": "^2.1",
     "dravencms/admin": "^3.0",
-    "dravencms/application": "^0.3"
+    "dravencms/application": "^0.3",
+    "dravencms/packager": "^3.0"
   },
   "require-dev": {
     "nette/tester": "@dev"
@@ -33,14 +34,17 @@
   },
   "extra": {
     "dravencms": {
-      "files": {
-        "assets/*": "%wwwDir%/assets/file"
-      },
-      "configuration": "dravencms.config.neon"
+      "configuration": "dravencms.config.neon",
+      "assets": {
+        "public": "%wwwDir%/assets/file"
+      }
     }
   },
   "conflict": {
     "dravencms/user": "<3.1",
     "dravencms/admin": "<3.2"
+  },
+  "scripts": {
+    "build:assets": "build-public-assets"
   }
 }

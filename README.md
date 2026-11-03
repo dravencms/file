@@ -52,3 +52,16 @@ This package is licensed under the LGPL-3.0-only license.
 ## Admin authorization and mutations
 
 Administration uses User 3.1, Admin 3.2 and Application 0.3 guards. Screens and write callbacks enforce the existing provider-defined permissions server-side, including direct URLs and bulk callbacks. Mutating signals require POST and a session-bound action token; synchronize the matching admin assets when upgrading. See the User package's `user:security:migrate` instructions for the password-reset schema change.
+
+
+## Public assets
+
+Released packages include a generated `public/` directory. Packager 3 links it to
+`www/assets/` on every Composer install/update; existing asset URLs stay the same.
+Development sources, package metadata and tests are kept outside the public directory.
+
+After editing assets, install Composer dependencies and run `composer build:assets`.
+The explicit runtime file list is `assets/public-assets.json`; local CSS dependencies
+are included automatically. Commit `public/` and `public-assets.manifest.json` with
+the source changes. The builder rejects missing dependencies and locally modified
+or unmanaged generated files. Admin's `npm run build:admin` also rebuilds public assets.
