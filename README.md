@@ -19,7 +19,7 @@ composer require dravencms/file
 
 The package loader publishes assets to `%wwwDir%/assets/file` and loads its configuration. By default, original data is stored under `%wwwDir%/data`, generated files under `%wwwDir%/webtemp`, and icons under `%wwwDir%/assets/file/ico`.
 
-Apply the package's Doctrine schema and load its fixtures when the file-manager admin menu and ACL permissions are required. Ensure the web/PHP process can write to the data and webtemp directories.
+Apply the package's Doctrine schema. Navigation and permission definitions come from providers; assign permissions through the group editor. Ensure the web/PHP process can write to the data and webtemp directories.
 
 ## Application Use
 
@@ -48,3 +48,7 @@ Installing `dravencms/structure` allows file components to be exposed through th
 ## License
 
 This package is licensed under the LGPL-3.0-only license.
+
+## Admin authorization and mutations
+
+Administration uses User 3.1, Admin 3.2 and Application 0.3 guards. Screens and write callbacks enforce the existing provider-defined permissions server-side, including direct URLs and bulk callbacks. Mutating signals require POST and a session-bound action token; synchronize the matching admin assets when upgrading. See the User package's `user:security:migrate` instructions for the password-reset schema change.

@@ -28,6 +28,7 @@ use Salamek\Files\FileStorage;
  *
  * @author sadam
  */
+#[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
 class FilePresenter extends SecuredPresenter
 {
     /** @var FileRepository @inject */
@@ -85,6 +86,7 @@ class FilePresenter extends SecuredPresenter
      * @param null|int $structureId
      * @throws \Exception
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function actionDefault(?int $structureId = null): void
     {
         $this->template->h1 = $this->translator->translate('file.fileManager');
@@ -109,6 +111,7 @@ class FilePresenter extends SecuredPresenter
      * @param int|null $structureId
      * @param string|null $type
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function renderAjaxFileManager(?int $structureId = null, ?string $type = null): void
     {
         $this->template->h1 = $this->translator->translate('file.fileManagerSelector');
@@ -133,6 +136,7 @@ class FilePresenter extends SecuredPresenter
      * @param int|null $structureId
      * @param string|null $type
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function renderAjaxFileManagerSelector(?int $structureId = null, ?string $type = null): void
     {
         $this->renderAjaxFileManager($structureId, $type);
@@ -142,6 +146,7 @@ class FilePresenter extends SecuredPresenter
      * @param int $structureId
      * @throws \Exception
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function renderAjaxStructureInfo(int $structureId): void
     {
         $structure = $this->structureRepository->getOneById($structureId);
@@ -152,6 +157,7 @@ class FilePresenter extends SecuredPresenter
     /**
      * @param int|null $filesStructureFilesId
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function renderAjaxFileInfo(?int $filesStructureFilesId = null): void
     {
         $structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
@@ -162,6 +168,7 @@ class FilePresenter extends SecuredPresenter
     /**
      * @param int|null $filesStructureFilesId
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function actionAjaxStructureFileForm(?int $filesStructureFilesId = null)
     {
         $this->structureFileEdit = $this->structureFileRepository->getOneById($filesStructureFilesId);
@@ -171,6 +178,7 @@ class FilePresenter extends SecuredPresenter
      * @param null|integer $structureId
      * @param null|integer $parentStructureId
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function actionAjaxStructureForm(?int $structureId = null, ?int $parentStructureId = null): void
     {
         if ($parentStructureId)
@@ -187,6 +195,7 @@ class FilePresenter extends SecuredPresenter
     /**
      * @param int|null $filesStructureFilesId
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function renderAjaxFileUploadUpdate(?int $filesStructureFilesId = null): void
     {
         $this->template->structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
@@ -197,6 +206,7 @@ class FilePresenter extends SecuredPresenter
      * @throws \Nette\Application\AbortException
      * @throws \Nette\Application\BadRequestException
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function handleFileDownload(int $filesStructureFilesId): void
     {
         $structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
@@ -213,6 +223,7 @@ class FilePresenter extends SecuredPresenter
      * @throws \Nette\Application\AbortException
      * @throws \Nette\Application\BadRequestException
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
     public function handleStructureDownload(int $structureId): void
     {
         $structure = $this->structureRepository->getOneById($structureId);
@@ -228,9 +239,13 @@ class FilePresenter extends SecuredPresenter
      * @param int $filesStructureFilesId
      * @throws \Nette\Application\AbortException
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'delete')]
+    #[\Dravencms\Security\Mutation]
     public function handleFileDelete(int $filesStructureFileId): void
     {
+        $this->requirePermission('file', 'delete');
         $structureFile = $this->structureFileRepository->getOneById($filesStructureFileId);
+        if ($structureFile === null) { $this->error(); }
         $filesStructureId = ($structureFile->getStructure() ? $structureFile->getStructure()->getId() : null);
         $this->deleteFile($structureFile);
        
@@ -292,10 +307,14 @@ class FilePresenter extends SecuredPresenter
      * @param int $structureId
      * @throws \Nette\Application\AbortException
      */
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'delete')]
+    #[\Dravencms\Security\Mutation]
     public function handleStructureDelete(int $structureId): void
     {
+        $this->requirePermission('file', 'delete');
         $structure = $this->structureRepository->getOneById($structureId);
-  
+        if ($structure === null) { $this->error(); }
+
         $structureParentId = ($structure->getParent() ? $structure->getParent()->getId() : null);
         
         $children = array_reverse($this->resolveStructureChildren($structure)) + [$structure];

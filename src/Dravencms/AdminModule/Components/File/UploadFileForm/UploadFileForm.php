@@ -136,6 +136,7 @@ class UploadFileForm extends BaseControl
      */
     public function editFormSucceeded(Form $form): void
     {
+        $this->requirePermission('file', 'edit');
         $values = $form->getValues();
 
         $structureFile = $this->fileStorage->processFile($values->file, $this->structureParent);
