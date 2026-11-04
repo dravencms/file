@@ -107,3 +107,15 @@ Nette handles range-capable streaming. See Nette Files' README for server config
 All custom image helpers/templates must pass a `FileReference`, not a bare file.
 Stored HTML embeds must pass through `fileContent` with their owning content resolver.
 There is no public raw-checksum fallback endpoint.
+
+
+## Variant configuration (3.1)
+
+This package declares its own variants in `dravencms.config.neon`; Nette merges the
+`files.variants` maps. Definitions use named `width`, `height` and `resizeMode` fields.
+`resizeMode` defaults to `fit`; an omitted/null dimension is unconstrained, and at
+least one dimension is required. On upgrade, replace old positional definitions
+and remove variants owned by other packages from the File configuration. Project
+variants belong in project configuration. Update the matching File, Nette Files
+and installed Gallery/Article/Partner/Carousel releases together. No additional
+database or storage migration is needed for this configuration change.
