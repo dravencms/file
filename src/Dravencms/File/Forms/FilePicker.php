@@ -104,7 +104,7 @@ final class FilePicker extends BaseControl
         $wrapper = Html::el('div', [
             'data-file-picker' => true, 'data-file-type' => $this->fileType ?? '',
             'data-browser-url' => $presenter->link(':Admin:File:File:ajaxFileManagerSelector'),
-            'data-preview-url' => $presenter->link(':Admin:File:File:ajaxFileSelection'),
+            'data-preview-url' => $presenter->link(':Admin:File:File:ajaxFileSelection', ['filesStructureFilesId' => 0]),
             'data-error-label' => $this->translate('file.picker.loadFailed'),
         ]);
         $wrapper->addHtml(Html::el('input', ['type' => 'hidden', 'name' => $this->getHtmlName() . '[id]',
