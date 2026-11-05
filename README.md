@@ -119,3 +119,30 @@ and remove variants owned by other packages from the File configuration. Project
 variants belong in project configuration. Update the matching File, Nette Files
 and installed Gallery/Article/Partner/Carousel releases together. No additional
 database or storage migration is needed for this configuration change.
+
+
+## Form file picker (File 4)
+
+Inject `Dravencms\File\File` and register one field:
+
+```php
+$this->files->addSelector($form, 'picture', 'myPlugin.picture', IFile::TYPE_IMAGE)
+    ->setExistingFile($entity?->getPicture());
+```
+
+Use `{label picture /}{input picture}` in Latte. The field owns the selected ID,
+optional upload, preview, removal, translations and server-side validation. Nested
+locale containers work without special IDs. Pass `false` as the last argument to
+disable uploads. `setRequired()` accepts a selection or an upload.
+
+The value is `FileSelection`, containing `?StructureFile $file` and
+`FileUpload $upload`; `getId()` returns the selected attachment ID. The consuming
+plugin handles storage, transactions, attachment links and its edit permission.
+Selection of another existing file requires `file.edit`; `setExistingFile()` marks
+the trusted attachment already owned by the edited record, so editors can keep it
+without receiving file-manager access. Supply it from the database, never HTTP data.
+Uploads are checked against the field type and PHP size limits before success.
+
+File 4 requires Admin 3.4. `getFileSelectorPath()` and `fileSelector.latte` are removed;
+migrate both inputs to the field and adapt persistence to its typed value. Synchronize
+package assets and clear the compiled container when deploying; no migration is needed.

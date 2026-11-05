@@ -204,6 +204,20 @@ class FilePresenter extends SecuredPresenter
         $this->template->structureFile = $this->structureFileRepository->getOneById($filesStructureFilesId);
     }
 
+    #[\Dravencms\User\Attributes\IsAllowed('file', 'edit')]
+    public function renderAjaxFileSelection(int $filesStructureFilesId, ?string $type = null): void
+    {
+        $attachment = $this->structureFileRepository->getOneById($filesStructureFilesId);
+        if ($attachment === null || ($type !== null && $attachment->getFile()->getType() !== $type)) { $this->error(); }
+        $file = $attachment->getFile();
+        $this->getHttpResponse()->setHeader('Cache-Control', 'private, no-store');
+        $this->sendJson([
+            'name' => $attachment->getBasename(),
+            'preview' => $file->getType() === \Salamek\Files\Models\IFile::TYPE_IMAGE
+                ? $this->fileUrls->create(new \Salamek\Files\Access\FileReference('file.admin', (string) $file->getId(), $file), 'admin-thumb') : null,
+        ]);
+    }
+
     /**
      * @param int $filesStructureFilesId
      * @throws \Nette\Application\AbortException

@@ -84,3 +84,10 @@ acl:
             label: 'Manage files'
         delete:
             label: 'Delete files'
+
+picker:
+    invalidSelection: "The selected file no longer exists or its identifier is invalid."
+    selectionForbidden: "You do not have permission to select this file."
+    wrongType: "Choose a file of the required type."
+    loadFailed: "The file selector could not be loaded. Please try again."
+    required: 'Choose a file or upload one.'

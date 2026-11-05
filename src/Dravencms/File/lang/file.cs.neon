@@ -84,3 +84,10 @@ acl:
             label: 'Spravovat soubory'
         delete:
             label: 'Mazat soubory'
+
+picker:
+    invalidSelection: "Vybraný soubor již neexistuje nebo má neplatný identifikátor."
+    selectionForbidden: "Nemáte oprávnění vybrat tento soubor."
+    wrongType: "Vyberte soubor požadovaného typu."
+    loadFailed: "Výběr souboru se nepodařilo načíst. Zkuste to znovu."
+    required: 'Vyberte soubor nebo nahrajte nový.'
