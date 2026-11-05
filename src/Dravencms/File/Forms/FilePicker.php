@@ -119,7 +119,8 @@ final class FilePicker extends BaseControl
             $label->addHtml(Html::el('input', ['type' => 'file', 'name' => $this->getHtmlName() . '[upload]', 'accept' => $accept,
                 'class' => 'visually-hidden', 'disabled' => $this->isDisabled(), 'data-file-picker-upload' => true]));
         }
-        $buttons->addHtml(Html::el('button', ['type' => 'button', 'class' => 'btn btn-outline-danger', 'data-file-picker-clear' => true,
+        $buttons->addHtml(Html::el('button', ['type' => 'button', 'class' => 'btn btn-outline-danger' . ($selection->file === null ? ' d-none' : ''),
+            'hidden' => $selection->file === null, 'data-file-picker-clear' => true,
             'disabled' => $this->isDisabled()])->setText($this->translate('file.removeSelection')));
         $preview = $wrapper->create('div', ['data-file-picker-preview' => true, 'aria-live' => 'polite']);
         if ($selection->file) {

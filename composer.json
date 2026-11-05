@@ -17,7 +17,7 @@
   "require": {
     "salamek/nette-files": "^3.1",
     "dravencms/locale": "^2.1",
-    "dravencms/admin": "^3.4",
+    "dravencms/admin": "^3.4.1",
     "dravencms/application": "^0.3",
     "dravencms/packager": "^3.0"
   },
@@ -42,7 +42,7 @@
   },
   "conflict": {
     "dravencms/user": "<3.1",
-    "dravencms/admin": "<3.4",
+    "dravencms/admin": "<3.4.1",
     "dravencms/gallery": "<3.1",
     "dravencms/article": "<3.1",
     "dravencms/partner": "<3.1",
