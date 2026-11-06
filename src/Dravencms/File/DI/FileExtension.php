@@ -28,6 +28,9 @@ class FileExtension extends CompilerExtension implements TranslationProviderInte
         }
         if ($this->compiler->getExtensions(\Dravencms\Admin\DI\AdminExtension::class) !== []) {
             $builder->addDefinition($this->prefix('adminMenuProvider'))->setFactory(\Dravencms\File\AdminMenuProvider::class);
+            if (interface_exists(\Dravencms\Admin\Dashboard\IDashboardComponent::class)) {
+                $builder->addDefinition($this->prefix('dashboard'))->setFactory(\Dravencms\File\DashboardComponent::class)->setAutowired(false);
+            }
         }
 
 

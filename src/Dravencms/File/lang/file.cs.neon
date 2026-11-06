@@ -91,3 +91,9 @@ picker:
     wrongType: "Vyberte soubor požadovaného typu."
     loadFailed: "Výběr souboru se nepodařilo načíst. Zkuste to znovu."
     required: 'Vyberte soubor nebo nahrajte nový.'
+
+dashboard:
+    title: "Soubory"
+    total: "Uložené soubory"
+    images: "Obrázky"
+    bytes: "Velikost originálů"

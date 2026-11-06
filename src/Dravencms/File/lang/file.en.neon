@@ -91,3 +91,9 @@ picker:
     wrongType: "Choose a file of the required type."
     loadFailed: "The file selector could not be loaded. Please try again."
     required: 'Choose a file or upload one.'
+
+dashboard:
+    title: "Files"
+    total: "Stored files"
+    images: "Images"
+    bytes: "Original file size"

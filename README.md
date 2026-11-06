@@ -146,3 +146,10 @@ Uploads are checked against the field type and PHP size limits before success.
 File 4 requires Admin 3.4. `getFileSelectorPath()` and `fileSelector.latte` are removed;
 migrate both inputs to the field and adapt persistence to its typed value. Synchronize
 package assets and clear the compiled container when deploying; no migration is needed.
+
+
+## Dashboard
+
+With Admin 3.5 installed, this package automatically registers an ACL-protected dashboard
+panel showing stored originals, images and original-file size. Aggregate data is loaded only
+when an authorized user renders the panel. No setup command or migration is required.
